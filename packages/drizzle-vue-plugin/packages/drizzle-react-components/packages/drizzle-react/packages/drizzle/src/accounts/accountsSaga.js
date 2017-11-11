@@ -1,20 +1,17 @@
 import { call, put, takeLatest } from 'redux-saga/effects'
-import store from '../store'
 
-function getAccounts() {
+function getAccounts(web3) {
   console.log('Getting accounts...')
+  console.log(web3)
 
-  return store
-    .getState()
-    .web3.eth.getAccounts()
-    .then(accounts => {
-      console.log(accounts)
-      return accounts
-    })
+  return web3.eth.getAccounts().then(accounts => {
+    console.log(accounts)
+    return accounts
+  })
 }
 
 function* callGetAccounts(action) {
-  const accounts = yield call(getAccounts)
+  const accounts = yield call(getAccounts, action.web3)
 
   if (!accounts) {
     console.log('No accounts found!')
