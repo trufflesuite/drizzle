@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 let DrizzleComponent = {
+
   withContract: function(Component, Contract) {
     return class extends React.Component {
       static contextTypes = {
@@ -27,16 +28,17 @@ let DrizzleComponent = {
       handleChange() {
         let newValue = this.drizzle.store.getState().contracts[Contract]
 
-        this.setState({ [Contract]: newValue })
+        this.setState({[Contract]: newValue})
       }
 
       render() {
-        let contractProps = { [Contract]: this.state[Contract] }
+        let contractProps = {[Contract]: this.state[Contract]}
 
         return <Component {...contractProps} {...this.props} />
       }
     }
   }
+
 }
 
 export default DrizzleComponent
