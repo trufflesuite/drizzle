@@ -1,12 +1,20 @@
+import PropTypes from 'prop-types'
 import React from 'react'
 import { connect } from 'react-redux'
 
 export default function drizzleConnect(Component, ...args) {
+
   var ConnectedWrappedComponent = connect(...args)(Component)
 
-  return function(props, context) {
-    return <ConnectedWrappedComponent {...props} drizzle={context.drizzle} />
+  const DrizzledComponent = (props, context) => (
+    <ConnectedWrappedComponent {...props} store={context.drizzleStore} />
+  )
+
+  DrizzledComponent.contextTypes = {
+    drizzleStore: PropTypes.object
   }
+
+  return DrizzledComponent
 }
 
 /*

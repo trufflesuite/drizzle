@@ -1,12 +1,6 @@
 import { connect } from 'react-redux'
 
-export default function drizzleConnect(
-  Component,
-  Contract,
-  stateForProps = {},
-  dispatchForProps = {},
-  mergeProps
-) {
+export default function drizzleConnect(Component, Contract, stateForProps = {}, dispatchForProps = {}, mergeProps) {
   const mapStateToProps = (state, stateForProps) => {
     console.log(state.contracts)
 
@@ -21,10 +15,5 @@ export default function drizzleConnect(
     return dispatchForProps
   }
 
-  return connect(
-    mapStateToProps,
-    mapDispatchToProps,
-    mergeProps,
-    { storeKey: 'drizzle' }
-  )(Component)
+  return connect(mapStateToProps, mapDispatchToProps, mergeProps, {storeKey: 'drizzle'})(Component)
 }
