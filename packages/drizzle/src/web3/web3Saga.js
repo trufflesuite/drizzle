@@ -27,14 +27,11 @@ function* callInitializeWeb3(action) {
   const web3 = yield call(initializeWeb3)
 
   if (typeof web3 === 'undefined') {
-    yield put({ type: 'WEB3_FAILED' })
-    yield call(action.reject, {
-      source: 'web3',
-      message: 'Web3 failed to initialize.'
-    })
+    yield put({type: 'WEB3_FAILED'})
+    yield call(action.reject, {source: 'web3', message: 'Web3 failed to initialize.'})
   }
 
-  yield put({ type: 'WEB3_INITIALIZED', web3 })
+  yield put({type: 'WEB3_INITIALIZED', web3})
   yield call(action.resolve)
 }
 
@@ -42,4 +39,4 @@ function* web3Saga() {
   yield takeLatest('WEB3_INITIALIZING', callInitializeWeb3)
 }
 
-export default web3Saga
+export default web3Saga;
