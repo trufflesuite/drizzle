@@ -1,68 +1,13 @@
 import { call, put, takeLatest, takeEvery } from 'redux-saga/effects'
-import store from '../store'
 import DrizzleContract from '../DrizzleContract'
-
-/*
- * Contract Initialization
- */
-function initializeContract(contractArtifact) {
-  var web3 = store.getState().web3
-
-  // Since Truffle artifacts have their deployed addresses stored by network id,
-  // we first get the current network id web3 is connected to, then initialize
-  // the contract with the proper address.
-
-  return web3.eth.net
-    .getId()
-    .then(id => {
-      var contractName = contractArtifact.contract_name
-
-      console.log('Initializing contract: ' + contractName + '...')
-
-      var contract = new DrizzleContract(contractArtifact, id)
-
-      var contractInfo = {
-        name: contractName,
-        contract: contract
-      }
-
-      return contractInfo
-    })
-    .catch(error => {
-      console.error(
-        'Error in ' + contract.contractArtifact.contract_name + ': ' + cFunction
-      )
-      console.error(error)
-
-      return false
-    })
-}
-
-function* callInitializeContract(action) {
-  const contractInfo = yield call(initializeContract, action.contractArtifact)
-
-  console.log('Contract Info:')
-  console.log(contractInfo)
-
-  if (!contractInfo) {
-    yield call(action.reject, {
-      source: 'contracts',
-      message: 'Failed to initialize contract.'
-    })
-  }
-
-  yield put({ type: 'INITIALIZED_CONTRACT', contractInfo })
-  yield call(action.resolve)
-}
+import store from '../store'
 
 /*
  * Contract Varialble Sync
  */
-function getContractVar({ contract, i, name }) {
-  contract.synced = false
-
+function getContractVar({ contract, i, name, web3 }) {
   console.log(
-    contract.contractArtifact.contract_name + ': ' + contract.abi[i].name
+    contract.contractArtifact.contractName + ': ' + contract.abi[i].name
   )
 
   return contract.methods[name]().call(
@@ -71,7 +16,7 @@ function getContractVar({ contract, i, name }) {
       if (error) {
         console.error(
           'Error in ' +
-            contract.contractArtifact.contract_name +
+            contract.contractArtifact.contractName +
             ': ' +
             contract.abi[i].name
         )
@@ -80,17 +25,18 @@ function getContractVar({ contract, i, name }) {
         return
       }
 
-      contract.data[name] = result
-
       // If return value is an integer, convert to the appropriate type.
       if (contract.abi[i].outputs[0].type === 'uint256') {
-        contract.data[name] = store.getState().web3.utils.hexToNumber(result)
+        result = web3.utils.hexToNumber(result)
       }
 
       var contractInfo = {
-        name: contract.contractArtifact.contract_name,
-        contract: contract
+        name: contract.contractArtifact.contractName,
+        variable: name,
+        value: result
       }
+
+      console.log(contractInfo)
 
       return contractInfo
     }
@@ -100,8 +46,6 @@ function getContractVar({ contract, i, name }) {
 function* callGetContractVar(action) {
   const contractInfo = yield call(getContractVar, action)
 
-  console.log(contractInfo)
-
   if (!contractInfo) {
     yield call(action.reject, {
       source: 'contracts (' + action.name + ')',
@@ -109,19 +53,14 @@ function* callGetContractVar(action) {
     })
   }
 
-  yield put({ type: 'GOT_CONTRACT_VAR', contractInfo })
-  yield call(action.resolve)
-}
-
-function* contractSynced(action) {
-  action.contract.synced = true
-
-  var contractInfo = {
-    name: action.contract.contractArtifact.contract_name,
-    contract: action.contract
+  var derp = {
+    name: action.contract.contractArtifact.contractName,
+    variable: action.contract.abi[action.i].name,
+    value: contractInfo
   }
 
-  yield put({ type: 'UPDATE_CONTRACT', contractInfo })
+  yield put({ type: 'GOT_CONTRACT_VAR', ...derp })
+  yield call(action.resolve)
 }
 
 /*
@@ -137,7 +76,7 @@ function sendContractTx({ contract, cFunction, cFunctionParams }) {
     })
     .catch(error => {
       console.error(
-        'Error in ' + contract.contractArtifact.contract_name + ': ' + cFunction
+        'Error in ' + contract.contractArtifact.contractName + ': ' + cFunction
       )
       console.error(error)
 
@@ -161,10 +100,8 @@ function* callSendContractTx(action) {
 }
 
 function* contractsSaga() {
-  yield takeLatest('INITIALIZING_CONTRACT', callInitializeContract)
   yield takeEvery('GETTING_CONTRACT_VAR', callGetContractVar)
   yield takeEvery('SENDING_CONTRACT_TX', callSendContractTx)
-  yield takeEvery('CONTRACT_SYNCED', contractSynced)
 }
 
 export default contractsSaga
