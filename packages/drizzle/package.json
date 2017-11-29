@@ -22,7 +22,7 @@
     "redux-saga": "^0.15.3",
     "redux-thunk": "^2.2.0",
     "truffle-contract": "^2.0.5",
-    "web3": "^1.0.0-beta.18"
+    "web3": "^1.0.0-beta.26"
   },
   "devDependencies": {
     "babel-core": "^6.25.0",
