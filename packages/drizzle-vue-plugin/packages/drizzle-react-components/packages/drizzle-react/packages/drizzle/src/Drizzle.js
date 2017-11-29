@@ -1,5 +1,4 @@
 import DrizzleContract from './DrizzleContract'
-import DrizzleError from './DrizzleError'
 
 var Web3 = require('web3')
 
@@ -20,6 +19,10 @@ class Drizzle {
     this.getContracts = this.getContracts.bind(this)
     this.observeBlocks = this.observeBlocks.bind(this)
 
+    // Drizzle load event
+    this.ready = new Event('DrizzleReady')
+
+    // Wait for window load event in case of injected web3.
     window.addEventListener('load', () => {
       this.getWeb3()
     })
@@ -68,7 +71,8 @@ class Drizzle {
         this.getContracts()
       })
       .catch(error => {
-        new DrizzleError(error)
+        console.error('Error fetching accounts:')
+        console.error(error)
       })
   }
 
@@ -87,21 +91,92 @@ class Drizzle {
       )
     }
 
-    this.observeBlocks()
+    // Wait until all contracts are intialized before observing changes
+    this.readytoObserve = store.subscribe(() => {
+      const state = store.getState()
+      var initializedContracts = 0
+
+      for (var contract in state.contracts) {
+        if (state.contracts[contract].initialized === true) {
+          initializedContracts++
+
+          if (initializedContracts === Object.keys(state.contracts).length) {
+            // All contracts are initialized, we can begin observing changes
+            this.observeBlocks()
+          }
+        }
+      }
+    })
   }
 
   observeBlocks() {
-    this.initialized = true
+    // Cancels our store subscription.
+    this.readytoObserve()
 
-    // Observe new blocks and re-sync accounts and contracts.
+    this.store.dispatch({ type: 'DRIZZLE_INITIALIZED' })
+
+    var contractAddresses = []
+    var contractNames = []
+
+    // Collect contract addresses in an array for later comparison in txs.
+    for (var contract in this.contracts) {
+      contractNames.push(this.contracts[contract].contractArtifact.contractName)
+      contractAddresses.push(this.contracts[contract].options.address)
+    }
+
+    // Observe new blocks and re-sync contracts.
     this.web3.eth
       .subscribe('newBlockHeaders', (error, result) => {
         if (error) {
+          console.error('Error in block header subscription:')
           console.error(error)
         }
       })
       .on('data', blockHeader => {
-        console.log('New block!')
+        // If block isn't pending, check block txs for interation with observed contracts.
+        if (blockHeader.number !== null) {
+          // Check block txs for our contract txs, if contract involved, sync contract.
+          const blockNumber = blockHeader.number
+
+          this.web3.eth
+            .getBlock(blockNumber, true)
+            .then(block => {
+              const txs = block.transactions
+
+              if (txs.length > 0) {
+                // Loop through txs looking for contract address
+                for (var i = 0; i < txs.length; i++) {
+                  if (
+                    contractAddresses.indexOf(txs[i].from) !== -1 ||
+                    contractAddresses.indexOf(txs[i].to) !== -1
+                  ) {
+                    const index =
+                      contractAddresses.indexOf(txs[i].from) !== -1
+                        ? contractAddresses.indexOf(txs[i].from)
+                        : contractAddresses.indexOf(txs[i].to)
+                    const contractName = contractNames[index]
+
+                    console.log('index:')
+                    console.log(index)
+
+                    console.log('contractName:')
+                    console.log(contractName)
+
+                    return this.store.dispatch({
+                      type: 'CONTRACT_SYNCING',
+                      contract: this.contracts[contractName]
+                    })
+                  }
+                }
+              }
+
+              return
+            })
+            .catch(error => {
+              console.error('Error in block fetching:')
+              console.error(error)
+            })
+        }
       })
   }
 }

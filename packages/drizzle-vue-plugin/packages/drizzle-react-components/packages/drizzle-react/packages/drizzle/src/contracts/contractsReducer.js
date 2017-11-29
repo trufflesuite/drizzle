@@ -1,53 +1,59 @@
 const initialState = {}
 
 const contractsReducer = (state = initialState, action) => {
-  if (action.type === 'INITIALIZED_CONTRACT') {
-    return Object.assign({}, state, {
-      [action.contractInfo.name]: action.contractInfo.contract
-    })
-  }
+  /*
+   * Contract Status
+   */
 
-  if (action.type === 'GOT_CONTRACT_VAR') {
-    /*return Object.assign({}, state, {
-     [action.contractInfo.name]['data'][action.contractInfo.variable]: action.contractInfo.value
-    })*/
-
-    console.log('Action:')
-    console.log(action)
-
+  if (action.type === 'CONTRACT_INITIALIZED') {
     return {
       ...state,
       [action.name]: {
         ...state[action.name],
-        [action.variable]: action.value
+        initialized: true,
+        synced: true
       }
     }
   }
 
   if (action.type === 'CONTRACT_SYNCING') {
-    /*return Object.assign({}, state, {
-     [action.contract.contractName]: action.contract
-    })*/
-
     return {
       ...state,
-      [action.contract.contractArtifact.contractName]: {
-        ...state[action.contract.contractArtifact.contractName],
+      [action.contractName]: {
+        ...state[action.contractName],
         synced: false
       }
     }
   }
 
   if (action.type === 'CONTRACT_SYNCED') {
-    /*return Object.assign({}, state, {
-     [action.contract.contractName]: action.contract
-    })*/
-
     return {
       ...state,
-      [action.contract.contractArtifact.contractName]: {
-        ...state[action.contract.contractArtifact.contractName],
+      [action.contractName]: {
+        ...state[action.contractName],
         synced: true
+      }
+    }
+  }
+
+  /*
+   * Contract Functions
+   */
+
+  if (action.type === 'GOT_CONTRACT_VAR') {
+    return {
+      ...state,
+      [action.name]: {
+        ...state[action.name],
+        [action.variable]: {
+          ...state[action.name][action.variable],
+          [action.argsHash]: {
+            ...state[action.name][action.variable][action.argsHash],
+            args: action.args,
+            fnIndex: action.fnIndex,
+            value: action.value
+          }
+        }
       }
     }
   }
