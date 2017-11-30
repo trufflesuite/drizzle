@@ -31,14 +31,7 @@ Tired of constantly coding contract calls after your state changes? Wish you had
    const drizzle = new Drizzle(this.props.options, drizzleStore)
    ```
 
-1. Wrap your app with `DrizzleProvider` and pass in an `options` object. You may also pass in your own `store`. For more information on using your own `store`, see [Using an Existing store](#using-an-existing-store).
-   ```javascript
-   <DrizzleProvider options={options}>
-     <App />
-   </DrizzleProvider>
-   ```
-
-1. Get contract data. Calling the data function will first check the store and, if empty, will query the blockchain for the data and cache the response for future use. For more information on how this works, see [How Data Stays Fresh](#how-data-stays-fresh).
+1. Get contract data. Calling the `data()` function on a contract will first check the store for a cached result. If empty, Drizzle will query the blockchain and cache the response for future use. For more information on how this works, see [How Data Stays Fresh](#how-data-stays-fresh).
 
    **Note:** We have to check that Drizzle is initialized before fetching data. A one-liner such as below is fine for display a few pieces of data, but a better approach for larger dapps is to use a [loading component](#loading-component).
    ```javascript
@@ -143,14 +136,14 @@ An object containing information about the status of Drizzle.
 
 ## How Data Stays Fresh
 
-Once initialized, Drizzle instantiates `web3` and our desired contracts, then observes the chain by subscribing to new block headers.
-![Drizzle Sync Step 1](https://github.com/trufflesuite/drizzle/blob/master/readme/drizzle-sync1.png?raw=true)
+1. Once initialized, Drizzle instantiates `web3` and our desired contracts, then observes the chain by subscribing to new block headers.
+   ![Drizzle Sync Step 1](https://github.com/trufflesuite/drizzle/blob/master/readme/drizzle-sync1.png?raw=true)
 
-Drizzle keeps track of contract calls so it knows what to synchronize.
-![Drizzle Sync Step 2](https://github.com/trufflesuite/drizzle/blob/master/readme/drizzle-sync2.png?raw=true)
+1. Drizzle keeps track of contract calls so it knows what to synchronize.
+   ![Drizzle Sync Step 2](https://github.com/trufflesuite/drizzle/blob/master/readme/drizzle-sync2.png?raw=true)
 
-When a new block header comes in, Drizzle checks that the block isn't pending, then goes through the transactions looking to see if any of them touched our contracts.
-![Drizzle Sync Step 3](https://github.com/trufflesuite/drizzle/blob/master/readme/drizzle-sync3.png?raw=true)
+1. When a new block header comes in, Drizzle checks that the block isn't pending, then goes through the transactions looking to see if any of them touched our contracts.
+   ![Drizzle Sync Step 3](https://github.com/trufflesuite/drizzle/blob/master/readme/drizzle-sync3.png?raw=true)
 
-If they did, we replay the calls already in the store to refresh any potentially altered data. If they didn't we continue with the store data.
-![Drizzle Sync Step 4](https://github.com/trufflesuite/drizzle/blob/master/readme/drizzle-sync4.png?raw=true)
+1. If they did, we replay the calls already in the store to refresh any potentially altered data. If they didn't we continue with the store data.
+   ![Drizzle Sync Step 4](https://github.com/trufflesuite/drizzle/blob/master/readme/drizzle-sync4.png?raw=true)
