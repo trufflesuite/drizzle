@@ -1,89 +1,84 @@
-import { call, put, takeLatest, takeEvery } from 'redux-saga/effects'
-import DrizzleContract from '../DrizzleContract'
-import store from '../store'
+import { call, put, select, takeLatest, takeEvery } from 'redux-saga/effects'
 
 /*
- * Contract Varialble Sync
+ * Call and Cache Contract Function
  */
-function getContractVar({contract, i, name, web3}) {
-  console.log(contract.contractArtifact.contractName + ': ' + contract.abi[i].name)
 
-  return contract.methods[name]().call({from: store.getState().accounts[0]}, (error, result) => {
-    if (error) {
-      console.error('Error in ' + contract.contractArtifact.contractName + ': ' + contract.abi[i].name)
-      console.error(error)
-
-      return
-    }
-
-    // If return value is an integer, convert to the appropriate type.
-    if (contract.abi[i].outputs[0].type === 'uint256')
-    {
-      result = web3.utils.hexToNumber(result)
-    }
-
-    var contractInfo = {
-      name: contract.contractArtifact.contractName,
-      variable: name,
-      value: result
-    }
-
-    console.log(contractInfo)
-
-    return contractInfo
+function derpContractVar({contract, fnName, fnIndex, args, argsHash}) {
+  return contract.methods[fnName](...args).call()
+  .then(result => {
+    return result
+  })
+  .catch(error => {
+    console.error('Error in ' + contract.contractArtifact.contractName + ': ' + fnName)
+    return console.error(error)
   })
 }
 
-function* callGetContractVar(action) {
-  const contractInfo = yield call(getContractVar, action)
+function* callDerpContractVar(action) {
+  var derpResult = yield call(derpContractVar, action)
 
-  if (!contractInfo) {
-    yield call(action.reject, {source: 'contracts (' + action.name + ')', message: 'Failed to initialize contract variable.'})
+  if (!derpResult) {
+    yield call(console.error('No result from contract call!'))
   }
+
+  // TODO: Extract into converter function
+  /*if (action.contract.abi[action.fnIndex].outputs[0].type === 'uint256')
+  {
+    derpResult = action.contract.web3.utils.hexToNumber(derpResult)
+  }
+
+  if (action.contract.abi[action.fnIndex].outputs[0].type === 'string')
+  {
+    derpResult = action.contract.web3.utils.hexToUtf8(derpResult)
+  }*/
 
   var derp = {
     name: action.contract.contractArtifact.contractName,
-    variable: action.contract.abi[action.i].name,
-    value: contractInfo
+    variable: action.contract.abi[action.fnIndex].name,
+    argsHash: action.argsHash,
+    args: action.args,
+    value: derpResult,
+    fnIndex: action.fnIndex
   }
 
   yield put({type: 'GOT_CONTRACT_VAR', ...derp})
-  yield call(action.resolve)
 }
 
 /*
- * Contract Tx
+ * Sync Contract
  */
-function sendContractTx({contract, cFunction, cFunctionParams}) {
-  var defaultAccount = store.getState().accounts[0]
 
-  return contract.methods[cFunction](cFunctionParams).send({from: defaultAccount, gas: 4700000})
-  .then((receipt) => {
-    return receipt
-  })
-  .catch((error) => {
-    console.error('Error in ' + contract.contractArtifact.contractName + ': ' + cFunction)
-    console.error(error)
+function* callSyncContract(action) {
+  // Get contract state from store
+  const contract = action.contract
+  const contractName = contract.contractArtifact.contractName
 
-    return false
-  })
-}
+  const contractsState = yield select(getContractsState)
+  const contractState = contractsState[contractName]
 
-function* callSendContractTx(action) {
-  const contractInfo = yield call(sendContractTx, action)
+  // Iterate over functions and hashes
+  for (var fnName in contractState)
+  {
+    for (var argsHash in contractState[fnName])
+    {
+      const fnIndex = contractState[fnName][argsHash].fnIndex
+      const args = contractState[fnName][argsHash].args
 
-  console.log(contractInfo)
-
-  if (!contractInfo) {
-    yield call(action.reject, {source: 'contracts (' + action.cFunction + ')', message: 'Failed to initialize contract variable.'})
+      // Pull args and call derp for each given function
+      yield put({type: 'DERP_CONTRACT_VAR', contract, fnName, fnIndex, args, argsHash})
+    }
   }
 
-  yield call(action.resolve)
+  // When complete, dispatch CONTRACT_SYNCED
+  yield put({type: 'CONTRACT_SYNCED', contractName})
 }
 
+const getContractsState = (state) => state.contracts
+
 function* contractsSaga() {
-  yield takeEvery('GETTING_CONTRACT_VAR', callGetContractVar)
-  yield takeEvery('SENDING_CONTRACT_TX', callSendContractTx)
+  yield takeEvery('DERP_CONTRACT_VAR', callDerpContractVar)
+  yield takeEvery('CONTRACT_SYNCING', callSyncContract)
 }
 
 export default contractsSaga;
