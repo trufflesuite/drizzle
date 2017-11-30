@@ -9,7 +9,8 @@ class DrizzleContract {
 
     var networkId = 0
 
-    web3.eth.net.getId().then(networkId => {
+    web3.eth.net.getId()
+    .then((networkId) => {
       var web3Contract = new web3.eth.Contract(
         this.abi,
         this.contractArtifact.networks[networkId].address,
@@ -30,16 +31,16 @@ class DrizzleContract {
       Removes need for most of these functions
       */
       for (var i = 0; i < this.abi.length; i++) {
-        var item = this.abi[i]
+        var item = this.abi[i];
 
-        if (item.type == 'function' && item.constant === true) {
-          this.methods[item.name].data = this.dataFunction(item.name, i)
+        if (item.type == "function" && item.constant === true) {
+          this.methods[item.name].data = this.dataFunction(item.name, i);
         }
       }
 
       const name = contractArtifact.contractName
 
-      store.dispatch({ type: 'CONTRACT_INITIALIZED', name })
+      store.dispatch({type: 'CONTRACT_INITIALIZED', name})
     })
   }
 
@@ -55,36 +56,27 @@ class DrizzleContract {
         argsHash = contract.generateArgsHash(args)
       }
       const contractName = contract.contractArtifact.contractName
-      const functionState = contract.store.getState().contracts[contractName][
-        fnName
-      ]
+      const functionState = contract.store.getState().contracts[contractName][fnName]
 
       // If call result is in state and fresh, return value instead of calling
       if (argsHash in functionState) {
         if (contract.store.getState().contracts[contractName].synced === true) {
-          return functionState[argsHash].value
+          return functionState[argsHash].value;
         }
       }
 
       // Otherwise, call function and update store
-      contract.store.dispatch({
-        type: 'DERP_CONTRACT_VAR',
-        contract,
-        fnName,
-        fnIndex,
-        args,
-        argsHash
-      })
+      contract.store.dispatch({type: 'DERP_CONTRACT_VAR', contract, fnName, fnIndex, args, argsHash})
 
       // Return nothing because state is currently empty.
-      return ''
-    }
+      return '';
+    };
 
     // Check if value in store
-    // Check if value fresh
-    // If fresh, return value
-    // If stale, dispatch action with:
-    // function, this (contract instance)
+      // Check if value fresh
+      // If fresh, return value
+        // If stale, dispatch action with:
+          // function, this (contract instance)
 
     // Can do 90% of this with a simple "data() function"
     // txs no longer need be tracked as block observer takes care of this
@@ -94,8 +86,10 @@ class DrizzleContract {
     var web3 = this.web3
     var hashString = ''
 
-    for (var i = 0; i < args.length; i++) {
-      if (typeof args[i] !== 'function') {
+    for (var i = 0; i < args.length; i++)
+    {
+      if (typeof args[i] !== 'function')
+      {
         var hashPiece = web3.utils.sha3(args[i])
 
         hashString += hashPiece

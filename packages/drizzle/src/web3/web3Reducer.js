@@ -3,21 +3,24 @@ const initialState = {
 }
 
 const web3Reducer = (state = initialState, action) => {
-  if (action.type === 'WEB3_INITIALIZING') {
+  if (action.type === 'WEB3_INITIALIZING')
+  {
     return {
       ...state,
       status: 'initializing'
     }
   }
 
-  if (action.type === 'WEB3_INITIALIZED') {
+  if (action.type === 'WEB3_INITIALIZED')
+  {
     return {
       ...state,
       status: 'initialized'
     }
   }
 
-  if (action.type === 'WEB3_FAILED') {
+  if (action.type === 'WEB3_FAILED')
+  {
     return {
       ...state,
       status: 'failed'
