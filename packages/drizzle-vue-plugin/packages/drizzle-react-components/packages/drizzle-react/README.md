@@ -44,13 +44,14 @@ Check out the [Drizzle Truffle Box](https://github.com/truffle-box/drizzle-box) 
 
    const mapStateToProps = state => {
      return {
-       drizzleStatus: state.drizzleStatus
+       drizzleStatus: state.drizzleStatus,
+       SimpleStorage: state.contracts.SimpleStorage
      }
    }
 
    const HomeContainer = drizzleConnect(Home, mapStateToProps);
    ```
-   `drizzleStatus` will be accessible on the wrapped component `Home` as `this.props.drizzleStatus`. See [Drizzle State in the Drizzle docs](https://github.com/trufflesuite/drizzle#drizzle-state) for the entire state tree.
+   See [Drizzle State in the Drizzle docs](https://github.com/trufflesuite/drizzle#drizzle-state) for the entire state tree.
 
 1. Get contract data by accessing the contracts via `context`. Calling the `data()` function on a contract will first check the store for a cached result. If empty, Drizzle will query the blockchain and cache the response for future use. For more information on how this works, see [How Data Stays Fresh in the Drizzle docs](https://github.com/trufflesuite/drizzle#how-data-stays-fresh).
 
@@ -64,6 +65,7 @@ Check out the [Drizzle Truffle Box](https://github.com/truffle-box/drizzle-box) 
    }
 
    // If Drizzle is initialized (and therefore web3, accounts and contracts), fetch data.
+   // This will update automatically when the contract state is altered.
    var storedData = this.props.drizzleStatus.initialized ? this.contracts.SimpleStorage.methods.storedData.data() : 'Loading...'
    ```
 
