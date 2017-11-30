@@ -5,7 +5,8 @@ const contractsReducer = (state = initialState, action) => {
    * Contract Status
    */
 
-  if (action.type === 'CONTRACT_INITIALIZED') {
+  if (action.type === 'CONTRACT_INITIALIZED')
+  {
     return {
       ...state,
       [action.name]: {
@@ -16,7 +17,8 @@ const contractsReducer = (state = initialState, action) => {
     }
   }
 
-  if (action.type === 'CONTRACT_SYNCING') {
+  if (action.type === 'CONTRACT_SYNCING')
+  {
     return {
       ...state,
       [action.contractName]: {
@@ -26,7 +28,8 @@ const contractsReducer = (state = initialState, action) => {
     }
   }
 
-  if (action.type === 'CONTRACT_SYNCED') {
+  if (action.type === 'CONTRACT_SYNCED')
+  {
     return {
       ...state,
       [action.contractName]: {
@@ -40,7 +43,8 @@ const contractsReducer = (state = initialState, action) => {
    * Contract Functions
    */
 
-  if (action.type === 'GOT_CONTRACT_VAR') {
+  if (action.type === 'GOT_CONTRACT_VAR')
+  {
     return {
       ...state,
       [action.name]: {
