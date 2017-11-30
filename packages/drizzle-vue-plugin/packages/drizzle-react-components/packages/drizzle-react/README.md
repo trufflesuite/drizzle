@@ -1,7 +1,7 @@
 # drizzle-react
 
 Requires React 0.14+
-`npm install --save drizzle-react`
+`npm install --save truffle-drizzle-react`
 
 `drizzle-react` is the official way to integrate Drizzle with your React dapp.
 
