@@ -21,8 +21,6 @@ class DrizzleContract {
 
       Object.assign(this, web3Contract)
 
-      //return this.syncData(0)
-
       /*
       Loop through contract functions similar to TrufflContract and add check store first for data then:
         return store data then refresh
@@ -35,11 +33,7 @@ class DrizzleContract {
         var item = this.abi[i]
 
         if (item.type == 'function' && item.constant === true) {
-          this.methods[item.name].data = this.dataFunction(
-            item.name,
-            i,
-            this.methods[item.name].call
-          )
+          this.methods[item.name].data = this.dataFunction(item.name, i)
         }
       }
 
@@ -110,56 +104,6 @@ class DrizzleContract {
 
     return web3.utils.sha3(hashString)
   }
-
-  /*syncData(i) {
-    let contract = this
-
-    // Indicate contract syncing for loading spinners, etc.
-    this.store.dispatch({type: 'CONTRACT_SYNCING', contract})
-
-    if (this.abi[i].constant === true && this.abi[i].payable === false && this.abi[i].inputs.length === 0)
-    {
-      var name = this.abi[i].name
-      var web3 = this.web3
-
-      new Promise((resolve, reject) => {
-        this.store.dispatch({type: 'GETTING_CONTRACT_VAR', resolve, reject, contract, i, name, web3})
-      }).catch((error) => {
-        new DrizzleError(error)
-      })
-    }
-
-    // More to sync!
-    if (i < this.abi.length - 1)
-    {
-      return this.syncData(i + 1)
-    }
-
-    // Sync Complete!
-    return this.store.dispatch({type: 'CONTRACT_SYNCED', contract})
-  }*/
-
-  /*
-   * string cFunction: The name of the function to be called.
-   * object cFunctionParams: {
-   *  int accountNumber
-   *  object params
-   * }
-   * string datumToSync
-   */
-  /*tx(cFunction, cFunctionParams) {
-    let contract = this
-
-    return new Promise((resolve, reject) => {
-      this.store.dispatch({type: 'SENDING_CONTRACT_TX', resolve, reject, contract, cFunction, cFunctionParams})
-    }).then(() => {
-      console.log('Transaction sent, attempting to sync contract data with store...')
-
-      this.syncData(0)
-    }).catch((error) => {
-      new DrizzleError(error)
-    })
-  }*/
 }
 
 export default DrizzleContract

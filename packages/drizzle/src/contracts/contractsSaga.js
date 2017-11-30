@@ -60,9 +60,6 @@ function* callSyncContract(action) {
   const contractsState = yield select(getContractsState)
   const contractState = contractsState[contractName]
 
-  console.log('contractState:')
-  console.log(contractState)
-
   // Iterate over functions and hashes
   for (var fnName in contractState) {
     for (var argsHash in contractState[fnName]) {
