@@ -15,7 +15,3 @@ export default function drizzleConnect(Component, ...args) {
 
   return DrizzledComponent
 }
-
-/*
- * TODO: See if this works or need to make class component...
- */
