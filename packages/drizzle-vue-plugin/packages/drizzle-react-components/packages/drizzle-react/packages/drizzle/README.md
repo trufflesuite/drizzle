@@ -39,6 +39,7 @@ Tired of constantly coding contract calls after your state changes? Wish you had
    const state = drizzle.store.getState()
 
    // If Drizzle is initialized (and therefore web3, accounts and contracts), fetch data.
+   // Place this in a store subscription and it will update automatically when the contract state is altered.
    var storedData = state.drizzleStatus.initialized ? drizzle.contracts.SimpleStorage.methods.storedData.data() : 'Loading...'
    ```
 
