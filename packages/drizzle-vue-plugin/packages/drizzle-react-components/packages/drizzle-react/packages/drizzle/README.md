@@ -35,20 +35,16 @@ Tired of constantly coding contract calls after your state changes? Wish you had
 
    **Note:** We have to check that Drizzle is initialized before fetching data. A one-liner such as below is fine for display a few pieces of data, but a better approach for larger dapps is to use a [loading component](#loading-component).
    ```javascript
-   // For convenience
-   constructor(props, context) {
-     super(props)
-
-     this.contracts = context.drizzle.contracts
-   }
+   // Get the state
+   const state = drizzle.store.getState()
 
    // If Drizzle is initialized (and therefore web3, accounts and contracts), fetch data.
-   var storedData = this.props.drizzleStatus.initialized ? this.contracts.SimpleStorage.methods.storedData.data() : 'Loading...'
+   var storedData = state.drizzleStatus.initialized ? drizzle.contracts.SimpleStorage.methods.storedData.data() : 'Loading...'
    ```
 
    The contract instance has all of its standard web3 properties and methods. For example, sending a transaction is done as normal:
    ```javascript
-   this.contracts.SimpleStorage.methods.set(this.state.storageAmount).send()
+   drizzle.contracts.SimpleStorage.methods.set(storageAmount).send()
    ```
 
 ## Options
