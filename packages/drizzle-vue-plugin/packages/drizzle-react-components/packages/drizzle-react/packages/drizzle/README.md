@@ -58,31 +58,31 @@ Tired of constantly coding contract calls after your state changes? Wish you had
    this.contracts.SimpleStorage.methods.set(this.state.storageAmount).send()
    ```
 
-   ## Options
+## Options
 
-   ```javascript
-   {
-     contracts,
-     web3: {
-       fallback: {
-         type
-         url
-       }
-     }
-   }
-   ```
-   ### `contracts` (array, required)
-   An array of contract artifact files.
+```javascript
+{
+  contracts,
+  web3: {
+    fallback: {
+      type
+      url
+    }
+  }
+}
+```
+### `contracts` (array, required)
+An array of contract artifact files.
 
-   ### `web3` (object)
-   Options regarding `web3` instantiation.
+### `web3` (object)
+Options regarding `web3` instantiation.
 
-   #### `fallback` (object)
-   An object consisting of the type and url of a fallback web3 provider.
+#### `fallback` (object)
+An object consisting of the type and url of a fallback web3 provider.
 
-   `type` (string): The type of web3 fallback, currently `ws` (web socket) is the only possibility.
+`type` (string): The type of web3 fallback, currently `ws` (web socket) is the only possibility.
 
-   `url` (string): The full websocket url. For example: `ws://127.0.0.1:8546`.
+`url` (string): The full websocket url. For example: `ws://127.0.0.1:8546`.
 
 ## Drizzle State
 
@@ -144,13 +144,13 @@ An object containing information about the status of Drizzle.
 ## How Data Stays Fresh
 
 Once initialized, Drizzle instantiates `web3` and our desired contracts, then observes the chain by subscribing to new block headers.
-![Image of Yaktocat](https://octodex.github.com/images/yaktocat.png)
+![Drizzle Sync Step 1](https://github.com/trufflesuite/drizzle/blob/master/readme/drizzle-sync1.png?raw=true)
 
 Drizzle keeps track of contract calls so it knows what to synchronize.
-![Image of Yaktocat](https://octodex.github.com/images/yaktocat.png)
+![Drizzle Sync Step 2](https://github.com/trufflesuite/drizzle/blob/master/readme/drizzle-sync2.png?raw=true)
 
 When a new block header comes in, Drizzle checks that the block isn't pending, then goes through the transactions looking to see if any of them touched our contracts.
-![Image of Yaktocat](https://octodex.github.com/images/yaktocat.png)
+![Drizzle Sync Step 3](https://github.com/trufflesuite/drizzle/blob/master/readme/drizzle-sync3.png?raw=true)
 
 If they did, we replay the calls already in the store to refresh any potentially altered data. If they didn't we continue with the store data.
-![Image of Yaktocat](https://octodex.github.com/images/yaktocat.png)
+![Drizzle Sync Step 4](https://github.com/trufflesuite/drizzle/blob/master/readme/drizzle-sync4.png?raw=true)
