@@ -71,7 +71,7 @@ An array of contract artifact files.
 Options regarding `web3` instantiation.
 
 #### `fallback` (object)
-An object consisting of the type and url of a fallback web3 provider.
+An object consisting of the type and url of a fallback web3 provider. This is used if no injected provider, such as MetaMask or Mist, is detected.
 
 `type` (string): The type of web3 fallback, currently `ws` (web socket) is the only possibility.
 
@@ -149,5 +149,5 @@ An object containing information about the status of Drizzle.
    ![Drizzle Sync Step 3](https://github.com/trufflesuite/drizzle/blob/master/readme/drizzle-sync3.png?raw=true)
 
 1. If they did, we replay the calls already in the store to refresh any potentially altered data. If they didn't we continue with the store data.
-   
+
    ![Drizzle Sync Step 4](https://github.com/trufflesuite/drizzle/blob/master/readme/drizzle-sync4.png?raw=true)
