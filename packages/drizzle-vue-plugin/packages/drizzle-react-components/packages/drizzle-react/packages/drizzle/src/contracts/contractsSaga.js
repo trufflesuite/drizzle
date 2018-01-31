@@ -1,18 +1,59 @@
 import { call, put, select, takeLatest, takeEvery } from 'redux-saga/effects'
 
 /*
- * Call and Cache Contract Function
+ * Send and Cache
  */
 
-function derpContractVar({contract, fnName, fnIndex, args, argsHash}) {
-  return contract.methods[fnName](...args).call()
-  .then(result => {
-    return result
-  })
-  .catch(error => {
-    console.error('Error in ' + contract.contractArtifact.contractName + ': ' + fnName)
-    return console.error(error)
-  })
+function sendContractTx({ contract, fnName, fnIndex, args, stackId }) {
+  var persistTxHash
+
+  return contract.methods[fnName]()
+    .send(...args)
+    .on('transactionHash', txHash => {
+      console.log('Tx hash from saga:')
+      console.log(txHash)
+
+      persistTxHash = txHash
+
+      put({ type: 'TX_BROADCASTED', txHash, stackId })
+
+      return txHash
+    })
+    .on('confirmation', (confirmationNumber, receipt) => {
+      put({
+        type: 'TX_CONFIRMAITON',
+        confirmationReceipt: receipt,
+        txHash: persistTxHash
+      })
+    })
+    .on('receipt', receipt => {
+      put({ type: 'TX_SUCCESSFUL', receipt: receipt, txHash: persistTxHash })
+    })
+    .on('error', error => {
+      put({ type: 'TX_ERROR', error: error, txHash: persistTxHash })
+    })
+}
+
+function* callSendContractTx(action) {
+  var sendResult = yield call(sendContractTx, action)
+}
+
+/*
+ * Call and Cache
+ */
+
+function derpContractVar({ contract, fnName, fnIndex, args, argsHash }) {
+  return contract.methods[fnName](...args)
+    .call()
+    .then(result => {
+      return result
+    })
+    .catch(error => {
+      console.error(
+        'Error in ' + contract.contractArtifact.contractName + ': ' + fnName
+      )
+      return console.error(error)
+    })
 }
 
 function* callDerpContractVar(action) {
@@ -42,7 +83,7 @@ function* callDerpContractVar(action) {
     fnIndex: action.fnIndex
   }
 
-  yield put({type: 'GOT_CONTRACT_VAR', ...derp})
+  yield put({ type: 'GOT_CONTRACT_VAR', ...derp })
 }
 
 /*
@@ -58,27 +99,33 @@ function* callSyncContract(action) {
   const contractState = contractsState[contractName]
 
   // Iterate over functions and hashes
-  for (var fnName in contractState)
-  {
-    for (var argsHash in contractState[fnName])
-    {
+  for (var fnName in contractState) {
+    for (var argsHash in contractState[fnName]) {
       const fnIndex = contractState[fnName][argsHash].fnIndex
       const args = contractState[fnName][argsHash].args
 
       // Pull args and call derp for each given function
-      yield put({type: 'DERP_CONTRACT_VAR', contract, fnName, fnIndex, args, argsHash})
+      yield put({
+        type: 'DERP_CONTRACT_VAR',
+        contract,
+        fnName,
+        fnIndex,
+        args,
+        argsHash
+      })
     }
   }
 
   // When complete, dispatch CONTRACT_SYNCED
-  yield put({type: 'CONTRACT_SYNCED', contractName})
+  yield put({ type: 'CONTRACT_SYNCED', contractName })
 }
 
-const getContractsState = (state) => state.contracts
+const getContractsState = state => state.contracts
 
 function* contractsSaga() {
+  yield takeEvery('SEND_CONTRACT_TX', callSendContractTx)
   yield takeEvery('DERP_CONTRACT_VAR', callDerpContractVar)
   yield takeEvery('CONTRACT_SYNCING', callSyncContract)
 }
 
-export default contractsSaga;
+export default contractsSaga
