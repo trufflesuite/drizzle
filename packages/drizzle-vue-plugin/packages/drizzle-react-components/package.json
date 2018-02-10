@@ -1,0 +1,32 @@
+{
+  "name": "drizzle-react-components",
+  "version": "0.1.0",
+  "description": "Put some Drizzle on your React components.",
+  "main": "dist/drizzle-react-components.js",
+  "scripts": {
+    "build": "webpack --config webpack.config.js --env.BABEL_ENV=production"
+  },
+  "keywords": [
+    "ethereum",
+    "react"
+  ],
+  "author": {
+    "name": "Josh Quintal",
+    "email": "josh@trufflesuite.com",
+    "url": "http://truffleframework.com/"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "prop-types": "^15.5.10",
+    "react": "^15.4.2"
+  },
+  "devDependencies": {
+    "babel-core": "^6.25.0",
+    "babel-loader": "^7.1.1",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-preset-react": "^6.24.1",
+    "react-redux": "^5.0.6",
+    "webpack": "^3.5.3"
+  }
+}
