@@ -1,4 +1,4 @@
-import drizzleConnect from '../drizzleConnect.js'
+import { drizzleConnect } from 'drizzle-react'
 import React, { Children, Component } from 'react'
 import PropTypes from 'prop-types'
 
