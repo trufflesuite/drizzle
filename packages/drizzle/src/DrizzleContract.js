@@ -19,20 +19,14 @@ class DrizzleContract {
 
       Object.assign(this, web3Contract)
 
-      /*
-      Loop through contract functions similar to TruffleContract and add check store first for data then:
-        return store data then refresh
-      or (if no data from that function at all)
-        return loading and get data
-
-      Removes need for most of these functions
-      */
       for (var i = 0; i < this.abi.length; i++) {
         var item = this.abi[i]
 
         if (item.type == 'function' && item.constant === true) {
-          this.methods[item.name].data = this.dataFunction(item.name, i)
-          this.methods[item.name].cacheCall = this.cacheFunction(item.name, i)
+          this.methods[item.name].cacheCall = this.cacheCallFunction(
+            item.name,
+            i
+          )
         }
 
         if (item.type == 'function' && item.constant === false) {
@@ -49,49 +43,11 @@ class DrizzleContract {
     })
   }
 
-  dataFunction(fnName, fnIndex, fn) {
+  cacheCallFunction(fnName, fnIndex, fn) {
     var contract = this
 
     return function() {
-      // Collect args and has to use as key, 0x0 if no args
-      var argsHash = '0x0'
-      var args = arguments
-
-      if (args.length > 0) {
-        argsHash = contract.generateArgsHash(args)
-      }
-      const contractName = contract.contractArtifact.contractName
-      const functionState = contract.store.getState().contracts[contractName][
-        fnName
-      ]
-
-      // If call result is in state and fresh, return value instead of calling
-      if (argsHash in functionState) {
-        if (contract.store.getState().contracts[contractName].synced === true) {
-          return functionState[argsHash].value
-        }
-      }
-
-      // Otherwise, call function and update store
-      contract.store.dispatch({
-        type: 'DERP_CONTRACT_VAR',
-        contract,
-        fnName,
-        fnIndex,
-        args,
-        argsHash
-      })
-
-      // Return nothing because state is currently empty.
-      return ''
-    }
-  }
-
-  cacheFunction(fnName, fnIndex, fn) {
-    var contract = this
-
-    return function() {
-      // Collect args and has to use as key, 0x0 if no args
+      // Collect args and hash to use as key, 0x0 if no args
       var argsHash = '0x0'
       var args = arguments
 
@@ -112,7 +68,7 @@ class DrizzleContract {
 
       // Otherwise, call function and update store
       contract.store.dispatch({
-        type: 'DERP_CONTRACT_VAR',
+        type: 'CALL_CONTRACT_FN',
         contract,
         fnName,
         fnIndex,
@@ -133,10 +89,14 @@ class DrizzleContract {
       var args = arguments
 
       // Generate temporary ID
-      stackId = contract.store.getState().transactionStack.length
+      var stackId = contract.store.getState().transactionStack.length
 
       // Add ID to "transactionStack" with empty value
       contract.store.dispatch({ type: 'PUSH_TO_STACK' })
+
+      // TODO: FOR DEMO, MOVE MOVE MOVE
+      const name = contract.contractArtifact.contractName
+      contract.store.dispatch({ type: 'CONTRACT_SYNC_IND', contractName: name })
 
       // Dispatch tx to saga
       // When txhash received, will be value of stack ID
