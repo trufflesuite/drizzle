@@ -1,10 +1,43 @@
 import { call, put, select, takeLatest, takeEvery } from 'redux-saga/effects'
 
 /*
- * Call and Cache Contract Function
+ * Send and Cache
  */
 
-function derpContractVar({contract, fnName, fnIndex, args, argsHash}) {
+function sendContractTx({contract, fnName, fnIndex, args, stackId}) {
+  var persistTxHash
+  
+  return contract.methods[fnName](...args).send()
+  .on('transactionHash', txHash => {
+    console.log('Tx hash from saga:')
+    console.log(txHash)
+
+    persistTxHash = txHash
+
+    put({type: 'TX_BROADCASTED', txHash, stackId})
+
+    return txHash
+  })
+  .on('confirmation', (confirmationNumber, receipt) => {
+    put({type: 'TX_CONFIRMAITON', confirmationReceipt: receipt, txHash: persistTxHash})
+  })
+  .on('receipt', receipt => {
+    put({type: 'TX_SUCCESSFUL', receipt: receipt, txHash: persistTxHash})
+  })
+  .on('error', error => {
+    put({type: 'TX_ERROR', error: error, txHash: persistTxHash})
+  })
+}
+
+function* callSendContractTx(action) {
+  var sendResult = yield call(sendContractTx, action)
+}
+
+/*
+ * Call and Cache
+ */
+
+function callContractFn({contract, fnName, fnIndex, args, argsHash}) {
   return contract.methods[fnName](...args).call()
   .then(result => {
     return result
@@ -15,34 +48,34 @@ function derpContractVar({contract, fnName, fnIndex, args, argsHash}) {
   })
 }
 
-function* callDerpContractVar(action) {
-  var derpResult = yield call(derpContractVar, action)
+function* callCallContractFn(action) {
+  var callResult = yield call(callContractFn, action)
 
-  if (!derpResult) {
+  if (!callResult) {
     yield call(console.error('No result from contract call!'))
   }
 
   // TODO: Extract into converter function
   /*if (action.contract.abi[action.fnIndex].outputs[0].type === 'uint256')
   {
-    derpResult = action.contract.web3.utils.hexToNumber(derpResult)
+    callResult = action.contract.web3.utils.hexToNumber(callResult)
   }
 
   if (action.contract.abi[action.fnIndex].outputs[0].type === 'string')
   {
-    derpResult = action.contract.web3.utils.hexToUtf8(derpResult)
+    callResult = action.contract.web3.utils.hexToUtf8(callResult)
   }*/
 
-  var derp = {
+  var dispatchArgs = {
     name: action.contract.contractArtifact.contractName,
     variable: action.contract.abi[action.fnIndex].name,
     argsHash: action.argsHash,
     args: action.args,
-    value: derpResult,
+    value: callResult,
     fnIndex: action.fnIndex
   }
 
-  yield put({type: 'GOT_CONTRACT_VAR', ...derp})
+  yield put({type: 'GOT_CONTRACT_VAR', ...dispatchArgs})
 }
 
 /*
@@ -65,8 +98,8 @@ function* callSyncContract(action) {
       const fnIndex = contractState[fnName][argsHash].fnIndex
       const args = contractState[fnName][argsHash].args
 
-      // Pull args and call derp for each given function
-      yield put({type: 'DERP_CONTRACT_VAR', contract, fnName, fnIndex, args, argsHash})
+      // Pull args and call fn for each given function
+      yield put({type: 'CALL_CONTRACT_FN', contract, fnName, fnIndex, args, argsHash})
     }
   }
 
@@ -77,7 +110,8 @@ function* callSyncContract(action) {
 const getContractsState = (state) => state.contracts
 
 function* contractsSaga() {
-  yield takeEvery('DERP_CONTRACT_VAR', callDerpContractVar)
+  yield takeEvery('SEND_CONTRACT_TX', callSendContractTx)
+  yield takeEvery('CALL_CONTRACT_FN', callCallContractFn)
   yield takeEvery('CONTRACT_SYNCING', callSyncContract)
 }
 

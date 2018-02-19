@@ -1,5 +1,7 @@
 const path = require('path');
 
+process.env.BABEL_ENV = 'production';
+
 module.exports = {
   entry: './src/index.js',
   output: {

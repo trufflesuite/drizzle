@@ -28,6 +28,17 @@ const contractsReducer = (state = initialState, action) => {
     }
   }
 
+  if (action.type === 'CONTRACT_SYNC_IND')
+  {
+    return {
+      ...state,
+      [action.contractName]: {
+        ...state[action.contractName],
+        synced: false
+      }
+    }
+  }
+
   if (action.type === 'CONTRACT_SYNCED')
   {
     return {
