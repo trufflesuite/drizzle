@@ -4,34 +4,29 @@ import { call, put, select, takeLatest, takeEvery } from 'redux-saga/effects'
  * Send and Cache
  */
 
-function sendContractTx({ contract, fnName, fnIndex, args, stackId }) {
+function sendContractTx({contract, fnName, fnIndex, args, stackId}) {
   var persistTxHash
+  
+  return contract.methods[fnName](...args).send()
+  .on('transactionHash', txHash => {
+    console.log('Tx hash from saga:')
+    console.log(txHash)
 
-  return contract.methods[fnName](...args)
-    .send()
-    .on('transactionHash', txHash => {
-      console.log('Tx hash from saga:')
-      console.log(txHash)
+    persistTxHash = txHash
 
-      persistTxHash = txHash
+    put({type: 'TX_BROADCASTED', txHash, stackId})
 
-      put({ type: 'TX_BROADCASTED', txHash, stackId })
-
-      return txHash
-    })
-    .on('confirmation', (confirmationNumber, receipt) => {
-      put({
-        type: 'TX_CONFIRMAITON',
-        confirmationReceipt: receipt,
-        txHash: persistTxHash
-      })
-    })
-    .on('receipt', receipt => {
-      put({ type: 'TX_SUCCESSFUL', receipt: receipt, txHash: persistTxHash })
-    })
-    .on('error', error => {
-      put({ type: 'TX_ERROR', error: error, txHash: persistTxHash })
-    })
+    return txHash
+  })
+  .on('confirmation', (confirmationNumber, receipt) => {
+    put({type: 'TX_CONFIRMAITON', confirmationReceipt: receipt, txHash: persistTxHash})
+  })
+  .on('receipt', receipt => {
+    put({type: 'TX_SUCCESSFUL', receipt: receipt, txHash: persistTxHash})
+  })
+  .on('error', error => {
+    put({type: 'TX_ERROR', error: error, txHash: persistTxHash})
+  })
 }
 
 function* callSendContractTx(action) {
@@ -42,18 +37,15 @@ function* callSendContractTx(action) {
  * Call and Cache
  */
 
-function callContractFn({ contract, fnName, fnIndex, args, argsHash }) {
-  return contract.methods[fnName](...args)
-    .call()
-    .then(result => {
-      return result
-    })
-    .catch(error => {
-      console.error(
-        'Error in ' + contract.contractArtifact.contractName + ': ' + fnName
-      )
-      return console.error(error)
-    })
+function callContractFn({contract, fnName, fnIndex, args, argsHash}) {
+  return contract.methods[fnName](...args).call()
+  .then(result => {
+    return result
+  })
+  .catch(error => {
+    console.error('Error in ' + contract.contractArtifact.contractName + ': ' + fnName)
+    return console.error(error)
+  })
 }
 
 function* callCallContractFn(action) {
@@ -83,7 +75,7 @@ function* callCallContractFn(action) {
     fnIndex: action.fnIndex
   }
 
-  yield put({ type: 'GOT_CONTRACT_VAR', ...dispatchArgs })
+  yield put({type: 'GOT_CONTRACT_VAR', ...dispatchArgs})
 }
 
 /*
@@ -99,28 +91,23 @@ function* callSyncContract(action) {
   const contractState = contractsState[contractName]
 
   // Iterate over functions and hashes
-  for (var fnName in contractState) {
-    for (var argsHash in contractState[fnName]) {
+  for (var fnName in contractState)
+  {
+    for (var argsHash in contractState[fnName])
+    {
       const fnIndex = contractState[fnName][argsHash].fnIndex
       const args = contractState[fnName][argsHash].args
 
       // Pull args and call fn for each given function
-      yield put({
-        type: 'CALL_CONTRACT_FN',
-        contract,
-        fnName,
-        fnIndex,
-        args,
-        argsHash
-      })
+      yield put({type: 'CALL_CONTRACT_FN', contract, fnName, fnIndex, args, argsHash})
     }
   }
 
   // When complete, dispatch CONTRACT_SYNCED
-  yield put({ type: 'CONTRACT_SYNCED', contractName })
+  yield put({type: 'CONTRACT_SYNCED', contractName})
 }
 
-const getContractsState = state => state.contracts
+const getContractsState = (state) => state.contracts
 
 function* contractsSaga() {
   yield takeEvery('SEND_CONTRACT_TX', callSendContractTx)
@@ -128,4 +115,4 @@ function* contractsSaga() {
   yield takeEvery('CONTRACT_SYNCING', callSyncContract)
 }
 
-export default contractsSaga
+export default contractsSaga;
