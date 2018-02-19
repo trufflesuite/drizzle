@@ -31,24 +31,51 @@ Tired of constantly coding contract calls after your state changes? Wish you had
    const drizzle = new Drizzle(this.props.options, drizzleStore)
    ```
 
-1. Get contract data. Calling the `data()` function on a contract will first check the store for a cached result. If empty, Drizzle will query the blockchain and cache the response for future use. For more information on how this works, see [How Data Stays Fresh](#how-data-stays-fresh).
+1. Get contract data. Calling the `cacheCall()` function on a contract will execute the desired call and return a corresponding key so the data can be retrieved from the store. When a new block is received, Drizzle will refresh the store automatically _if_ any transactions in the block touched our contract. For more information on how this works, see [How Data Stays Fresh](#how-data-stays-fresh).
 
-   **Note:** We have to check that Drizzle is initialized before fetching data. A one-liner such as below is fine for display a few pieces of data, but a better approach for larger dapps is to use a [loading component](#loading-component).
+   **Note:** We have to check that Drizzle is initialized before fetching data. A simple if statement such as below is fine for display a few pieces of data, but a better approach for larger dapps is to use a [loading component](https://github.com/trufflesuite/drizzle-react#recipe-loading-component).
    ```javascript
-   // For convenience
-   constructor(props, context) {
-     super(props)
+   // If Drizzle is initialized (and therefore web3, accounts and contracts), continue.
+   if (drizzle.store.getState().drizzleStatus.initialized) {
+    // Declare this call to be cached and synchronized. We'll receive the store key for recall.
+    const dataKey = drizzle.contracts.SimpleStorage.methods.storedData.cacheCall()
 
-     this.contracts = context.drizzle.contracts
+    // Use the dataKey to display data from the store.
+    return drizzle.store.getState().contracts.SimpleStorage.methods.storedData[dataKey].value
    }
 
-   // If Drizzle is initialized (and therefore web3, accounts and contracts), fetch data.
-   var storedData = this.props.drizzleStatus.initialized ? this.contracts.SimpleStorage.methods.storedData.data() : 'Loading...'
+   // If Drizzle isn't initialized, display some loading indication.
+   return 'Loading...'
    ```
 
-   The contract instance has all of its standard web3 properties and methods. For example, sending a transaction is done as normal:
+   The contract instance has all of its standard web3 properties and methods. For example, you could still call as normal if you don't want something in the store:
    ```javascript
-   this.contracts.SimpleStorage.methods.set(this.state.storageAmount).send()
+   drizzle.contracts.SimpleStorage.methods.storedData().call()
+   ```
+
+1. Send a contract transaction. Calling the `cacheSend()` function on a contract will send the desired transaction and return a corresponding transaction hash so the status can be retrieved from the store. Drizzle will update the transaction's state in the store (pending, success, error) and store the transaction receipt. For more information on how this works, see [How Data Stays Fresh](#how-data-stays-fresh).
+
+   **Note:** We have to check that Drizzle is initialized before fetching data. A simple if statement such as below is fine for display a few pieces of data, but a better approach for larger dapps is to use a [loading component](https://github.com/trufflesuite/drizzle-react#recipe-loading-component).
+   ```javascript
+   // If Drizzle is initialized (and therefore web3, accounts and contracts), continue.
+   if (drizzle.store.getState().drizzleStatus.initialized) {
+    // Declare this call to be cached and synchronized. We'll receive the store key for recall.
+    const txHash = drizzle.contracts.SimpleStorage.methods.set.cacheSend(2, {from: '0x3f...'})
+
+    // Use the dataKey to display the transaction status.
+    return drizzle.store.getState().transactions[txHash].status
+
+    // You can also access the receipt, if available.
+    // drizzle.store.getState().transactions[txHash].receipt
+   }
+
+   // If Drizzle isn't initialized, display some loading indication.
+   return 'Loading...'
+   ```
+
+   The contract instance has all of its standard web3 properties and methods. For example, you could still send as normal if you don't want a tx in the store:
+   ```javascript
+   drizzle.contracts.SimpleStorage.methods.set(2).send({from: '0x3f...'})
    ```
 
 ## Options
@@ -56,6 +83,11 @@ Tired of constantly coding contract calls after your state changes? Wish you had
 ```javascript
 {
   contracts,
+  events: {
+    contractName: [
+      eventName
+    ]
+  },
   web3: {
     fallback: {
       type
@@ -66,6 +98,9 @@ Tired of constantly coding contract calls after your state changes? Wish you had
 ```
 ### `contracts` (array, required)
 An array of contract artifact files.
+
+### `events` (object)
+An object consisting of contract names along with arrays of the event names we'd like to listen for and sync with the store.
 
 ### `web3` (object)
 Options regarding `web3` instantiation.
