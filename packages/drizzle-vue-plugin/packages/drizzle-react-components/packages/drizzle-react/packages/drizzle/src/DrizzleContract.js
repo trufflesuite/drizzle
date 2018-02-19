@@ -1,5 +1,3 @@
-import DrizzleError from './DrizzleError'
-
 class DrizzleContract {
   constructor(contractArtifact, web3, store) {
     this.contractArtifact = contractArtifact
@@ -22,19 +20,15 @@ class DrizzleContract {
 
       Object.assign(this, web3Contract)
 
-      /*
-      Loop through contract functions similar to TrufflContract and add check store first for data then:
-        return store data then refresh
-      or (if no data from that function at all)
-        return loading and get data
-
-      Removes need for most of these functions
-      */
       for (var i = 0; i < this.abi.length; i++) {
-        var item = this.abi[i];
+        var item = this.abi[i]
 
         if (item.type == "function" && item.constant === true) {
-          this.methods[item.name].data = this.dataFunction(item.name, i);
+          this.methods[item.name].cacheCall = this.cacheCallFunction(item.name, i)
+        }
+
+        if (item.type == "function" && item.constant === false) {
+          this.methods[item.name].cacheSend = this.cacheSendFunction(item.name, i)
         }
       }
 
@@ -44,11 +38,11 @@ class DrizzleContract {
     })
   }
 
-  dataFunction(fnName, fnIndex, fn) {
+  cacheCallFunction(fnName, fnIndex, fn) {
     var contract = this
 
     return function() {
-      // Collect args and has to use as key, 0x0 if no args
+      // Collect args and hash to use as key, 0x0 if no args
       var argsHash = '0x0'
       var args = arguments
 
@@ -61,25 +55,54 @@ class DrizzleContract {
       // If call result is in state and fresh, return value instead of calling
       if (argsHash in functionState) {
         if (contract.store.getState().contracts[contractName].synced === true) {
-          return functionState[argsHash].value;
+          return argsHash
         }
       }
 
       // Otherwise, call function and update store
-      contract.store.dispatch({type: 'DERP_CONTRACT_VAR', contract, fnName, fnIndex, args, argsHash})
+      contract.store.dispatch({type: 'CALL_CONTRACT_FN', contract, fnName, fnIndex, args, argsHash})
 
       // Return nothing because state is currently empty.
-      return '';
-    };
+      return argsHash
+    }
+  }
 
-    // Check if value in store
-      // Check if value fresh
-      // If fresh, return value
-        // If stale, dispatch action with:
-          // function, this (contract instance)
+  cacheSendFunction(fnName, fnIndex, fn) {
+    // NOTE: May not need fn index
+    var contract = this
 
-    // Can do 90% of this with a simple "data() function"
-    // txs no longer need be tracked as block observer takes care of this
+    return function() {
+      var args = arguments
+
+      // Generate temporary ID
+      var stackId = contract.store.getState().transactionStack.length
+
+      // Add ID to "transactionStack" with empty value
+      contract.store.dispatch({type: 'PUSH_TO_STACK'})
+
+      // TODO: FOR DEMO, MOVE MOVE MOVE
+      const name = contract.contractArtifact.contractName
+      contract.store.dispatch({type: 'CONTRACT_SYNC_IND', contractName: name})
+      
+      // Dispatch tx to saga
+      // When txhash received, will be value of stack ID
+      contract.store.dispatch({type: 'SEND_CONTRACT_TX', contract, fnName, fnIndex, args, stackId})
+     
+      // return promise that observes store, checks when stack ID has tx ID
+      // resolve tx ID
+      // Destroy store listener
+      return new Promise((resolve, reject) => {
+        let unsubscribe = contract.store.subscribe(() => {
+          var stackHash = contract.store.store.getState().transactionStack[stackId]
+
+          if (stackHash) {
+            resolve(stackHash)
+          }
+        })
+
+        unsubscribe()
+      })
+    }
   }
 
   generateArgsHash(args) {
