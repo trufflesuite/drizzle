@@ -4,7 +4,7 @@
   "description": "Put some Drizzle on your React components.",
   "main": "dist/drizzle-react.js",
   "scripts": {
-    "build": "webpack --config webpack.config.js"
+    "build": "webpack --config webpack.config.js --env.BABEL_ENV=production"
   },
   "keywords": [
     "ethereum",
