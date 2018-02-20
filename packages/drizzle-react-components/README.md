@@ -3,27 +3,32 @@ A set of useful components for common UI elements.
 
 ## Components
 
-ContractData
-------------
+### LoadingContainer
 
-contract (string) Name of the contract to call.
+This components wraps your entire app (but within the DrizzleProvider) and will show a loading screen until Drizzle, and therefore web3 and your contracts, are initialized.
 
-method (string) Method of the contract to call.
+`loadingComp` (component) The component displayed while Drizzle intializes.
 
-methodArgs (array) Arguments for the contract method call. EX: The address for an ERC20 balanceOf() function.
+`errorComp` (component) The component displayed if Drizzle initialization fails.
 
-hideIndicator (boolean) If true, hides the loading indicator during contract state updates. Useful for things like ERC20 token symbols which do not change.
+### ContractData
 
-toUtf8 (boolean) Converts the return value to a UTF-8 string before display.
+`contract` (string, required) Name of the contract to call.
 
-toAscii (boolean) Converts the return value to an Ascii string before display.
+`method` (string, required) Method of the contract to call.
 
+`methodArgs` (array) Arguments for the contract method call. EX: The address for an ERC20 balanceOf() function.
 
-ContractForm
-------------
+`hideIndicator` (boolean) If true, hides the loading indicator during contract state updates. Useful for things like ERC20 token symbols which do not change.
 
-contract (string) Name of the contract whose method will be the basis the form.
+`toUtf8` (boolean) Converts the return value to a UTF-8 string before display.
 
-method (string) Method whose inputs will be used to create corresponding form fields.
+`toAscii` (boolean) Converts the return value to an Ascii string before display.
 
-labels (array) Custom labels. EX: "_to" -> "Recipient Address"
+### ContractForm
+
+`contract` (string, required) Name of the contract whose method will be the basis the form.
+
+`method` (string, required) Method whose inputs will be used to create corresponding form fields.
+
+`labels` (array) Custom labels; will follow ABI input ordering. Useful for friendlier names. For example "_to" becoming "Recipient Address".
