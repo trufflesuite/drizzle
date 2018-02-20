@@ -8,28 +8,26 @@ import PropTypes from 'prop-types'
 
 class LoadingContainer extends Component {
   render() {
-    if (this.props.web3.status === 'failed') {
-      return (
+    if (this.props.web3.status === 'failed')
+    {
+      return(
         <main className="container loading-screen">
           <div className="pure-g">
             <div className="pure-u-1-1">
               <h1>⚠️</h1>
-              <p>
-                This browser has no connection to the Ethereum network. Please
-                use the Chrome/FireFox extension MetaMask, or dedicated Ethereum
-                browsers Mist or Parity.
-              </p>
+              <p>This browser has no connection to the Ethereum network. Please use the Chrome/FireFox extension MetaMask, or dedicated Ethereum browsers Mist or Parity.</p>
             </div>
           </div>
         </main>
       )
     }
 
-    if (this.props.drizzleStatus.initialized) {
+    if (this.props.drizzleStatus.initialized)
+    {
       return Children.only(this.props.children)
     }
 
-    return (
+    return(
       <main className="container loading-screen">
         <div className="pure-g">
           <div className="pure-u-1-1">
