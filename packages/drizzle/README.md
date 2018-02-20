@@ -1,10 +1,12 @@
+<div style="text-align: center"><img src="https://github.com/trufflesuite/drizzle/blob/master/readme/drizzle-logomark.png?raw=true" alt="Drizzle Logo" /></div>
+
 # drizzle
 
 `npm install --save drizzle`
 
 Tired of constantly coding contract calls after your state changes? Wish you had a one-liner for knowing when your dapp is ready to use? Ethereum developers have to account for extra considerations that traditional apps don't have to worry about. Drizzle abstracts away the boilerplate of creating a dapp front-end, allowing you to focus on what makes it unique. Drizzle handles instantiating web3 and contracts, fetching accounts, and keeping all of this data in sync with the blockchain.
 
-**Using React?**: The easiest way to get started with Drizzle is to use our [official `drizzle-react` package](https://github.com/trufflesuite/drizzle-react)!
+**Using React?**: The easiest way to get started with Drizzle is to use our [official `drizzle-react` package](https://github.com/trufflesuite/drizzle-react) and (optionally) its companion [`drizzle-react-components`](https://github.com/trufflesuite/drizzle-react-components).
 
 ## Getting Started
 
@@ -33,15 +35,18 @@ Tired of constantly coding contract calls after your state changes? Wish you had
 
 1. Get contract data. Calling the `cacheCall()` function on a contract will execute the desired call and return a corresponding key so the data can be retrieved from the store. When a new block is received, Drizzle will refresh the store automatically _if_ any transactions in the block touched our contract. For more information on how this works, see [How Data Stays Fresh](#how-data-stays-fresh).
 
-   **Note:** We have to check that Drizzle is initialized before fetching data. A simple if statement such as below is fine for display a few pieces of data, but a better approach for larger dapps is to use a [loading component](https://github.com/trufflesuite/drizzle-react#recipe-loading-component).
+   **Note:** We have to check that Drizzle is initialized before fetching data. A simple if statement such as below is fine for display a few pieces of data, but a better approach for larger dapps is to use a [loading component](https://github.com/trufflesuite/drizzle-react#recipe-loading-component). We've already built one for you in our [`drizzle-react-components` library](https://github.com/trufflesuite/drizzle-react-components) as well.
    ```javascript
+   // Assuming we're observing the store for changes.
+   var state = drizzle.store.getState()
+
    // If Drizzle is initialized (and therefore web3, accounts and contracts), continue.
-   if (drizzle.store.getState().drizzleStatus.initialized) {
+   if (state.drizzleStatus.initialized) {
     // Declare this call to be cached and synchronized. We'll receive the store key for recall.
     const dataKey = drizzle.contracts.SimpleStorage.methods.storedData.cacheCall()
 
     // Use the dataKey to display data from the store.
-    return drizzle.store.getState().contracts.SimpleStorage.methods.storedData[dataKey].value
+    return state.contracts.SimpleStorage.methods.storedData[dataKey].value
    }
 
    // If Drizzle isn't initialized, display some loading indication.
@@ -55,23 +60,29 @@ Tired of constantly coding contract calls after your state changes? Wish you had
 
 1. Send a contract transaction. Calling the `cacheSend()` function on a contract will send the desired transaction and return a corresponding transaction hash so the status can be retrieved from the store. Drizzle will update the transaction's state in the store (pending, success, error) and store the transaction receipt. For more information on how this works, see [How Data Stays Fresh](#how-data-stays-fresh).
 
-   **Note:** We have to check that Drizzle is initialized before fetching data. A simple if statement such as below is fine for display a few pieces of data, but a better approach for larger dapps is to use a [loading component](https://github.com/trufflesuite/drizzle-react#recipe-loading-component).
+   **Note:** We have to check that Drizzle is initialized before fetching data. A simple if statement such as below is fine for display a few pieces of data, but a better approach for larger dapps is to use a [loading component](https://github.com/trufflesuite/drizzle-react#recipe-loading-component). We've already built one for you in our [`drizzle-react-components` library](https://github.com/trufflesuite/drizzle-react-components) as well.
    ```javascript
+   // Assuming we're observing the store for changes.
+   var state = drizzle.store.getState()
+
    // If Drizzle is initialized (and therefore web3, accounts and contracts), continue.
-   if (drizzle.store.getState().drizzleStatus.initialized) {
-    // Declare this call to be cached and synchronized. We'll receive the store key for recall.
-    const txHash = drizzle.contracts.SimpleStorage.methods.set.cacheSend(2, {from: '0x3f...'})
+   if (state.drizzleStatus.initialized) {
+    // Declare this transaction to be observed. We'll receive the stackId for reference.
+    const stackId = drizzle.contracts.SimpleStorage.methods.set.cacheSend(2, {from: '0x3f...'})
 
     // Use the dataKey to display the transaction status.
-    return drizzle.store.getState().transactions[txHash].status
+    if (state.transactionStack[stackId]) {
+      const txHash = state.transactionStack[stackId]
 
-    // You can also access the receipt, if available.
-    // drizzle.store.getState().transactions[txHash].receipt
+      return state.transactions[txHash].status
+    }
    }
 
    // If Drizzle isn't initialized, display some loading indication.
    return 'Loading...'
    ```
+
+   For more information on what's contained in transaction state, see [Drizzle State](#drizzle-state).
 
    The contract instance has all of its standard web3 properties and methods. For example, you could still send as normal if you don't want a tx in the store:
    ```javascript
@@ -100,7 +111,7 @@ Tired of constantly coding contract calls after your state changes? Wish you had
 An array of contract artifact files.
 
 ### `events` (object)
-An object consisting of contract names along with arrays of the event names we'd like to listen for and sync with the store.
+An object consisting of contract names each containing an array of strings of the event names we'd like to listen for and sync with the store.
 
 ### `web3` (object)
 Options regarding `web3` instantiation.
@@ -121,6 +132,7 @@ An object consisting of the type and url of a fallback web3 provider. This is us
     contractName: {
       initialized,
       synced,
+      events,
       callerFunctionName: {
         argsHash: {
           args,
@@ -129,6 +141,15 @@ An object consisting of the type and url of a fallback web3 provider. This is us
       }
     }
   },
+  transactions: {
+    txHash: {
+      confirmations,
+      error,
+      receipt,
+      status
+    }
+  },
+  transactionStack
   drizzleStatus: {
     initialized
   }
@@ -147,12 +168,33 @@ A series of contract state objects, indexed by the contract name as declared in 
 #### `contractName` (object)
 
 `initialized` (boolean): `true` once contract is fully instantiated.
-`synced` (boolean): `true` or `false` depending on
+`synced` (boolean): `false` if contract state changes have occurred in a block and Drizzle is re-running its calls.
+
+`events` (array): An array of event objects. Drizzle will only listen for the events we declared in options.
 
 The contract's state also includes the state of each constant function called on the contract (`callerFunctionName`). The functions are indexed by name, and contain the outputs indexed by a hash of the arguments passed during the call (`argsHash`). If no arguments were passed, the hash is `0x0`. Drizzle reads from the store for you, so it should be unnecessary to touch this data cache manually.
 
 `args` (array): Arguments passed to function call.
 `value` (mixed): Value returned from function call.
+
+### `transactions` (object)
+A series of transaction objects, indexed by transaction hash.
+
+#### `txHash` (object)
+
+`confirmations` (array): After the initial receipt, further confirmation receipts (up to the 24th).
+`error` (object): contains the returned error if any.
+`receipt` (object): contains the first transaction receipt received from a transaction's `success` event.
+
+`status` (string): `true` or `false` depending on transaction status
+*   `pending` when the transaction has broadcasted successfully, but is not yet mined
+*   `success` when a transaction receipt has been received (you may also wish to check for further confirmations)
+*   `error` if any errors occurred after broadcasting
+
+For more in-depth information on the Ethereum transaction lifecycle, [check out this great blog post](https://medium.com/blockchannel/life-cycle-of-an-ethereum-transaction-e5c66bae0f6e).
+
+### `transactionStack` (array)
+In some cases, a transaction may be malformed and not even make it to being broadcasted. To keep track of this, an empty string will be added to this array and replaced with the transaction hash once broascasted. The `cacheSend()` method will return a `stackId`, which will allow you to observe this process for your own transaction status indicator UI.
 
 ### `drizzleStatus` (object)
 An object containing information about the status of Drizzle.
