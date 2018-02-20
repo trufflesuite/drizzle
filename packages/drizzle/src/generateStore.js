@@ -7,13 +7,13 @@ import reducer from './reducer'
 
 function generateStore(options) {
   // Redux DevTools
-  const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+  const composeEnhancers =
+    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 
   // Preloaded state
   var contractsInitialState = {}
 
-  for (var i = 0; i < options.contracts.length; i++)
-  {
+  for (var i = 0; i < options.contracts.length; i++) {
     // Initial contract details
     var contractName = options.contracts[i].contractName
 
@@ -24,20 +24,17 @@ function generateStore(options) {
 
     // Constant getters
     for (var i2 = 0; i2 < options.contracts[i].abi.length; i2++) {
-      var item = options.contracts[i].abi[i2];
+      var item = options.contracts[i].abi[i2]
 
-      if (item.type == "function" && item.constant === true) {
+      if (item.type == 'function' && item.constant === true) {
         contractsInitialState[contractName][item.name] = {}
       }
     }
-
   }
-
-  console.log(contractsInitialState)
 
   var preloadedState = {
     accounts: {},
-    contracts: contractsInitialState,
+    contracts: contractsInitialState
     //web3: {}
   }
 
@@ -47,12 +44,7 @@ function generateStore(options) {
   const store = createStore(
     reducer,
     preloadedState,
-    composeEnhancers(
-      applyMiddleware(
-        sagaMiddleware,
-        thunkMiddleware
-      )
-    )
+    composeEnhancers(applyMiddleware(sagaMiddleware, thunkMiddleware))
   )
 
   sagaMiddleware.run(rootSaga)
