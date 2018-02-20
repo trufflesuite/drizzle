@@ -1,32 +1,24 @@
 import { END, eventChannel } from 'redux-saga'
-import {
-  call,
-  put,
-  select,
-  take,
-  takeLatest,
-  takeEvery
-} from 'redux-saga/effects'
+import { call, put, select, take, takeLatest, takeEvery } from 'redux-saga/effects'
 
 /*
  * Events
  */
 
-function createContractEventChannel({ contract, eventName }) {
+function createContractEventChannel({contract, eventName}) {
   const name = contract.contractArtifact.contractName
 
   return eventChannel(emit => {
-    const eventListener = contract.events[eventName]()
-      .on('data', event => {
-        emit({ type: 'EVENT_FIRED', name, event })
-      })
-      .on('changed', event => {
-        emit({ type: 'EVENT_CHANGED', name, event })
-      })
-      .on('error', error => {
-        emit({ type: 'EVENT_ERROR', name, error })
-        emit(END)
-      })
+    const eventListener = contract.events[eventName]().on('data', event => {
+      emit({type: 'EVENT_FIRED', name, event})
+    })
+    .on('changed', event => {
+      emit({type: 'EVENT_CHANGED', name, event})
+    })
+    .on('error', error => {
+      emit({type: 'EVENT_ERROR', name, error})
+      emit(END)
+    })
 
     const unsubscribe = () => {
       eventListener.removeListener(eventName)
@@ -36,11 +28,8 @@ function createContractEventChannel({ contract, eventName }) {
   })
 }
 
-function* callListenForContractEvent({ contract, eventName }) {
-  const contractEventChannel = yield call(createContractEventChannel, {
-    contract,
-    eventName
-  })
+function* callListenForContractEvent({contract, eventName}) {
+  const contractEventChannel = yield call(createContractEventChannel, {contract, eventName})
 
   while (true) {
     var event = yield take(contractEventChannel)
@@ -52,33 +41,27 @@ function* callListenForContractEvent({ contract, eventName }) {
  * Send and Cache
  */
 
-function createTxChannel({ txObject, stackId, sendArgs = {}, contractName }) {
+function createTxChannel({txObject, stackId, sendArgs = {}, contractName}) {
   var persistTxHash
 
   return eventChannel(emit => {
-    const txPromiEvent = txObject
-      .send(sendArgs)
-      .on('transactionHash', txHash => {
-        persistTxHash = txHash
+    const txPromiEvent = txObject.send(sendArgs).on('transactionHash', txHash => {
+      persistTxHash = txHash
 
-        emit({ type: 'TX_BROADCASTED', txHash, stackId })
-        emit({ type: 'CONTRACT_SYNC_IND', contractName })
-      })
-      .on('confirmation', (confirmationNumber, receipt) => {
-        emit({
-          type: 'TX_CONFIRMAITON',
-          confirmationReceipt: receipt,
-          txHash: persistTxHash
-        })
-      })
-      .on('receipt', receipt => {
-        emit({ type: 'TX_SUCCESSFUL', receipt: receipt, txHash: persistTxHash })
-        emit(END)
-      })
-      .on('error', error => {
-        emit({ type: 'TX_ERROR', error: error, txHash: persistTxHash })
-        emit(END)
-      })
+      emit({type: 'TX_BROADCASTED', txHash, stackId})
+      emit({type: 'CONTRACT_SYNC_IND', contractName})
+    })
+    .on('confirmation', (confirmationNumber, receipt) => {
+      emit({type: 'TX_CONFIRMAITON', confirmationReceipt: receipt, txHash: persistTxHash})
+    })
+    .on('receipt', receipt => {
+      emit({type: 'TX_SUCCESSFUL', receipt: receipt, txHash: persistTxHash})
+      emit(END)
+    })
+    .on('error', error => {
+      emit({type: 'TX_ERROR', error: error, txHash: persistTxHash})
+      emit(END)
+    })
 
     const unsubscribe = () => {
       txPromiEvent.off()
@@ -88,7 +71,7 @@ function createTxChannel({ txObject, stackId, sendArgs = {}, contractName }) {
   })
 }
 
-function* callSendContractTx({ contract, fnName, fnIndex, args, stackId }) {
+function* callSendContractTx({contract, fnName, fnIndex, args, stackId}) {
   // Check for type of object and properties indicative of call/send options.
   const finalArg = args[args.length - 1]
   var sendArgs = {}
@@ -106,12 +89,7 @@ function* callSendContractTx({ contract, fnName, fnIndex, args, stackId }) {
 
   // Create the transaction object and execute the tx.
   const txObject = yield call(contract.methods[fnName], ...args)
-  const txChannel = yield call(createTxChannel, {
-    txObject,
-    stackId,
-    sendArgs,
-    contractName
-  })
+  const txChannel = yield call(createTxChannel, {txObject, stackId, sendArgs, contractName})
 
   try {
     while (true) {
@@ -127,7 +105,7 @@ function* callSendContractTx({ contract, fnName, fnIndex, args, stackId }) {
  * Call and Cache
  */
 
-function* callCallContractFn({ contract, fnName, fnIndex, args, argsHash }) {
+function* callCallContractFn({contract, fnName, fnIndex, args, argsHash}) {
   // Check for type of object and properties indicative of call/send options.
   const finalArg = args[args.length - 1]
   var callArgs = {}
@@ -139,10 +117,10 @@ function* callCallContractFn({ contract, fnName, fnIndex, args, argsHash }) {
     delete args[args.length - 1]
     args.length = args.length - 1
   }
-
+  
   // Create the transaction object and execute the call.
   const txObject = yield call(contract.methods[fnName], ...args)
-
+  
   try {
     const callResult = yield call(txObject.call, callArgs)
 
@@ -154,9 +132,10 @@ function* callCallContractFn({ contract, fnName, fnIndex, args, argsHash }) {
       value: callResult,
       fnIndex: fnIndex
     }
-
-    yield put({ type: 'GOT_CONTRACT_VAR', ...dispatchArgs })
-  } catch (error) {
+  
+    yield put({type: 'GOT_CONTRACT_VAR', ...dispatchArgs})  
+  }
+  catch (error) {
     console.error(error)
 
     var errorArgs = {
@@ -167,8 +146,8 @@ function* callCallContractFn({ contract, fnName, fnIndex, args, argsHash }) {
       error: error,
       fnIndex: fnIndex
     }
-
-    yield put({ type: 'ERROR_CONTRACT_VAR', ...errorArgs })
+  
+    yield put({type: 'ERROR_CONTRACT_VAR', ...errorArgs})
   }
 }
 
@@ -190,28 +169,23 @@ function* callSyncContract(action) {
   delete contractFnsState.events
 
   // Iterate over functions and hashes
-  for (var fnName in contractFnsState) {
-    for (var argsHash in contractFnsState[fnName]) {
+  for (var fnName in contractFnsState)
+  {
+    for (var argsHash in contractFnsState[fnName])
+    {
       const fnIndex = contractFnsState[fnName][argsHash].fnIndex
       const args = contractFnsState[fnName][argsHash].args
 
       // Pull args and call fn for each given function
-      yield put({
-        type: 'CALL_CONTRACT_FN',
-        contract,
-        fnName,
-        fnIndex,
-        args,
-        argsHash
-      })
+      yield put({type: 'CALL_CONTRACT_FN', contract, fnName, fnIndex, args, argsHash})
     }
   }
 
   // When complete, dispatch CONTRACT_SYNCED
-  yield put({ type: 'CONTRACT_SYNCED', contractName })
+  yield put({type: 'CONTRACT_SYNCED', contractName})
 }
 
-const getContractsState = state => state.contracts
+const getContractsState = (state) => state.contracts
 
 function isSendOrCallOptions(options) {
   if ('from' in options) return true
@@ -229,4 +203,4 @@ function* contractsSaga() {
   yield takeEvery('LISTEN_FOR_EVENT', callListenForContractEvent)
 }
 
-export default contractsSaga
+export default contractsSaga;

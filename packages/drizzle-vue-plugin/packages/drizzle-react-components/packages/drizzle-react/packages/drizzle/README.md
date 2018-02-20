@@ -58,7 +58,7 @@ Tired of constantly coding contract calls after your state changes? Wish you had
    drizzle.contracts.SimpleStorage.methods.storedData().call()
    ```
 
-1. Send a contract transaction. Calling the `cacheSend()` function on a contract will send the desired transaction and return a corresponding transaction hash so the status can be retrieved from the store. Drizzle will update the transaction's state in the store (pending, success, error) and store the transaction receipt. For more information on how this works, see [How Data Stays Fresh](#how-data-stays-fresh).
+1. Send a contract transaction. Calling the `cacheSend()` function on a contract will send the desired transaction and return a corresponding transaction hash so the status can be retrieved from the store. The last argument can optionally be an options object with the typical from, gas and gasPrice keys. Drizzle will update the transaction's state in the store (pending, success, error) and store the transaction receipt. For more information on how this works, see [How Data Stays Fresh](#how-data-stays-fresh).
 
    **Note:** We have to check that Drizzle is initialized before fetching data. A simple if statement such as below is fine for display a few pieces of data, but a better approach for larger dapps is to use a [loading component](https://github.com/trufflesuite/drizzle-react#recipe-loading-component). We've already built one for you in our [`drizzle-react-components` library](https://github.com/trufflesuite/drizzle-react-components) as well.
    ```javascript
@@ -199,13 +199,10 @@ In some cases, a transaction may be malformed and not even make it to being broa
 ### `drizzleStatus` (object)
 An object containing information about the status of Drizzle.
 
-`initialized` (boolean): `true` once:
+#### `initialized` (boolean): `true` once:
 *   `web3` is found or instantiated
 *   Account addresses are stored in state
 *   All contracts are instantiated
-
-#### `initialized` (boolean)
-`false` by default, becomes true once a `web3` instance is found and the accounts and contracts are fetched.
 
 ### `web3` (object)
 
