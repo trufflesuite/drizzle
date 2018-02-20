@@ -26,7 +26,8 @@ Check out the [Drizzle Truffle Box](https://github.com/truffle-box/drizzle-box) 
 
    const options = {
      contracts: [
-       SimpleStorage
+       SimpleStorage,
+       TutorialToken
      ]
    }
    ```
