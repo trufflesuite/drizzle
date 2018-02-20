@@ -134,22 +134,8 @@ class DrizzleContract {
         stackId
       })
 
-      // return promise that observes store, checks when stack ID has tx ID
-      // resolve tx ID
-      // Destroy store listener
-      return new Promise((resolve, reject) => {
-        let unsubscribe = contract.store.subscribe(() => {
-          var stackHash = contract.store.store.getState().transactionStack[
-            stackId
-          ]
-
-          if (stackHash) {
-            resolve(stackHash)
-          }
-        })
-
-        unsubscribe()
-      })
+      // return stack ID
+      return stackId
     }
   }
 
