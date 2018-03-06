@@ -1,25 +1,20 @@
 import { call, put, takeLatest } from 'redux-saga/effects'
 
-function getAccounts(web3) {
-  return web3.eth.getAccounts().then((accounts) => {
-    return accounts
-  })
-}
+export function* getAccounts(action) {
+  const web3 = action.web3
 
-function* callGetAccounts(action) {
-  const accounts = yield call(getAccounts, action.web3)
-
-  if (!accounts) {
-    console.error('No accounts found!')
-    yield call(action.reject, {source: 'accounts', message: 'Failed to get accounts.'})
+  try {
+    const accounts = yield call(web3.eth.getAccounts)
+    yield put({ type: 'ACCOUNTS_FETCHED', accounts })
+  } catch (error) {
+    yield put({ type: 'ACCOUNTS_FAILED', error })
+    console.error('Error fetching accounts:')
+    console.error(error)
   }
-
-  yield put({type: 'ACCOUNTS_FETCHED', accounts})
-  yield call(action.resolve)
 }
 
 function* accountsSaga() {
-  yield takeLatest('ACCOUNTS_FETCHING', callGetAccounts)
+  yield takeLatest('ACCOUNTS_FETCHING', getAccounts)
 }
 
-export default accountsSaga;
+export default accountsSaga
