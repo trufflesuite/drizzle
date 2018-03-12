@@ -13,6 +13,8 @@ export function* initializeWeb3({ options }) {
   if (typeof window.web3 !== 'undefined') {
     // Use Mist/MetaMask's provider.
     web3 = new Web3(window.web3.currentProvider)
+    web3.eth.cacheSendTransaction = txObject =>
+      put({ type: 'SEND_WEB3_TX', txObject, stackId, web3 })
 
     console.log('Injected web3 detected.')
 
@@ -30,6 +32,10 @@ export function* initializeWeb3({ options }) {
             options.fallback.url
           )
           web3 = new Web3(provider)
+
+          // Attach drizzle functions
+          web3.eth['cacheSendTransaction'] = txObject =>
+            put({ type: 'SEND_WEB3_TX', txObject, stackId, web3 })
 
           yield put({ type: 'WEB3_INITIALIZED' })
 
@@ -79,9 +85,66 @@ export function* getNetworkId({ web3 }) {
   }
 }
 
+/*
+ * Send Transaction
+ */
+
+function createTxChannel({ txObject, stackId, web3 }) {
+  var persistTxHash
+
+  return eventChannel(emit => {
+    const txPromiEvent = web3.eth
+      .sendTransaction(txObject)
+      .on('transactionHash', txHash => {
+        persistTxHash = txHash
+
+        emit({ type: 'W3TX_BROADCASTED', txHash, stackId })
+      })
+      .on('confirmation', (confirmationNumber, receipt) => {
+        emit({
+          type: 'W3TX_CONFIRMAITON',
+          confirmationReceipt: receipt,
+          txHash: persistTxHash
+        })
+      })
+      .on('receipt', receipt => {
+        emit({
+          type: 'W3TX_SUCCESSFUL',
+          receipt: receipt,
+          txHash: persistTxHash
+        })
+        emit(END)
+      })
+      .on('error', error => {
+        emit({ type: 'W3TX_ERROR', error: error, txHash: persistTxHash })
+        emit(END)
+      })
+
+    const unsubscribe = () => {
+      txPromiEvent.off()
+    }
+
+    return unsubscribe
+  })
+}
+
+function* callSendTx({ txObject, stackId, web3 }) {
+  const txChannel = yield call(createTxChannel, { txObject, stackId, web3 })
+
+  try {
+    while (true) {
+      var event = yield take(txChannel)
+      yield put(event)
+    }
+  } finally {
+    txChannel.close()
+  }
+}
+
 function* web3Saga() {
   yield takeLatest('WEB3_INITIALIZING', callInitializeWeb3)
   yield takeLatest('NETWORK_ID_FETCHING', getNetworkId)
+  yield takeEvery('SEND_WEB3_TX', callSendTx)
 }
 
 export default web3Saga
