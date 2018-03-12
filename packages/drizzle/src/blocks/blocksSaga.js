@@ -1,6 +1,19 @@
 import { END, eventChannel } from 'redux-saga'
 import { call, put, take, takeEvery, takeLatest } from 'redux-saga/effects'
 
+// TODO
+// TODO: Turn into "pollsSaga"
+// Poll for multiple things depending on options:
+// accounts, accountBalances, blocks
+// "blocks" option automatically passed by web3 provider detection
+// Object shape: {
+//   accounts: true,
+//   accountBalances: false,
+//   blocks: true
+// }
+// TODO
+// TODO
+
 /*
  * Listen for Blocks
  */
@@ -53,6 +66,67 @@ function* callCreateBlockChannel({
   web3
 }) {
   const blockChannel = yield call(createBlockChannel, {
+    contracts,
+    contractAddresses,
+    contractNames,
+    web3
+  })
+
+  try {
+    while (true) {
+      var event = yield take(blockChannel)
+      yield put(event)
+    }
+  } finally {
+    blockChannel.close()
+  }
+}
+
+/*
+ * Poll for Blocks
+ */
+
+function createBlockPollChannel({
+  contracts,
+  contractAddresses,
+  contractNames,
+  web3
+}) {
+  return eventChannel(emit => {
+    const blockPoller = setInterval(() => {
+      web3.eth
+        .getBlock('latest')
+        .then(block => {
+          emit({
+            type: 'BLOCK_RECEIVED',
+            blockHeader: block,
+            contracts,
+            contractAddresses,
+            contractNames,
+            web3
+          })
+        })
+        .catch(error => {
+          emit({ type: 'BLOCKS_FAILED', error })
+          emit(END)
+        })
+    }, 1500)
+
+    const unsubscribe = () => {
+      clearInterval(blockPoller)
+    }
+
+    return unsubscribe
+  })
+}
+
+function* callCreateBlockPollChannel({
+  contracts,
+  contractAddresses,
+  contractNames,
+  web3
+}) {
+  const blockChannel = yield call(createBlockPollChannel, {
     contracts,
     contractAddresses,
     contractNames,
@@ -124,6 +198,7 @@ function* processBlock({
 
 function* blocksSaga() {
   yield takeLatest('BLOCKS_LISTENING', callCreateBlockChannel)
+  yield takeLatest('BLOCKS_POLLING', callCreateBlockPollChannel)
   yield takeEvery('BLOCK_RECEIVED', processBlock)
 }
 

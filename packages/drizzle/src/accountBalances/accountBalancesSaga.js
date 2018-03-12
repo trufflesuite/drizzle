@@ -11,7 +11,8 @@ export function* getAccountBalances(action) {
   try {
     for (var i in accounts) {
       var account = accounts[i]
-      const accountBalance = yield call(web3.eth.getBalance, account)
+      var accountBalance = yield call(web3.eth.getBalance, account)
+
       yield put({ type: 'ACCOUNT_BALANCE_FETCHED', account, accountBalance })
     }
   } catch (error) {

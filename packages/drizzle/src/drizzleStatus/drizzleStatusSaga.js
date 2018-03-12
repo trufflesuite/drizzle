@@ -1,6 +1,6 @@
 import { call, put, select, takeLatest } from 'redux-saga/effects'
 
-// Initialization Effects
+// Initialization Functions
 import { initializeWeb3, getNetworkId } from '../web3/web3Saga'
 import { getAccounts } from '../accounts/accountsSaga'
 import { getAccountBalances } from '../accountBalances/accountBalancesSaga'
@@ -8,7 +8,9 @@ import { instantiateContract } from '../contracts/contractsSaga'
 
 function* initializeDrizzle(action) {
   // TODO
+  // TODO
   // TODO: Add events for timeline between steps
+  // TODO
   // TODO
   try {
     const options = action.options
@@ -49,13 +51,25 @@ function* initializeDrizzle(action) {
       contractAddresses.push(action.drizzle.contracts[contract].options.address)
     }
 
-    yield put({
-      type: 'BLOCKS_LISTENING',
-      contracts: action.drizzle.contracts,
-      contractAddresses,
-      contractNames,
-      web3
-    })
+    if (web3.currentProvider.isMetaMask) {
+      // Using MetaMask, attempt block polling.
+      yield put({
+        type: 'BLOCKS_POLLING',
+        contracts: action.drizzle.contracts,
+        contractAddresses,
+        contractNames,
+        web3
+      })
+    } else {
+      // Not using MetaMask, attempt subscription block listening.
+      yield put({
+        type: 'BLOCKS_LISTENING',
+        contracts: action.drizzle.contracts,
+        contractAddresses,
+        contractNames,
+        web3
+      })
+    }
   } catch (error) {
     yield put({ type: 'DRIZZLE_FAILED', error })
 
