@@ -124,7 +124,12 @@ class DrizzleContract {
           argToHash = JSON.stringify(argToHash)
         }
 
-        var hashPiece = web3.utils.sha3(argToHash)
+        // This check is in place for web3 v0.x
+        if ('utils' in web3) {
+          var hashPiece = web3.utils.sha3(argToHash)
+        } else {
+          var hashPiece = web3.sha3(argToHash)
+        }
 
         hashString += hashPiece
       }
