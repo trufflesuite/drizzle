@@ -1,10 +1,57 @@
 import 'babel-polyfill' // Required for async/await in redux-saga
 import { createStore, applyMiddleware, compose } from 'redux'
 import createSagaMiddleware from 'redux-saga'
-import rootSaga from './rootSaga'
-import reducer from './reducer'
+import { combineReducers } from 'redux'
+
+// Reducers
+import accountsReducer from './accounts/accountsReducer'
+import accountBalancesReducer from './accountBalances/accountBalancesReducer'
+import contractsReducer from './contracts/contractsReducer'
+import drizzleStatusReducer from './drizzleStatus/drizzleStatusReducer'
+import transactionsReducer from './transactions/transactionsReducer'
+import transactionStackReducer from './transactions/transactionStackReducer'
+import web3Reducer from './web3/web3Reducer'
+import { all, fork } from 'redux-saga/effects'
+
+// Sagas
+import accountsSaga from './accounts/accountsSaga'
+import accountBalancesSaga from './accountBalances/accountBalancesSaga'
+import blocksSaga from './blocks/blocksSaga'
+import contractsSaga from './contracts/contractsSaga'
+import drizzleStatusSaga from './drizzleStatus/drizzleStatusSaga'
+import web3Saga from './web3/web3Saga'
+import sagaMiddlewareFactory from 'redux-saga'
 
 function generateStore(options) {
+  // Combine Drizzle reducers and sagas with user's.
+  const reducer = combineReducers({
+    accounts: accountsReducer,
+    accountBalances: accountBalancesReducer,
+    contracts: contractsReducer,
+    drizzleStatus: drizzleStatusReducer,
+    transactions: transactionsReducer,
+    transactionStack: transactionStackReducer,
+    web3: web3Reducer,
+    ...options.reducers
+  })
+
+  const sagas = [
+    accountsSaga,
+    accountBalancesSaga,
+    blocksSaga,
+    contractsSaga,
+    drizzleStatusSaga,
+    web3Saga
+  ]
+
+  if (options.sagas) {
+    sagas.push(options.sagas)
+  }
+
+  function* rootSaga() {
+    yield all(sagas.map(saga => fork(saga)))
+  }
+
   // Redux DevTools
   const composeEnhancers =
     window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose

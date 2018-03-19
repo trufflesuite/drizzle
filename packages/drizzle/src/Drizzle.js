@@ -9,7 +9,7 @@ class Drizzle {
     // Wait for window load event in case of injected web3.
     window.addEventListener('load', () => {
       // Begin Drizzle initialization.
-      store.dispatch({ type: 'DRIZZLE_INITIALIZING', drizzle: this, options })
+      store.dispatch({type: 'DRIZZLE_INITIALIZING', drizzle: this, options})
     })
   }
 }
