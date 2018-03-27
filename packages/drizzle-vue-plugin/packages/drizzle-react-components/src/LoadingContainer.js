@@ -29,6 +29,26 @@ class LoadingContainer extends Component {
       )
     }
 
+    if (
+      this.props.web3.status === 'initialized' &&
+      Object.keys(this.props.accounts).length === 0
+    ) {
+      return (
+        <main className="container loading-screen">
+          <div className="pure-g">
+            <div className="pure-u-1-1">
+              <h1>🦊</h1>
+              <p>
+                <strong>We can't find any Ethereum accounts!</strong> Please
+                check and make sure Metamask or you browser are pointed at the
+                correct network and your account is unlocked.
+              </p>
+            </div>
+          </div>
+        </main>
+      )
+    }
+
     if (this.props.drizzleStatus.initialized) {
       return Children.only(this.props.children)
     }
@@ -60,6 +80,7 @@ LoadingContainer.contextTypes = {
 
 const mapStateToProps = state => {
   return {
+    accounts: state.accounts,
     drizzleStatus: state.drizzleStatus,
     web3: state.web3
   }

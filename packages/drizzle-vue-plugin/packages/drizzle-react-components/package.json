@@ -4,7 +4,8 @@
   "description": "Put some Drizzle on your React components.",
   "main": "dist/drizzle-react-components.js",
   "scripts": {
-    "build": "webpack --config webpack.config.js --env.BABEL_ENV=production"
+    "build": "webpack --config webpack.config.js",
+    "publish": "webpack --config webpack.prod.js"
   },
   "keywords": [
     "ethereum",
@@ -27,6 +28,7 @@
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-react": "^6.24.1",
     "react-redux": "^5.0.6",
+    "uglifyjs-webpack-plugin": "^1.2.4",
     "webpack": "^3.5.3"
   }
 }
