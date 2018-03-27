@@ -15,12 +15,3 @@ export function accountsFetched(results) {
     payload: results
   }
 }
-
-const ACCOUNTS_FAILED = 'ACCOUNTS_FAILED'
-
-export function accountsFailed(error) {
-  return {
-    type: ACCOUNTS_FAILED,
-    payload: error
-  }
-}

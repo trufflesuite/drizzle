@@ -27,6 +27,22 @@ const web3Reducer = (state = initialState, action) => {
     }
   }
 
+  if (action.type === 'NETWORK_ID_FETCHED')
+  {
+    return {
+      ...state,
+      networkId: action.networkId
+    }
+  }
+
+  if (action.type === 'NETWORK_ID_FAILED')
+  {
+    return {
+      ...state,
+      networkId: action.networkId
+    }
+  }
+
   return state
 }
 
