@@ -4,7 +4,8 @@
   "description": "A reactive data-store for web3 and smart contracts.",
   "main": "dist/drizzle.js",
   "scripts": {
-    "build": "webpack --config webpack.config.js"
+    "build": "webpack --config webpack.config.js",
+    "publish": "webpack --config webpack.prod.js"
   },
   "keywords": [
     "ethereum",
@@ -29,6 +30,7 @@
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-polyfill": "^6.23.0",
     "babel-preset-env": "^1.6.0",
+    "uglifyjs-webpack-plugin": "^1.2.4",
     "webpack": "^3.5.3"
   }
 }
