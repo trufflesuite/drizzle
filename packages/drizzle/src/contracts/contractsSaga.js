@@ -1,5 +1,16 @@
 import { END, eventChannel } from 'redux-saga'
 import { call, put, select, take, takeLatest, takeEvery } from 'redux-saga/effects'
+import DrizzleContract from '../DrizzleContract'
+
+/*
+ * Instantiation
+ */
+
+export function* instantiateContract({contractArtifact, events, store, web3}) {
+  const networkId = yield select(getNetworkId)
+
+  return new DrizzleContract(contractArtifact, web3, networkId, store, events)
+}
 
 /*
  * Events
@@ -133,7 +144,7 @@ function* callCallContractFn({contract, fnName, fnIndex, args, argsHash}) {
       fnIndex: fnIndex
     }
   
-    yield put({type: 'GOT_CONTRACT_VAR', ...dispatchArgs})  
+    yield put({type: 'GOT_CONTRACT_VAR', ...dispatchArgs})
   }
   catch (error) {
     console.error(error)
@@ -186,6 +197,7 @@ function* callSyncContract(action) {
 }
 
 const getContractsState = (state) => state.contracts
+const getNetworkId = (state) => state.web3.networkId
 
 function isSendOrCallOptions(options) {
   if ('from' in options) return true

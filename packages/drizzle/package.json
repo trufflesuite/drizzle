@@ -4,7 +4,8 @@
   "description": "A reactive data-store for web3 and smart contracts.",
   "main": "dist/drizzle.js",
   "scripts": {
-    "build": "webpack --config webpack.config.js"
+    "build": "webpack --config webpack.config.js",
+    "publish": "webpack --config webpack.prod.js"
   },
   "keywords": [
     "ethereum",
@@ -20,9 +21,7 @@
   "dependencies": {
     "redux": "^3.6.0",
     "redux-saga": "^0.15.3",
-    "redux-thunk": "^2.2.0",
-    "truffle-contract": "^2.0.5",
-    "web3": "^1.0.0-beta.26"
+    "web3": "^1.0.0-beta.30"
   },
   "devDependencies": {
     "babel-core": "^6.25.0",
@@ -31,6 +30,7 @@
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-polyfill": "^6.23.0",
     "babel-preset-env": "^1.6.0",
+    "uglifyjs-webpack-plugin": "^1.2.4",
     "webpack": "^3.5.3"
   }
 }

@@ -1,6 +1,5 @@
 import 'babel-polyfill' // Required for async/await in redux-saga
 import { createStore, applyMiddleware, compose } from 'redux'
-import thunkMiddleware from 'redux-thunk'
 import createSagaMiddleware from 'redux-saga'
 import rootSaga from './rootSaga'
 import reducer from './reducer'
@@ -12,8 +11,7 @@ function generateStore(options) {
   // Preloaded state
   var contractsInitialState = {}
 
-  for (var i = 0; i < options.contracts.length; i++)
-  {
+  for (var i = 0; i < options.contracts.length; i++) {
     // Initial contract details
     var contractName = options.contracts[i].contractName
 
@@ -30,13 +28,10 @@ function generateStore(options) {
         contractsInitialState[contractName][item.name] = {}
       }
     }
-
   }
 
   var preloadedState = {
-    accounts: {},
-    contracts: contractsInitialState,
-    //web3: {}
+    contracts: contractsInitialState
   }
 
   // create the saga middleware
@@ -47,8 +42,7 @@ function generateStore(options) {
     preloadedState,
     composeEnhancers(
       applyMiddleware(
-        sagaMiddleware,
-        thunkMiddleware
+        sagaMiddleware
       )
     )
   )
