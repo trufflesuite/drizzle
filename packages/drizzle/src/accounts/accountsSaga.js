@@ -55,11 +55,6 @@ function* callCreateAccountsPollChannel({ interval, web3 }) {
       var event = yield take(accountsChannel)
 
       if (event.type === 'SYNCING_ACCOUNTS') {
-        // TODO
-        // TODO
-        // TODO: Add events for timeline between steps
-        // TODO
-        // TODO
         yield call(getAccounts, { web3: event.persistedWeb3 })
         yield call(getAccountBalances, { web3: event.persistedWeb3 })
       }

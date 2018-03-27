@@ -1,18 +1,6 @@
 import { END, eventChannel } from 'redux-saga'
 import { call, put, take, takeEvery, takeLatest } from 'redux-saga/effects'
 
-// TODO
-// TODO: Turn into "pollsSaga"
-// Poll for multiple things depending on options:
-// accounts (includes accountBalances), blocks
-// "blocks" option automatically passed by web3 provider detection
-// Object shape: {
-//   accounts: <<INTERVAL>>,
-//   blocks: <<INTERVAL>>
-// }
-// TODO
-// TODO
-
 /*
  * Listen for Blocks
  */
