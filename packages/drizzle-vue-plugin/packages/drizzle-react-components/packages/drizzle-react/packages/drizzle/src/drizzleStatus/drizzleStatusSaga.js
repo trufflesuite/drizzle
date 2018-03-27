@@ -7,11 +7,6 @@ import { getAccountBalances } from '../accountBalances/accountBalancesSaga'
 import { instantiateContract } from '../contracts/contractsSaga'
 
 function* initializeDrizzle(action) {
-  // TODO
-  // TODO
-  // TODO: Add events for timeline between steps
-  // TODO
-  // TODO
   try {
     const options = action.options
     const web3Options = options.web3
