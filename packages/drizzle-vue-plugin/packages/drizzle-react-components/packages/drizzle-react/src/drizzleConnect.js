@@ -3,7 +3,6 @@ import React from 'react'
 import { connect } from 'react-redux'
 
 export default function drizzleConnect(Component, ...args) {
-
   var ConnectedWrappedComponent = connect(...args)(Component)
 
   const DrizzledComponent = (props, context) => (
