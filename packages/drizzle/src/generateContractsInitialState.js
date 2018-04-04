@@ -13,9 +13,9 @@ function generateContractsInitialState(options) {
 
     // Constant getters
     for (var i2 = 0; i2 < options.contracts[i].abi.length; i2++) {
-      var item = options.contracts[i].abi[i2]
+      var item = options.contracts[i].abi[i2];
 
-      if (item.type == 'function' && item.constant === true) {
+      if (item.type == "function" && item.constant === true) {
         contractsInitialState[contractName][item.name] = {}
       }
     }
