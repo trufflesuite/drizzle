@@ -99,7 +99,11 @@ Drizzle is a collection of front-end libraries that make writing dapp frontends 
   contracts,
   events: {
     contractName: [
-      eventName
+      eventName,
+      {
+        eventName,
+        eventOptions
+      }
     ]
   },
   web3: {
@@ -114,7 +118,7 @@ Drizzle is a collection of front-end libraries that make writing dapp frontends 
 An array of contract artifact files.
 
 ### `events` (object)
-An object consisting of contract names each containing an array of strings of the event names we'd like to listen for and sync with the store.
+An object consisting of contract names each containing an array of strings of the event names we'd like to listen for and sync with the store. Furthermore, event names may be replaced with an object containing both `eventName` and `eventOptions`, where `eventOptions` field corresponds to the [web3 Contract.events options](https://web3js.readthedocs.io/en/1.0/web3-eth-contract.html#contract-events).
 
 ### `web3` (object)
 Options regarding `web3` instantiation.
