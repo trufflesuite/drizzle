@@ -3,6 +3,7 @@ const path = require('path');
 process.env.BABEL_ENV = 'production';
 
 module.exports = {
+  devtool: 'inline-source-map',
   entry: './src/index.js',
   output: {
     filename: 'drizzle.js',
@@ -17,8 +18,17 @@ module.exports = {
       loader: 'babel-loader',
       options: {
         presets: ['env'],
-        plugins: [require('babel-plugin-transform-es2015-arrow-functions'), require('babel-plugin-transform-object-rest-spread')]
+        plugins: [
+          require('babel-plugin-transform-runtime'),
+          require('babel-plugin-transform-es2015-arrow-functions'),
+          require('babel-plugin-transform-object-rest-spread')
+        ]
       }
     }]
+  },
+  externals: {
+    'web3': 'web3',
+    'redux-saga': 'redux-saga',
+    'redux': 'redux'
   }
 };
