@@ -25,7 +25,11 @@ function* initializeDrizzle(action) {
     for (var i = 0; i < options.contracts.length; i++)
     {
       var contractArtifact = options.contracts[i]
-      var events = contractArtifact.contractName in options.events ? options.events[contractArtifact.contractName] : []
+      var events = []
+
+      if ('events' in options && contractArtifact.contractName in options.events) {
+        events = options.events[contractArtifact.contractName]
+      }
 
       action.drizzle.contracts[contractArtifact.contractName] = yield call(instantiateContract, {contractArtifact, events, store: action.drizzle.store, web3})
     }
@@ -45,7 +49,7 @@ function* initializeDrizzle(action) {
       var interval = 3000
 
       // Optional user-defined blocktime.
-      if (options.polls.blocks) {
+      if ('polls' in options && 'blocks' in options.polls) {
         interval = options.polls.blocks
       }
 
@@ -57,7 +61,7 @@ function* initializeDrizzle(action) {
     }
 
     // Accounts Polling
-    if (options.polls.accounts) {
+    if ('polls' in options && 'accounts' in options.polls) {
       yield put({type: 'ACCOUNTS_POLLING', interval: options.polls.accounts, web3})
     }
   }
