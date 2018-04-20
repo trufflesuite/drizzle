@@ -42,14 +42,14 @@ function* initializeDrizzle(action) {
 
     if (web3.currentProvider.isMetaMask) {
       // Using MetaMask, attempt block polling.
-      var blocksInterval = 3000
+      var interval = 3000
 
       // Optional user-defined blocktime.
       if (options.polls.blocks) {
-        blocksInterval = options.polls.blocks
+        interval = options.polls.blocks
       }
 
-      yield put({type: 'BLOCKS_POLLING', contracts: action.drizzle.contracts, contractAddresses, contractNames, web3})
+      yield put({type: 'BLOCKS_POLLING', contracts: action.drizzle.contracts, interval, contractAddresses, contractNames, web3})
     }
     else {
       // Not using MetaMask, attempt subscription block listening.
