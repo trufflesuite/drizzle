@@ -110,6 +110,11 @@ class DrizzleContract {
           argToHash = JSON.stringify(argToHash)
         }
 
+        // Convert number to strong to allow hashing
+        if (typeof argToHash === 'number') {
+          argToHash = argToHash.toString()
+        }
+
         // This check is in place for web3 v0.x
         if ('utils' in web3) {
           var hashPiece = web3.utils.sha3(argToHash)

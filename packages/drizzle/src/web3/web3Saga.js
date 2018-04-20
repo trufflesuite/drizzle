@@ -76,7 +76,7 @@ export function* getNetworkId({web3}) {
   catch(error){
     yield put({type: 'NETWORK_ID_FAILED', error})
 
-    console.error('Erorr fetching network ID:')
+    console.error('Error fetching network ID:')
     console.error(error)
 
     return
