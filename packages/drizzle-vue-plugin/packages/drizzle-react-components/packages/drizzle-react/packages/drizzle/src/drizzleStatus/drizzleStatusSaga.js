@@ -46,7 +46,9 @@ function* initializeDrizzle(action) {
       contractNames.push(
         action.drizzle.contracts[contract].contractArtifact.contractName
       )
-      contractAddresses.push(action.drizzle.contracts[contract].options.address)
+      contractAddresses.push(
+        action.drizzle.contracts[contract].options.address.toLowerCase()
+      )
     }
 
     if (web3.currentProvider.isMetaMask) {
