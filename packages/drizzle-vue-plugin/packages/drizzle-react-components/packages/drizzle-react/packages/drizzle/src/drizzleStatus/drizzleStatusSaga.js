@@ -1,4 +1,6 @@
 import { call, put, select, takeLatest } from 'redux-saga/effects'
+import defaultOptions from '../defaultOptions'
+import merge from 'deepmerge'
 
 // Initialization Functions
 import { initializeWeb3, getNetworkId } from '../web3/web3Saga'
@@ -8,7 +10,7 @@ import { instantiateContract } from '../contracts/contractsSaga'
 
 function* initializeDrizzle(action) {
   try {
-    const options = action.options
+    const options = merge(defaultOptions, action.options)
     const web3Options = options.web3
 
     // Initialize web3 and get the current network ID.
@@ -25,7 +27,11 @@ function* initializeDrizzle(action) {
     for (var i = 0; i < options.contracts.length; i++)
     {
       var contractArtifact = options.contracts[i]
-      var events = contractArtifact.contractName in options.events ? options.events[contractArtifact.contractName] : []
+      var events = []
+
+      if (contractArtifact.contractName in options.events) {
+        events = options.events[contractArtifact.contractName]
+      }
 
       action.drizzle.contracts[contractArtifact.contractName] = yield call(instantiateContract, {contractArtifact, events, store: action.drizzle.store, web3})
     }
@@ -37,19 +43,14 @@ function* initializeDrizzle(action) {
     for (var contract in action.drizzle.contracts)
     {
       contractNames.push(action.drizzle.contracts[contract].contractArtifact.contractName)
-      contractAddresses.push(action.drizzle.contracts[contract].options.address)
+      contractAddresses.push(action.drizzle.contracts[contract].options.address.toLowerCase())
     }
 
     if (web3.currentProvider.isMetaMask) {
       // Using MetaMask, attempt block polling.
-      var blocksInterval = 3000
+      const interval = options.polls.blocks
 
-      // Optional user-defined blocktime.
-      if (options.polls.blocks) {
-        blocksInterval = options.polls.blocks
-      }
-
-      yield put({type: 'BLOCKS_POLLING', contracts: action.drizzle.contracts, contractAddresses, contractNames, web3})
+      yield put({type: 'BLOCKS_POLLING', contracts: action.drizzle.contracts, interval, contractAddresses, contractNames, web3})
     }
     else {
       // Not using MetaMask, attempt subscription block listening.
@@ -57,7 +58,7 @@ function* initializeDrizzle(action) {
     }
 
     // Accounts Polling
-    if (options.polls.accounts) {
+    if ('accounts' in options.polls) {
       yield put({type: 'ACCOUNTS_POLLING', interval: options.polls.accounts, web3})
     }
   }
