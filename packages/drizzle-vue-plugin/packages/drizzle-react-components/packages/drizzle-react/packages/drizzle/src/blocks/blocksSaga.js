@@ -1,5 +1,6 @@
 import { END, eventChannel } from 'redux-saga'
 import { call, put, take, takeEvery, takeLatest } from 'redux-saga/effects'
+const BlockTracker = require('eth-block-tracker')
 
 /*
  * Listen for Blocks
@@ -53,18 +54,21 @@ function* callCreateBlockChannel({contracts, contractAddresses, contractNames, w
 
 function createBlockPollChannel({contracts, contractAddresses, contractNames, interval, web3}) {
   return eventChannel(emit => {
-    const blockPoller = setInterval(() => {
-      web3.eth.getBlock('latest').then((block) => {
-        emit({type: 'BLOCK_RECEIVED', blockHeader: block, contracts, contractAddresses, contractNames, web3})
-      })
-      .catch((error) => {
-        emit({type: 'BLOCKS_FAILED', error})
-        emit(END)
-      })
-    }, interval) // options.polls.blocks
-    
+    const blockTracker = new BlockTracker({ provider: web3.currentProvider }, interval)
+
+    blockTracker.on('latest', (block) => {
+      emit({type: 'BLOCK_FOUND', block, contracts, contractAddresses, contractNames, web3})
+    })
+
+    blockTracker
+    .start()
+    .catch((error) => {
+      emit({type: 'BLOCKS_FAILED', error})
+      emit(END)
+    })
+
     const unsubscribe = () => {
-      clearInterval(blockPoller)
+      blockTracker.stop()
     }
 
     return unsubscribe
@@ -88,11 +92,26 @@ function* callCreateBlockPollChannel({contracts, contractAddresses, contractName
  * Process Blocks
  */
 
-function* processBlock({blockHeader, contracts, contractAddresses, contractNames, web3}) {
+function* processBlockHeader({blockHeader, contracts, contractAddresses, contractNames, web3}) {
   const blockNumber = blockHeader.number
 
   try {
     const block = yield call(web3.eth.getBlock, blockNumber, true)
+
+    yield call(processBlock, {block, contracts, contractAddresses, contractNames, web3})
+  }
+  catch (error) {
+    console.error('Error in block processing:')
+    console.error(error)
+
+    yield put({type: 'BLOCK_FAILED', error})
+
+    return
+  }
+}
+
+function* processBlock({block, contracts, contractAddresses, contractNames, web3}) {
+  try {
     const txs = block.transactions
 
     if (txs.length > 0)
@@ -100,7 +119,7 @@ function* processBlock({blockHeader, contracts, contractAddresses, contractNames
       // Loop through txs looking for contract address
       for (var i = 0; i < txs.length; i++)
       {
-        if (contractAddresses.indexOf(txs[i].from) !== -1 || contractAddresses.indexOf(txs[i].to) !== -1)
+        if (contractAddresses.indexOf(txs[i].from.toLowerCase()) !== -1 || contractAddresses.indexOf(txs[i].to.toLowerCase()) !== -1)
         {
           const index = contractAddresses.indexOf(txs[i].from) !== -1 ? contractAddresses.indexOf(txs[i].from) : contractAddresses.indexOf(txs[i].to)
           const contractName = contractNames[index]
@@ -127,9 +146,13 @@ function* processBlock({blockHeader, contracts, contractAddresses, contractNames
 }
 
 function* blocksSaga() {
+  // Block Subscriptions
   yield takeLatest('BLOCKS_LISTENING', callCreateBlockChannel)
-  yield takeLatest('BLOCKS_POLLING', callCreateBlockPollChannel)
-  yield takeEvery('BLOCK_RECEIVED', processBlock)
+  yield takeEvery('BLOCK_RECEIVED', processBlockHeader)
+
+  // Block Polling
+  yield takeLatest('BLOCKS_POLLING', callCreateBlockPollChannel)  
+  yield takeEvery('BLOCK_FOUND', processBlock)
 }
 
 export default blocksSaga
