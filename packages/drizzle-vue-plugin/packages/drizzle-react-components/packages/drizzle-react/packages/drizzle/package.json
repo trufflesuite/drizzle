@@ -1,8 +1,12 @@
 {
   "name": "drizzle",
-  "version": "0.1.0",
+  "version": "1.1.3",
   "description": "A reactive data-store for web3 and smart contracts.",
   "main": "dist/drizzle.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/trufflesuite/drizzle"
+  },
   "scripts": {
     "build": "webpack --config webpack.config.js",
     "dev": "webpack --config webpack.config.js --watch"
@@ -15,10 +19,11 @@
   "author": {
     "name": "Josh Quintal",
     "email": "josh@trufflesuite.com",
-    "url": "http://truffleframework.com/"
+    "url": "http://truffleframework.com/docs/drizzle/getting-started"
   },
   "license": "ISC",
   "dependencies": {
+    "deepmerge": "^2.1.0",
     "redux": "^3.6.0",
     "redux-saga": "^0.15.3",
     "web3": "^1.0.0-beta.30"
