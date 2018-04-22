@@ -31,7 +31,7 @@ Check out the [Drizzle Truffle Box](https://github.com/truffle-box/drizzle-box) 
    }
    ```
 
-1. Wrap your app with `DrizzleProvider` and pass in an `options` object.
+1. Wrap your app with `DrizzleProvider` and pass in an `options` object. You can also pass in your existing `store`. [See our documentation for more information on using an existing Redux store](http://truffleframework.com/docs/drizzle/using-an-existing-redux-store).
    ```javascript
    <DrizzleProvider options={options}>
      <App />
