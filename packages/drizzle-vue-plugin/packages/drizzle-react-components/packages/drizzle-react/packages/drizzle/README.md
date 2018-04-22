@@ -134,7 +134,7 @@ An object consisting of the type and url of a fallback web3 provider. This is us
 
 `type` (string): The type of the fallback web3 provider. Currently the only possibility is `'ws'` (web socket). **Default**: `'ws'`
 
-`url` (string | default: 'ws://127.0.0.1:8545'): The full fallback web3 provider url. **Default**: `'ws://127.0.0.1:8545'`
+`url` (string): The full fallback web3 provider url. **Default**: `'ws://127.0.0.1:8545'`
 
 ## Drizzle State
 
