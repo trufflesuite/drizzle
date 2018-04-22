@@ -26,10 +26,8 @@ class DrizzleProvider extends Component {
   }
 
   render() {
-    if (this.props.options.web3.block === false) {
-      // `Children.only` enables us not to add a <div /> for nothing
-      return Children.only(this.props.children)
-    }
+    // `Children.only` enables us not to add a <div /> for nothing
+    return Children.only(this.props.children)
   }
 }
 
