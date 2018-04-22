@@ -19,17 +19,17 @@ class DrizzleProvider extends Component {
   }
 
   getChildContext() {
-    const drizzleStore = this.props.store ? this.props.store : generateStore(this.props.options)
+    const drizzleStore = this.props.store
+      ? this.props.store
+      : generateStore(this.props.options)
     const drizzle = new Drizzle(this.props.options, drizzleStore)
 
     return { drizzle, drizzleStore }
   }
 
   render() {
-    if (this.props.options.web3.block === false) {
-      // `Children.only` enables us not to add a <div /> for nothing
-      return Children.only(this.props.children)
-    }
+    // `Children.only` enables us not to add a <div /> for nothing
+    return Children.only(this.props.children)
   }
 }
 
