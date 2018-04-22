@@ -1,4 +1,6 @@
 import { call, put, select, takeLatest } from 'redux-saga/effects'
+import defaultOptions from '../defaultOptions'
+import merge from 'deepmerge'
 
 // Initialization Functions
 import { initializeWeb3, getNetworkId } from '../web3/web3Saga'
@@ -8,7 +10,7 @@ import { instantiateContract } from '../contracts/contractsSaga'
 
 function* initializeDrizzle(action) {
   try {
-    const options = action.options
+    const options = merge(defaultOptions, action.options)
     const web3Options = options.web3
 
     // Initialize web3 and get the current network ID.
@@ -27,7 +29,7 @@ function* initializeDrizzle(action) {
       var contractArtifact = options.contracts[i]
       var events = []
 
-      if ('events' in options && contractArtifact.contractName in options.events) {
+      if (contractArtifact.contractName in options.events) {
         events = options.events[contractArtifact.contractName]
       }
 
@@ -41,17 +43,12 @@ function* initializeDrizzle(action) {
     for (var contract in action.drizzle.contracts)
     {
       contractNames.push(action.drizzle.contracts[contract].contractArtifact.contractName)
-      contractAddresses.push(action.drizzle.contracts[contract].options.address)
+      contractAddresses.push(action.drizzle.contracts[contract].options.address.toLowerCase())
     }
 
     if (web3.currentProvider.isMetaMask) {
       // Using MetaMask, attempt block polling.
-      var interval = 3000
-
-      // Optional user-defined blocktime.
-      if ('polls' in options && 'blocks' in options.polls) {
-        interval = options.polls.blocks
-      }
+      const interval = options.polls.blocks
 
       yield put({type: 'BLOCKS_POLLING', contracts: action.drizzle.contracts, interval, contractAddresses, contractNames, web3})
     }
@@ -61,7 +58,7 @@ function* initializeDrizzle(action) {
     }
 
     // Accounts Polling
-    if ('polls' in options && 'accounts' in options.polls) {
+    if ('accounts' in options.polls) {
       yield put({type: 'ACCOUNTS_POLLING', interval: options.polls.accounts, web3})
     }
   }
