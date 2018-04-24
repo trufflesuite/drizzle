@@ -84,15 +84,21 @@ function createTxChannel({txObject, stackId, sendArgs = {}, contractName}) {
 
 function* callSendContractTx({contract, fnName, fnIndex, args, stackId}) {
   // Check for type of object and properties indicative of call/send options.
-  const finalArg = args[args.length - 1]
-  var sendArgs = {}
-  var finalArgTest = call(isSendOrCallOptions, finalArg)
+  if (args.length) {
+    const finalArg = args.length > 1 ? args[args.length - 1] : args[0]
+    var sendArgs = {}
+    var finalArgTest = false
+  
+    if (typeof finalArg === 'object') {
+      var finalArgTest = call(isSendOrCallOptions, finalArg)
+    }
 
-  if (typeof finalArg === 'object' && finalArgTest) {
-    sendArgs = finalArg
-
-    delete args[args.length - 1]
-    args.length = args.length - 1
+    if (finalArgTest) {
+      sendArgs = finalArg
+  
+      args.length > 1 ? delete args[args.length - 1] : delete args[0]
+      args.length = args.length - 1
+    }
   }
 
   // Get name to mark as desynchronized on tx creation
@@ -116,17 +122,28 @@ function* callSendContractTx({contract, fnName, fnIndex, args, stackId}) {
  * Call and Cache
  */
 
-function* callCallContractFn({contract, fnName, fnIndex, args, argsHash}) {
+function* callCallContractFn({contract, fnName, fnIndex, args, argsHash, sync = false}) {
+  // keeping for pre-v1.1.5 compatibility with CALL_CONTRACT_FN event.
+  if (sync) {
+    return
+  }
+
   // Check for type of object and properties indicative of call/send options.
-  const finalArg = args[args.length - 1]
-  var callArgs = {}
-  var finalArgTest = call(isSendOrCallOptions, finalArg)
+  if (args.length) {
+    const finalArg = args.length > 1 ? args[args.length - 1] : args[0]
+    var callArgs = {}
+    var finalArgTest = false
+  
+    if (typeof finalArg === 'object') {
+      var finalArgTest = call(isSendOrCallOptions, finalArg)
+    }
 
-  if (typeof finalArg === 'object' && finalArgTest) {
-    callArgs = finalArg
-
-    delete args[args.length - 1]
-    args.length = args.length - 1
+    if (finalArgTest) {
+      callArgs = finalArg
+  
+      args.length > 1 ? delete args[args.length - 1] : delete args[0]
+      args.length = args.length - 1
+    }
   }
   
   // Create the transaction object and execute the call.
@@ -174,7 +191,7 @@ function* callSyncContract(action) {
   const contractsState = yield select(getContractsState)
   var contractFnsState = Object.assign({}, contractsState[contractName])
 
-  // Remove unecessary keys
+  // Remove unnecessary keys
   delete contractFnsState.initialized
   delete contractFnsState.synced
   delete contractFnsState.events
@@ -188,7 +205,9 @@ function* callSyncContract(action) {
       const args = contractFnsState[fnName][argsHash].args
 
       // Pull args and call fn for each given function
-      yield put({type: 'CALL_CONTRACT_FN', contract, fnName, fnIndex, args, argsHash})
+      // keeping for pre-v1.1.5 compatibility with CALL_CONTRACT_FN event.
+      yield put({type: 'CALL_CONTRACT_FN', contract, fnName, fnIndex, args, argsHash, sync: true})
+      yield call(callCallContractFn, {contract, fnName, fnIndex, args, argsHash})
     }
   }
 
