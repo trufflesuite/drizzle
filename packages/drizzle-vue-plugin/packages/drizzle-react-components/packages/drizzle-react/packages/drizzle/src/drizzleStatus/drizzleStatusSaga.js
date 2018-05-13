@@ -17,7 +17,7 @@ function* initializeDrizzle(action) {
     var web3 = yield call(initializeWeb3, { options: web3Options })
 
     if (!web3) {
-      throw 'Web3 could not be initialized'
+      throw 'Web3 could not be initialized.'
     }
 
     action.drizzle.web3 = web3
