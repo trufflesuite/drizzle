@@ -1,19 +1,9 @@
 class DrizzleContract {
-  constructor(contractArtifact, web3, networkId, store, events = []) {
-    this.contractArtifact = contractArtifact
-    this.abi = contractArtifact.abi
+  constructor(web3Contract, web3, name, store, events = []) {
+    this.abi = web3Contract.options.jsonInterface
     this.web3 = web3
+    this.contractName = name
     this.store = store
-
-    // Instantiate the contract.
-    var web3Contract = new web3.eth.Contract(
-      this.abi,
-      this.contractArtifact.networks[networkId].address,
-      {
-        from: this.store.getState().accounts[0],
-        data: this.contractArtifact.deployedBytecode
-      }
-    )
 
     // Merge web3 contract instance into DrizzleContract instance.
     Object.assign(this, web3Contract)
@@ -21,11 +11,11 @@ class DrizzleContract {
     for (var i = 0; i < this.abi.length; i++) {
       var item = this.abi[i]
 
-      if (item.type == "function" && item.constant === true) {
+      if (item.type == 'function' && item.constant === true) {
         this.methods[item.name].cacheCall = this.cacheCallFunction(item.name, i)
       }
 
-      if (item.type == "function" && item.constant === false) {
+      if (item.type == 'function' && item.constant === false) {
         this.methods[item.name].cacheSend = this.cacheSendFunction(item.name, i)
       }
     }
@@ -35,13 +25,11 @@ class DrizzleContract {
       for (i = 0; i < events.length; i++) {
         const eventName = events[i]
 
-        store.dispatch({type: 'LISTEN_FOR_EVENT', contract: this, eventName})
+        store.dispatch({ type: 'LISTEN_FOR_EVENT', contract: this, eventName })
       }
     }
 
-    const name = contractArtifact.contractName
-
-    store.dispatch({type: 'CONTRACT_INITIALIZED', name})
+    store.dispatch({ type: 'CONTRACT_INITIALIZED', name })
   }
 
   cacheCallFunction(fnName, fnIndex, fn) {
@@ -55,8 +43,10 @@ class DrizzleContract {
       if (args.length > 0) {
         argsHash = contract.generateArgsHash(args)
       }
-      const contractName = contract.contractArtifact.contractName
-      const functionState = contract.store.getState().contracts[contractName][fnName]
+      const contractName = contract.contractName
+      const functionState = contract.store.getState().contracts[contractName][
+        fnName
+      ]
 
       // If call result is in state and fresh, return value instead of calling
       if (argsHash in functionState) {
@@ -66,7 +56,14 @@ class DrizzleContract {
       }
 
       // Otherwise, call function and update store
-      contract.store.dispatch({type: 'CALL_CONTRACT_FN', contract, fnName, fnIndex, args, argsHash})
+      contract.store.dispatch({
+        type: 'CALL_CONTRACT_FN',
+        contract,
+        fnName,
+        fnIndex,
+        args,
+        argsHash
+      })
 
       // Return nothing because state is currently empty.
       return argsHash
@@ -84,12 +81,19 @@ class DrizzleContract {
       var stackId = contract.store.getState().transactionStack.length
 
       // Add ID to "transactionStack" with empty value
-      contract.store.dispatch({type: 'PUSH_TO_STACK'})
-      
+      contract.store.dispatch({ type: 'PUSH_TO_STACK' })
+
       // Dispatch tx to saga
       // When txhash received, will be value of stack ID
-      contract.store.dispatch({type: 'SEND_CONTRACT_TX', contract, fnName, fnIndex, args, stackId})
-     
+      contract.store.dispatch({
+        type: 'SEND_CONTRACT_TX',
+        contract,
+        fnName,
+        fnIndex,
+        args,
+        stackId
+      })
+
       // return stack ID
       return stackId
     }
@@ -99,10 +103,8 @@ class DrizzleContract {
     var web3 = this.web3
     var hashString = ''
 
-    for (var i = 0; i < args.length; i++)
-    {
-      if (typeof args[i] !== 'function')
-      {
+    for (var i = 0; i < args.length; i++) {
+      if (typeof args[i] !== 'function') {
         var argToHash = args[i]
 
         // Stringify objects to allow hashing
@@ -118,8 +120,7 @@ class DrizzleContract {
         // This check is in place for web3 v0.x
         if ('utils' in web3) {
           var hashPiece = web3.utils.sha3(argToHash)
-        }
-        else {
+        } else {
           var hashPiece = web3.sha3(argToHash)
         }
 

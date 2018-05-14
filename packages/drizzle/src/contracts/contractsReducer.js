@@ -5,8 +5,7 @@ const contractsReducer = (state = initialState, action) => {
    * Contract Status
    */
 
-  if (action.type === 'CONTRACT_INITIALIZED')
-  {
+  if (action.type === 'CONTRACT_INITIALIZED') {
     return {
       ...state,
       [action.name]: {
@@ -18,9 +17,8 @@ const contractsReducer = (state = initialState, action) => {
     }
   }
 
-  if (action.type === 'CONTRACT_SYNCING')
-  {
-    const contractName = action.contract.contractArtifact.contractName
+  if (action.type === 'CONTRACT_SYNCING') {
+    const contractName = action.contract.contractName
 
     return {
       ...state,
@@ -31,8 +29,7 @@ const contractsReducer = (state = initialState, action) => {
     }
   }
 
-  if (action.type === 'CONTRACT_SYNCED')
-  {
+  if (action.type === 'CONTRACT_SYNCED') {
     return {
       ...state,
       [action.contractName]: {
@@ -42,8 +39,7 @@ const contractsReducer = (state = initialState, action) => {
     }
   }
 
-  if (action.type === 'CONTRACT_SYNC_IND')
-  {
+  if (action.type === 'CONTRACT_SYNC_IND') {
     return {
       ...state,
       [action.contractName]: {
@@ -57,8 +53,7 @@ const contractsReducer = (state = initialState, action) => {
    * Contract Functions
    */
 
-  if (action.type === 'GOT_CONTRACT_VAR')
-  {
+  if (action.type === 'GOT_CONTRACT_VAR') {
     return {
       ...state,
       [action.name]: {
@@ -76,8 +71,7 @@ const contractsReducer = (state = initialState, action) => {
     }
   }
 
-  if (action.type === 'ERROR_CONTRACT_VAR')
-  {
+  if (action.type === 'ERROR_CONTRACT_VAR') {
     return {
       ...state,
       [action.name]: {
@@ -99,16 +93,12 @@ const contractsReducer = (state = initialState, action) => {
    * Contract Events
    */
 
-  if (action.type === 'EVENT_FIRED')
-  {
+  if (action.type === 'EVENT_FIRED') {
     return {
       ...state,
       [action.name]: {
         ...state[action.name],
-        events: [
-          ...state[action.name].events,
-          action.event
-        ]
+        events: [...state[action.name].events, action.event]
       }
     }
   }
