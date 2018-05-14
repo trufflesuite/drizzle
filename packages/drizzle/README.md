@@ -49,7 +49,7 @@ Drizzle is a collection of front-end libraries that make writing dapp frontends 
     const dataKey = drizzle.contracts.SimpleStorage.methods.storedData.cacheCall()
 
     // Use the dataKey to display data from the store.
-    return state.contracts.SimpleStorage.methods.storedData[dataKey].value
+    return state.contracts.SimpleStorage.storedData[dataKey].value
    }
 
    // If Drizzle isn't initialized, display some loading indication.
