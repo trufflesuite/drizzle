@@ -118,7 +118,19 @@ Drizzle has a number of configuration options so it only keeps track of exactly 
 ```
 
 ### `contracts` (array)
-An array of contract artifact files.
+An array of either contract artifact files or Web3 Contract objects.  The objects have a `contractName` and `web3Contract` key.
+
+I.e.
+
+```
+contracts: [
+  truffleArtifact, // A regular Truffle contract artifact
+  {
+    contractName: 'RegisteredContract',
+    web3Contract: new web3.eth.Contract(abi, address, {data: 'deployedBytecode' }) // An instance of a Web3 contract
+  }
+]
+```
 
 ### `events` (object)
 An object consisting of contract names each containing an array of strings of the event names we'd like to listen for and sync with the store.
