@@ -1,12 +1,12 @@
 import { call, put, select, takeLatest } from 'redux-saga/effects'
 import defaultOptions from '../defaultOptions'
-import merge from 'deepmerge'
+import merge from '../mergeOptions'
 
 // Initialization Functions
 import { initializeWeb3, getNetworkId } from '../web3/web3Saga'
 import { getAccounts } from '../accounts/accountsSaga'
 import { getAccountBalances } from '../accountBalances/accountBalancesSaga'
-import { instantiateContract } from '../contracts/contractsSaga'
+import { instantiateContract, instantiateWeb3Contract } from '../contracts/contractsSaga'
 
 function* initializeDrizzle(action) {
   try {
@@ -26,14 +26,21 @@ function* initializeDrizzle(action) {
     // Instantiate contracts passed through via options.
     for (var i = 0; i < options.contracts.length; i++)
     {
-      var contractArtifact = options.contracts[i]
+      var contractConfig = options.contracts[i]
       var events = []
+      var contractName = contractConfig.contractName
 
-      if (contractArtifact.contractName in options.events) {
-        events = options.events[contractArtifact.contractName]
+      if (contractName in options.events) {
+        events = options.events[contractName]
       }
 
-      action.drizzle.contracts[contractArtifact.contractName] = yield call(instantiateContract, {contractArtifact, events, store: action.drizzle.store, web3})
+      if (contractConfig.web3Contract) {
+        var drizzleContract = yield call(instantiateWeb3Contract, {web3Contract: contractConfig.web3Contract, name: contractName, events, store: action.drizzle.store, web3})
+      } else {
+        drizzleContract = yield call(instantiateContract, {contractArtifact: contractConfig, events, store: action.drizzle.store, web3})
+      }
+
+      action.drizzle.contracts[contractName] = drizzleContract
     }
 
     // Collect contract addresses in an array for later comparison in txs.
@@ -42,7 +49,7 @@ function* initializeDrizzle(action) {
 
     for (var contract in action.drizzle.contracts)
     {
-      contractNames.push(action.drizzle.contracts[contract].contractArtifact.contractName)
+      contractNames.push(action.drizzle.contracts[contract].contractName)
       contractAddresses.push(action.drizzle.contracts[contract].options.address.toLowerCase())
     }
 

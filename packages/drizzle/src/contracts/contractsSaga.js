@@ -6,10 +6,24 @@ import DrizzleContract from '../DrizzleContract'
  * Instantiation
  */
 
+export function* instantiateWeb3Contract({web3Contract, name, events, store, web3}) {
+  return new DrizzleContract(web3Contract, web3, name, store, events)
+}
+
 export function* instantiateContract({contractArtifact, events, store, web3}) {
   const networkId = yield select(getNetworkId)
 
-  return new DrizzleContract(contractArtifact, web3, networkId, store, events)
+  // Instantiate the contract.
+  var web3Contract = new web3.eth.Contract(
+    contractArtifact.abi,
+    contractArtifact.networks[networkId].address,
+    {
+      from: store.getState().accounts[0],
+      data: contractArtifact.deployedBytecode
+    }
+  )
+
+  return new DrizzleContract(web3Contract, web3, contractArtifact.contractName, store, events)
 }
 
 /*
@@ -17,7 +31,7 @@ export function* instantiateContract({contractArtifact, events, store, web3}) {
  */
 
 function createContractEventChannel({contract, eventName}) {
-  const name = contract.contractArtifact.contractName
+  const name = contract.contractName
 
   return eventChannel(emit => {
     const eventListener = contract.events[eventName]().on('data', event => {
@@ -88,21 +102,21 @@ function* callSendContractTx({contract, fnName, fnIndex, args, stackId}) {
     const finalArg = args.length > 1 ? args[args.length - 1] : args[0]
     var sendArgs = {}
     var finalArgTest = false
-  
+
     if (typeof finalArg === 'object') {
       var finalArgTest = call(isSendOrCallOptions, finalArg)
     }
 
     if (finalArgTest) {
       sendArgs = finalArg
-  
+
       args.length > 1 ? delete args[args.length - 1] : delete args[0]
       args.length = args.length - 1
     }
   }
 
   // Get name to mark as desynchronized on tx creation
-  const contractName = contract.contractArtifact.contractName
+  const contractName = contract.contractName
 
   // Create the transaction object and execute the tx.
   const txObject = yield call(contract.methods[fnName], ...args)
@@ -133,48 +147,48 @@ function* callCallContractFn({contract, fnName, fnIndex, args, argsHash, sync = 
     const finalArg = args.length > 1 ? args[args.length - 1] : args[0]
     var callArgs = {}
     var finalArgTest = false
-  
+
     if (typeof finalArg === 'object') {
       var finalArgTest = call(isSendOrCallOptions, finalArg)
     }
 
     if (finalArgTest) {
       callArgs = finalArg
-  
+
       args.length > 1 ? delete args[args.length - 1] : delete args[0]
       args.length = args.length - 1
     }
   }
-  
+
   // Create the transaction object and execute the call.
   const txObject = yield call(contract.methods[fnName], ...args)
-  
+
   try {
     const callResult = yield call(txObject.call, callArgs)
 
     var dispatchArgs = {
-      name: contract.contractArtifact.contractName,
+      name: contract.contractName,
       variable: contract.abi[fnIndex].name,
       argsHash: argsHash,
       args: args,
       value: callResult,
       fnIndex: fnIndex
     }
-  
+
     yield put({type: 'GOT_CONTRACT_VAR', ...dispatchArgs})
   }
   catch (error) {
     console.error(error)
 
     var errorArgs = {
-      name: contract.contractArtifact.contractName,
+      name: contract.contractName,
       variable: contract.abi[fnIndex].name,
       argsHash: argsHash,
       args: args,
       error: error,
       fnIndex: fnIndex
     }
-  
+
     yield put({type: 'ERROR_CONTRACT_VAR', ...errorArgs})
   }
 }
@@ -186,7 +200,7 @@ function* callCallContractFn({contract, fnName, fnIndex, args, argsHash, sync = 
 function* callSyncContract(action) {
   // Get contract state from store
   const contract = action.contract
-  const contractName = contract.contractArtifact.contractName
+  const contractName = contract.contractName
 
   const contractsState = yield select(getContractsState)
   var contractFnsState = Object.assign({}, contractsState[contractName])
