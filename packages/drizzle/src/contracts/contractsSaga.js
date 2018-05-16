@@ -10,8 +10,14 @@ import {
 import DrizzleContract from '../DrizzleContract'
 
 export function* addContract({ drizzle, contractConfig, events, web3 }) {
+  // Prevents double-adding contracts
+  if (drizzle.loadingContract[contractConfig.contractName]) {
+    return false
+  }
+  drizzle.loadingContract[contractConfig.contractName] = true
+  let drizzleContract
   if (contractConfig.web3Contract) {
-    var drizzleContract = yield call(instantiateWeb3Contract, {
+    drizzleContract = yield call(instantiateWeb3Contract, {
       web3Contract: contractConfig.web3Contract,
       name: contractConfig.contractName,
       events,
