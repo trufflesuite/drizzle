@@ -1,6 +1,7 @@
 class DrizzleContract {
   constructor(web3Contract, web3, name, store, events = []) {
     this.abi = web3Contract.options.jsonInterface
+    this.address = web3Contract.options.address
     this.web3 = web3
     this.contractName = name
     this.store = store
@@ -28,8 +29,6 @@ class DrizzleContract {
         store.dispatch({type: 'LISTEN_FOR_EVENT', contract: this, eventName})
       }
     }
-
-    store.dispatch({type: 'CONTRACT_INITIALIZED', name})
   }
 
   cacheCallFunction(fnName, fnIndex, fn) {
