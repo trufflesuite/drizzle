@@ -29,8 +29,6 @@ class DrizzleContract {
         store.dispatch({ type: 'LISTEN_FOR_EVENT', contract: this, eventName })
       }
     }
-
-    store.dispatch({ type: 'CONTRACT_INITIALIZED', name })
   }
 
   cacheCallFunction(fnName, fnIndex, fn) {
