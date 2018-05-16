@@ -2,6 +2,7 @@ import { createStore, applyMiddleware, compose } from 'redux'
 import createSagaMiddleware from 'redux-saga'
 import rootSaga from './rootSaga'
 import reducer from './reducer'
+import getAbi from './getAbi'
 
 function generateStore(options) {
   // Redux DevTools
@@ -20,8 +21,9 @@ function generateStore(options) {
     }
 
     // Constant getters
-    for (var i2 = 0; i2 < options.contracts[i].abi.length; i2++) {
-      var item = options.contracts[i].abi[i2];
+    var abi = getAbi(options.contracts[i])
+    for (var i2 = 0; i2 < abi.length; i2++) {
+      var item = abi[i2];
 
       if (item.type == "function" && item.constant === true) {
         contractsInitialState[contractName][item.name] = {}

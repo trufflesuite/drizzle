@@ -119,11 +119,14 @@ function* processBlock({block, contracts, contractAddresses, contractNames, web3
       // Loop through txs looking for contract address
       for (var i = 0; i < txs.length; i++)
       {
-        if (contractAddresses.indexOf(txs[i].from.toLowerCase()) !== -1 || contractAddresses.indexOf(txs[i].to.toLowerCase()) !== -1)
+        var from = txs[i].from || ''
+        var to = txs[i].to || ''
+        
+        if (contractAddresses.indexOf(from.toLowerCase()) !== -1 || contractAddresses.indexOf(to.toLowerCase()) !== -1)
         {
           const index = contractAddresses.indexOf(txs[i].from.toLowerCase()) !== -1 ? contractAddresses.indexOf(txs[i].from.toLowerCase()) : contractAddresses.indexOf(txs[i].to.toLowerCase())
           const contractName = contractNames[index]
-          
+
           yield put({type: 'CONTRACT_SYNCING', contract: contracts[contractName]})
         }
       }
@@ -145,7 +148,7 @@ function* blocksSaga() {
   yield takeEvery('BLOCK_RECEIVED', processBlockHeader)
 
   // Block Polling
-  yield takeLatest('BLOCKS_POLLING', callCreateBlockPollChannel)  
+  yield takeLatest('BLOCKS_POLLING', callCreateBlockPollChannel)
   yield takeEvery('BLOCK_FOUND', processBlock)
 }
 
