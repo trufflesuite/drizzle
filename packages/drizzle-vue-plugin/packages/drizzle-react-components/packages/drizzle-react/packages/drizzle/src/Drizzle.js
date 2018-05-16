@@ -12,6 +12,8 @@ class Drizzle {
     this.store = store
     this.web3 = {}
 
+    this.loadingContract = {}
+
     // Wait for window load event in case of injected web3.
     windowPromise.then(() => {
       // Begin Drizzle initialization.
