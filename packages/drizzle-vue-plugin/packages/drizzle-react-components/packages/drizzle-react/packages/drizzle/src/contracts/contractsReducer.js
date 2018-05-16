@@ -1,9 +1,18 @@
+import { generateContractInitialState } from '../generateContractInitialState'
+
 const initialState = {}
 
 const contractsReducer = (state = initialState, action) => {
   /*
    * Contract Status
    */
+
+  if (action.type === 'ADD_CONTRACT') {
+    return {
+      ...state,
+      [action.contractConfig.contractName]: generateContractInitialState(action.contractConfig)
+    }
+  }
 
   if (action.type === 'CONTRACT_INITIALIZED')
   {
