@@ -15,6 +15,11 @@ function* initializeDrizzle(action) {
 
     // Initialize web3 and get the current network ID.
     var web3 = yield call(initializeWeb3, {options: web3Options})
+
+    if (!web3) {
+      throw 'Web3 could not be initialized.'
+    }
+
     action.drizzle.web3 = web3
 
     yield call(getNetworkId, {web3})
