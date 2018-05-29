@@ -1,19 +1,10 @@
 class DrizzleContract {
-  constructor(contractArtifact, web3, networkId, store, events = []) {
-    this.contractArtifact = contractArtifact
-    this.abi = contractArtifact.abi
+  constructor(web3Contract, web3, name, store, events = []) {
+    this.abi = web3Contract.options.jsonInterface
+    this.address = web3Contract.options.address
     this.web3 = web3
+    this.contractName = name
     this.store = store
-
-    // Instantiate the contract.
-    var web3Contract = new web3.eth.Contract(
-      this.abi,
-      this.contractArtifact.networks[networkId].address,
-      {
-        from: this.store.getState().accounts[0],
-        data: this.contractArtifact.deployedBytecode
-      }
-    )
 
     // Merge web3 contract instance into DrizzleContract instance.
     Object.assign(this, web3Contract)
@@ -38,10 +29,6 @@ class DrizzleContract {
         store.dispatch({type: 'LISTEN_FOR_EVENT', contract: this, eventName})
       }
     }
-
-    const name = contractArtifact.contractName
-
-    store.dispatch({type: 'CONTRACT_INITIALIZED', name})
   }
 
   cacheCallFunction(fnName, fnIndex, fn) {
@@ -55,7 +42,7 @@ class DrizzleContract {
       if (args.length > 0) {
         argsHash = contract.generateArgsHash(args)
       }
-      const contractName = contract.contractArtifact.contractName
+      const contractName = contract.contractName
       const functionState = contract.store.getState().contracts[contractName][fnName]
 
       // If call result is in state and fresh, return value instead of calling
@@ -85,11 +72,11 @@ class DrizzleContract {
 
       // Add ID to "transactionStack" with empty value
       contract.store.dispatch({type: 'PUSH_TO_STACK'})
-      
+
       // Dispatch tx to saga
       // When txhash received, will be value of stack ID
       contract.store.dispatch({type: 'SEND_CONTRACT_TX', contract, fnName, fnIndex, args, stackId})
-     
+
       // return stack ID
       return stackId
     }

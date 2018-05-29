@@ -6,7 +6,7 @@ const BlockTracker = require('eth-block-tracker')
  * Listen for Blocks
  */
 
-function createBlockChannel({contracts, contractAddresses, contractNames, web3}) {
+function createBlockChannel({drizzle, web3}) {
   return eventChannel(emit => {
     const blockEvents = web3.eth.subscribe('newBlockHeaders', (error, result) => {
       if (error)
@@ -20,7 +20,7 @@ function createBlockChannel({contracts, contractAddresses, contractNames, web3})
       }
     })
     .on('data', (blockHeader) => {
-      emit({type: 'BLOCK_RECEIVED', blockHeader, contracts, contractAddresses, contractNames, web3})
+      emit({type: 'BLOCK_RECEIVED', blockHeader, drizzle, web3})
     })
     .on('error', error => {
       emit({type: 'BLOCKS_FAILED', error})
@@ -35,8 +35,8 @@ function createBlockChannel({contracts, contractAddresses, contractNames, web3})
   })
 }
 
-function* callCreateBlockChannel({contracts, contractAddresses, contractNames, web3}) {
-  const blockChannel = yield call(createBlockChannel, {contracts, contractAddresses, contractNames, web3})
+function* callCreateBlockChannel({drizzle, web3}) {
+  const blockChannel = yield call(createBlockChannel, {drizzle, web3})
 
   try {
     while (true) {
@@ -52,12 +52,12 @@ function* callCreateBlockChannel({contracts, contractAddresses, contractNames, w
  * Poll for Blocks
  */
 
-function createBlockPollChannel({contracts, contractAddresses, contractNames, interval, web3}) {
+function createBlockPollChannel({drizzle, interval, web3}) {
   return eventChannel(emit => {
     const blockTracker = new BlockTracker({ provider: web3.currentProvider, pollingInterval: interval})
 
     blockTracker.on('latest', (block) => {
-      emit({type: 'BLOCK_FOUND', block, contracts, contractAddresses, contractNames, web3})
+      emit({type: 'BLOCK_FOUND', block, drizzle, web3})
     })
 
     blockTracker
@@ -75,8 +75,8 @@ function createBlockPollChannel({contracts, contractAddresses, contractNames, in
   })
 }
 
-function* callCreateBlockPollChannel({contracts, contractAddresses, contractNames, interval, web3}) {
-  const blockChannel = yield call(createBlockPollChannel, {contracts, contractAddresses, contractNames, interval, web3})
+function* callCreateBlockPollChannel({drizzle, interval, web3}) {
+  const blockChannel = yield call(createBlockPollChannel, {drizzle, interval, web3})
 
   try {
     while (true) {
@@ -92,13 +92,13 @@ function* callCreateBlockPollChannel({contracts, contractAddresses, contractName
  * Process Blocks
  */
 
-function* processBlockHeader({blockHeader, contracts, contractAddresses, contractNames, web3}) {
+function* processBlockHeader({blockHeader, drizzle, web3}) {
   const blockNumber = blockHeader.number
 
   try {
     const block = yield call(web3.eth.getBlock, blockNumber, true)
 
-    yield call(processBlock, {block, contracts, contractAddresses, contractNames, web3})
+    yield call(processBlock, {block, drizzle, web3})
   }
   catch (error) {
     console.error('Error in block processing:')
@@ -110,7 +110,7 @@ function* processBlockHeader({blockHeader, contracts, contractAddresses, contrac
   }
 }
 
-function* processBlock({block, contracts, contractAddresses, contractNames, web3}) {
+function* processBlock({block, drizzle, web3}) {
   try {
     const txs = block.transactions
 
@@ -119,21 +119,16 @@ function* processBlock({block, contracts, contractAddresses, contractNames, web3
       // Loop through txs looking for any contract address of interest
       for (var i = 0; i < txs.length; i++)
       {
-        const fromAddr = txs[i].from
-        const toAddr = txs[i].to
+        var from = txs[i].from || ''
+        var fromContract = drizzle.findContractByAddress(from.toLowerCase())
+        if (fromContract) {
+          yield put({type: 'CONTRACT_SYNCING', contract: fromContract})
+        }
 
-        // Some txs are special cases (e.g. undefined "to" when it is a contract deploy TX)
-        // Prevent the toLowerCase call when it is undefined.
-        const fromTxIndex = fromAddr ? contractAddresses.indexOf(fromAddr.toLowerCase()) : -1
-        const toTxIndex = toAddr ? contractAddresses.indexOf(toAddr.toLowerCase()) : -1
-
-        const index = fromTxIndex !== -1 ? fromTxIndex : toTxIndex
-
-        if (index !== -1)
-        {
-          const contractName = contractNames[index]
-
-          yield put({type: 'CONTRACT_SYNCING', contract: contracts[contractName]})
+        var to = txs[i].to || ''
+        var toContract = drizzle.findContractByAddress(to.toLowerCase())
+        if (toContract) {
+          yield put({type: 'CONTRACT_SYNCING', contract: toContract})
         }
       }
     }
@@ -154,7 +149,7 @@ function* blocksSaga() {
   yield takeEvery('BLOCK_RECEIVED', processBlockHeader)
 
   // Block Polling
-  yield takeLatest('BLOCKS_POLLING', callCreateBlockPollChannel)  
+  yield takeLatest('BLOCKS_POLLING', callCreateBlockPollChannel)
   yield takeEvery('BLOCK_FOUND', processBlock)
 }
 

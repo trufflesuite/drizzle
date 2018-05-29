@@ -49,7 +49,7 @@ Drizzle is a collection of front-end libraries that make writing dapp frontends 
     const dataKey = drizzle.contracts.SimpleStorage.methods.storedData.cacheCall()
 
     // Use the dataKey to display data from the store.
-    return state.contracts.SimpleStorage.methods.storedData[dataKey].value
+    return state.contracts.SimpleStorage.storedData[dataKey].value
    }
 
    // If Drizzle isn't initialized, display some loading indication.
@@ -92,6 +92,24 @@ Drizzle is a collection of front-end libraries that make writing dapp frontends 
    drizzle.contracts.SimpleStorage.methods.set(2).send({from: '0x3f...'})
    ```
 
+## Adding contracts dynamically
+
+You can programmatically add contracts to Drizzle using either Drizzle#addContract or the ADD_CONTRACT action.
+
+```javascript
+var contractConfig = {
+  contractName: "0x066408929e8d5Ed161e9cAA1876b60e1fBB5DB75",
+  web3Contract: new web3.eth.Contract(/* ... */)
+}
+events = ['Mint']
+
+// Using an action
+dispatch({type: 'ADD_CONTRACT', drizzle, contractConfig, events, web3})
+
+// Or using the Drizzle context object
+this.context.drizzle.addContract({contractConfig, events})
+```
+
 ## Options
 
 Drizzle has a number of configuration options so it only keeps track of exactly the data you need. Here's the full list of options along with their default values.
@@ -118,7 +136,19 @@ Drizzle has a number of configuration options so it only keeps track of exactly 
 ```
 
 ### `contracts` (array)
-An array of contract artifact files.
+An array of either contract artifact files or Web3 Contract objects.  The objects have a `contractName` and `web3Contract` key.
+
+I.e.
+
+```
+contracts: [
+  truffleArtifact, // A regular Truffle contract artifact
+  {
+    contractName: 'RegisteredContract',
+    web3Contract: new web3.eth.Contract(abi, address, {data: 'deployedBytecode' }) // An instance of a Web3 contract
+  }
+]
+```
 
 ### `events` (object)
 An object consisting of contract names each containing an array of strings of the event names we'd like to listen for and sync with the store.
