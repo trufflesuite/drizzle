@@ -116,7 +116,7 @@ function* processBlock({block, drizzle, web3}) {
 
     if (txs.length > 0)
     {
-      // Loop through txs looking for contract address
+      // Loop through txs looking for any contract address of interest
       for (var i = 0; i < txs.length; i++)
       {
         var from = txs[i].from || ''
