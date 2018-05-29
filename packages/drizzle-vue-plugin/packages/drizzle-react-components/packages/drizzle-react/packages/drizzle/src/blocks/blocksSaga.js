@@ -116,14 +116,23 @@ function* processBlock({block, contracts, contractAddresses, contractNames, web3
 
     if (txs.length > 0)
     {
-      // Loop through txs looking for contract address
+      // Loop through txs looking for any contract address of interest
       for (var i = 0; i < txs.length; i++)
       {
-        if (contractAddresses.indexOf(txs[i].from.toLowerCase()) !== -1 || contractAddresses.indexOf(txs[i].to.toLowerCase()) !== -1)
+        const fromAddr = txs[i].from
+        const toAddr = txs[i].to
+
+        // Some txs are special cases (e.g. undefined "to" when it is a contract deploy TX)
+        // Prevent the toLowerCase call when it is undefined.
+        const fromTxIndex = fromAddr ? contractAddresses.indexOf(fromAddr.toLowerCase()) : -1
+        const toTxIndex = toAddr ? contractAddresses.indexOf(toAddr.toLowerCase()) : -1
+
+        const index = fromTxIndex !== -1 ? fromTxIndex : toTxIndex
+
+        if (index !== -1)
         {
-          const index = contractAddresses.indexOf(txs[i].from.toLowerCase()) !== -1 ? contractAddresses.indexOf(txs[i].from.toLowerCase()) : contractAddresses.indexOf(txs[i].to.toLowerCase())
           const contractName = contractNames[index]
-          
+
           yield put({type: 'CONTRACT_SYNCING', contract: contracts[contractName]})
         }
       }
