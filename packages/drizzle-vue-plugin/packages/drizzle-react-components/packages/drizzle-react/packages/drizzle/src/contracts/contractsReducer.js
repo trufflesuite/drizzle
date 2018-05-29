@@ -1,9 +1,18 @@
+import { generateContractInitialState } from '../generateContractInitialState'
+
 const initialState = {}
 
 const contractsReducer = (state = initialState, action) => {
   /*
    * Contract Status
    */
+
+  if (action.type === 'CONTRACT_INITIALIZING') {
+    return {
+      ...state,
+      [action.contractConfig.contractName]: generateContractInitialState(action.contractConfig)
+    }
+  }
 
   if (action.type === 'CONTRACT_INITIALIZED')
   {
@@ -20,7 +29,7 @@ const contractsReducer = (state = initialState, action) => {
 
   if (action.type === 'CONTRACT_SYNCING')
   {
-    const contractName = action.contract.contractArtifact.contractName
+    const contractName = action.contract.contractName
 
     return {
       ...state,
