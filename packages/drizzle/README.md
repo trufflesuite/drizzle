@@ -119,7 +119,11 @@ Drizzle has a number of configuration options so it only keeps track of exactly 
   contracts,
   events: {
     contractName: [
-      eventName
+      eventName,
+      {
+        eventName,
+        eventOptions
+      }
     ]
   },
   polls: {
@@ -151,7 +155,7 @@ contracts: [
 ```
 
 ### `events` (object)
-An object consisting of contract names each containing an array of strings of the event names we'd like to listen for and sync with the store.
+An object consisting of contract names each containing an array of strings of the event names we'd like to listen for and sync with the store. Furthermore, event names may be replaced with an object containing both `eventName` and `eventOptions`, where `eventOptions` field corresponds to the [web3 Contract.events options](https://web3js.readthedocs.io/en/1.0/web3-eth-contract.html#contract-events).
 
 ### `polls` (object)
 An object containing key/value pairs denoting what is being polled and the interval (in ms). Possible polls are accounts and blocks. Accounts will poll for addresses and balances, blocks for new blocks. **Default**: `{ blocks: 3000 }`

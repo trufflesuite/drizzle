@@ -24,9 +24,12 @@ class DrizzleContract {
     // Register event listeners if any events.
     if (events.length > 0) {
       for (i = 0; i < events.length; i++) {
-        const eventName = events[i]
-
-        store.dispatch({type: 'LISTEN_FOR_EVENT', contract: this, eventName})
+        let event = events[i]
+        if ( typeof event === 'object' ) {
+          store.dispatch({type: 'LISTEN_FOR_EVENT', contract: this, eventName: event.eventName, eventOptions: event.eventOptions})
+        } else {
+          store.dispatch({type: 'LISTEN_FOR_EVENT', contract: this, eventName: event})
+        }
       }
     }
   }
