@@ -2,14 +2,43 @@ import { END, eventChannel } from 'redux-saga'
 import { call, put, select, take, takeLatest, takeEvery } from 'redux-saga/effects'
 import DrizzleContract from '../DrizzleContract'
 
+export function* addContract({drizzle, contractConfig, events, web3}) {
+  // Prevents double-adding contracts
+  if (drizzle.loadingContract[contractConfig.contractName]) { return false }
+  drizzle.loadingContract[contractConfig.contractName] = true
+  yield put({type: 'CONTRACT_INITIALIZING', contractConfig})
+  let drizzleContract
+  if (contractConfig.web3Contract) {
+    drizzleContract = yield call(instantiateWeb3Contract, {web3Contract: contractConfig.web3Contract, name: contractConfig.contractName, events, store: drizzle.store, web3})
+  } else {
+    drizzleContract = yield call(instantiateContract, {contractArtifact: contractConfig, events, store: drizzle.store, web3})
+  }
+  drizzle._addContract(drizzleContract)
+  yield put({type: 'CONTRACT_INITIALIZED', name: contractConfig.contractName})
+}
+
 /*
  * Instantiation
  */
 
+export function* instantiateWeb3Contract({web3Contract, name, events, store, web3}) {
+  return new DrizzleContract(web3Contract, web3, name, store, events)
+}
+
 export function* instantiateContract({contractArtifact, events, store, web3}) {
   const networkId = yield select(getNetworkId)
 
-  return new DrizzleContract(contractArtifact, web3, networkId, store, events)
+  // Instantiate the contract.
+  var web3Contract = new web3.eth.Contract(
+    contractArtifact.abi,
+    contractArtifact.networks[networkId].address,
+    {
+      from: store.getState().accounts[0],
+      data: contractArtifact.deployedBytecode
+    }
+  )
+
+  return new DrizzleContract(web3Contract, web3, contractArtifact.contractName, store, events)
 }
 
 /*
@@ -84,19 +113,25 @@ function createTxChannel({txObject, stackId, sendArgs = {}, contractName}) {
 
 function* callSendContractTx({contract, fnName, fnIndex, args, stackId}) {
   // Check for type of object and properties indicative of call/send options.
-  const finalArg = args[args.length - 1]
-  var sendArgs = {}
-  var finalArgTest = call(isSendOrCallOptions, finalArg)
+  if (args.length) {
+    const finalArg = args.length > 1 ? args[args.length - 1] : args[0]
+    var sendArgs = {}
+    var finalArgTest = false
 
-  if (typeof finalArg === 'object' && finalArgTest) {
-    sendArgs = finalArg
+    if (typeof finalArg === 'object') {
+      var finalArgTest = call(isSendOrCallOptions, finalArg)
+    }
 
-    delete args[args.length - 1]
-    args.length = args.length - 1
+    if (finalArgTest) {
+      sendArgs = finalArg
+
+      args.length > 1 ? delete args[args.length - 1] : delete args[0]
+      args.length = args.length - 1
+    }
   }
 
   // Get name to mark as desynchronized on tx creation
-  const contractName = contract.contractArtifact.contractName
+  const contractName = contract.contractName
 
   // Create the transaction object and execute the tx.
   const txObject = yield call(contract.methods[fnName], ...args)
@@ -116,17 +151,28 @@ function* callSendContractTx({contract, fnName, fnIndex, args, stackId}) {
  * Call and Cache
  */
 
-function* callCallContractFn({contract, fnName, fnIndex, args, argsHash}) {
+function* callCallContractFn({contract, fnName, fnIndex, args, argsHash, sync = false}) {
+  // keeping for pre-v1.1.5 compatibility with CALL_CONTRACT_FN event.
+  if (sync) {
+    return
+  }
+
   // Check for type of object and properties indicative of call/send options.
-  const finalArg = args[args.length - 1]
-  var callArgs = {}
-  var finalArgTest = call(isSendOrCallOptions, finalArg)
+  if (args.length) {
+    const finalArg = args.length > 1 ? args[args.length - 1] : args[0]
+    var callArgs = {}
+    var finalArgTest = false
 
-  if (typeof finalArg === 'object' && finalArgTest) {
-    callArgs = finalArg
+    if (typeof finalArg === 'object') {
+      var finalArgTest = call(isSendOrCallOptions, finalArg)
+    }
 
-    delete args[args.length - 1]
-    args.length = args.length - 1
+    if (finalArgTest) {
+      callArgs = finalArg
+
+      args.length > 1 ? delete args[args.length - 1] : delete args[0]
+      args.length = args.length - 1
+    }
   }
 
   // Create the transaction object and execute the call.
@@ -136,7 +182,7 @@ function* callCallContractFn({contract, fnName, fnIndex, args, argsHash}) {
     const callResult = yield call(txObject.call, callArgs)
 
     var dispatchArgs = {
-      name: contract.contractArtifact.contractName,
+      name: contract.contractName,
       variable: contract.abi[fnIndex].name,
       argsHash: argsHash,
       args: args,
@@ -150,7 +196,7 @@ function* callCallContractFn({contract, fnName, fnIndex, args, argsHash}) {
     console.error(error)
 
     var errorArgs = {
-      name: contract.contractArtifact.contractName,
+      name: contract.contractName,
       variable: contract.abi[fnIndex].name,
       argsHash: argsHash,
       args: args,
@@ -169,12 +215,12 @@ function* callCallContractFn({contract, fnName, fnIndex, args, argsHash}) {
 function* callSyncContract(action) {
   // Get contract state from store
   const contract = action.contract
-  const contractName = contract.contractArtifact.contractName
+  const contractName = contract.contractName
 
   const contractsState = yield select(getContractsState)
   var contractFnsState = Object.assign({}, contractsState[contractName])
 
-  // Remove unecessary keys
+  // Remove unnecessary keys
   delete contractFnsState.initialized
   delete contractFnsState.synced
   delete contractFnsState.events
@@ -188,7 +234,9 @@ function* callSyncContract(action) {
       const args = contractFnsState[fnName][argsHash].args
 
       // Pull args and call fn for each given function
-      yield put({type: 'CALL_CONTRACT_FN', contract, fnName, fnIndex, args, argsHash})
+      // keeping for pre-v1.1.5 compatibility with CALL_CONTRACT_FN event.
+      yield put({type: 'CALL_CONTRACT_FN', contract, fnName, fnIndex, args, argsHash, sync: true})
+      yield call(callCallContractFn, {contract, fnName, fnIndex, args, argsHash})
     }
   }
 
@@ -213,6 +261,7 @@ function* contractsSaga() {
   yield takeEvery('CALL_CONTRACT_FN', callCallContractFn)
   yield takeEvery('CONTRACT_SYNCING', callSyncContract)
   yield takeEvery('LISTEN_FOR_EVENT', callListenForContractEvent)
+  yield takeEvery('ADD_CONTRACT', addContract)
 }
 
 export default contractsSaga;

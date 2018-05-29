@@ -1,21 +1,21 @@
 import { call, put, select, takeLatest } from 'redux-saga/effects'
 import defaultOptions from '../defaultOptions'
-import merge from 'deepmerge'
+import merge from '../mergeOptions'
 
 // Initialization Functions
 import { initializeWeb3, getNetworkId } from '../web3/web3Saga'
 import { getAccounts } from '../accounts/accountsSaga'
 import { getAccountBalances } from '../accountBalances/accountBalancesSaga'
-import { instantiateContract } from '../contracts/contractsSaga'
 
 function* initializeDrizzle(action) {
   try {
     const options = merge(defaultOptions, action.options)
     const web3Options = options.web3
+    const drizzle = action.drizzle
 
     // Initialize web3 and get the current network ID.
     var web3 = yield call(initializeWeb3, {options: web3Options})
-    action.drizzle.web3 = web3
+    drizzle.web3 = web3
 
     yield call(getNetworkId, {web3})
 
@@ -26,35 +26,25 @@ function* initializeDrizzle(action) {
     // Instantiate contracts passed through via options.
     for (var i = 0; i < options.contracts.length; i++)
     {
-      var contractArtifact = options.contracts[i]
+      var contractConfig = options.contracts[i]
       var events = []
+      var contractName = contractConfig.contractName
 
-      if (contractArtifact.contractName in options.events) {
-        events = options.events[contractArtifact.contractName]
+      if (contractName in options.events) {
+        events = options.events[contractName]
       }
 
-      action.drizzle.contracts[contractArtifact.contractName] = yield call(instantiateContract, {contractArtifact, events, store: action.drizzle.store, web3})
-    }
-
-    // Collect contract addresses in an array for later comparison in txs.
-    var contractAddresses = []
-    var contractNames = []
-
-    for (var contract in action.drizzle.contracts)
-    {
-      contractNames.push(action.drizzle.contracts[contract].contractArtifact.contractName)
-      contractAddresses.push(action.drizzle.contracts[contract].options.address.toLowerCase())
+      yield put({type: 'ADD_CONTRACT', drizzle, contractConfig, events, web3})
     }
 
     if (web3.currentProvider.isMetaMask) {
       // Using MetaMask, attempt block polling.
       const interval = options.polls.blocks
-
-      yield put({type: 'BLOCKS_POLLING', contracts: action.drizzle.contracts, interval, contractAddresses, contractNames, web3})
+      yield put({type: 'BLOCKS_POLLING', drizzle, interval, web3})
     }
     else {
       // Not using MetaMask, attempt subscription block listening.
-      yield put({type: 'BLOCKS_LISTENING', contracts: action.drizzle.contracts, contractAddresses, contractNames, web3})
+      yield put({type: 'BLOCKS_LISTENING', drizzle, web3})
     }
 
     // Accounts Polling
