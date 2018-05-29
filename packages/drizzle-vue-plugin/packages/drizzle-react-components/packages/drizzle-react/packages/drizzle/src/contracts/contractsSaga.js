@@ -45,11 +45,11 @@ export function* instantiateContract({contractArtifact, events, store, web3}) {
  * Events
  */
 
-function createContractEventChannel({contract, eventName}) {
-  const name = contract.contractName
+function createContractEventChannel({contract, eventName, eventOptions}) {
+  const name = contract.contractArtifact.contractName
 
   return eventChannel(emit => {
-    const eventListener = contract.events[eventName]().on('data', event => {
+    const eventListener = contract.events[eventName](eventOptions).on('data', event => {
       emit({type: 'EVENT_FIRED', name, event})
     })
     .on('changed', event => {
@@ -68,8 +68,8 @@ function createContractEventChannel({contract, eventName}) {
   })
 }
 
-function* callListenForContractEvent({contract, eventName}) {
-  const contractEventChannel = yield call(createContractEventChannel, {contract, eventName})
+function* callListenForContractEvent({contract, eventName, eventOptions}) {
+  const contractEventChannel = yield call(createContractEventChannel, {contract, eventName, eventOptions})
 
   while (true) {
     var event = yield take(contractEventChannel)
