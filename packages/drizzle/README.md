@@ -94,7 +94,7 @@ Drizzle is a collection of front-end libraries that make writing dapp frontends 
 
 ## Adding contracts dynamically
 
-You can programmatically add contracts to Drizzle using either Drizzle#addContract or the ADD_CONTRACT action.
+You can programmatically add contracts to Drizzle using either `drizzle.addContract()` or the `ADD_CONTRACT` action.
 
 ```javascript
 var contractConfig = {
@@ -130,6 +130,7 @@ Drizzle has a number of configuration options so it only keeps track of exactly 
     accounts: interval,
     blocks: interval
   },
+  syncAlways,
   web3: {
     fallback: {
       type
@@ -159,6 +160,9 @@ An object consisting of contract names each containing an array of strings of th
 
 ### `polls` (object)
 An object containing key/value pairs denoting what is being polled and the interval (in ms). Possible polls are accounts and blocks. Accounts will poll for addresses and balances, blocks for new blocks. **Default**: `{ blocks: 3000 }`
+
+### `syncAlways` (boolean)
+If `true`, will replay all contract calls at every block. This is useful if your dapp uses a proxy contract which obfuscates your primary contract's address. By default Drizzle checks blocks to see if a transaction interacting with your contracts has occured. If so, it syncs that contract. **Default**: `false`
 
 ### `web3` (object)
 Options regarding `web3` instantiation.
