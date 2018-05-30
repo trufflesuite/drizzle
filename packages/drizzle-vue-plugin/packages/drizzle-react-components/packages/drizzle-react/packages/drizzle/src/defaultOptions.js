@@ -12,7 +12,8 @@ const defaultOptions = {
   events: {},
   polls: {
     blocks: 3000
-  }
+  },
+  syncAlways: false
 }
 
 export default defaultOptions
