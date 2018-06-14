@@ -1,16 +1,16 @@
 import { generateContractInitialState } from './generateContractInitialState'
 
-function generateContractsInitialState(options) {
+export function generateContractsInitialState(options) {
   // Preloaded state
   var contractsInitialState = {}
 
   for (var i = 0; i < options.contracts.length; i++) {
     // Initial contract details
     var contractName = options.contracts[i].contractName
-    contractsInitialState[contractName] = generateContractInitialState(options.contracts[i])
+    contractsInitialState[contractName] = generateContractInitialState(
+      options.contracts[i]
+    )
   }
 
   return contractsInitialState
 }
-
-module.exports = generateContractsInitialState
