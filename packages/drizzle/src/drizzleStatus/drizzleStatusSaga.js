@@ -37,14 +37,16 @@ function* initializeDrizzle(action) {
       yield put({type: 'ADD_CONTRACT', drizzle, contractConfig, events, web3})
     }
 
+    const syncAlways = options.syncAlways
+
     if (web3.currentProvider.isMetaMask) {
       // Using MetaMask, attempt block polling.
       const interval = options.polls.blocks
-      yield put({type: 'BLOCKS_POLLING', drizzle, interval, web3})
+      yield put({type: 'BLOCKS_POLLING', drizzle, interval, web3, syncAlways})
     }
     else {
       // Not using MetaMask, attempt subscription block listening.
-      yield put({type: 'BLOCKS_LISTENING', drizzle, web3})
+      yield put({type: 'BLOCKS_LISTENING', drizzle, web3, syncAlways})
     }
 
     // Accounts Polling

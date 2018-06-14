@@ -1,6 +1,6 @@
 import { generateContractInitialState } from './generateContractInitialState'
 
-function generateContractsInitialState(options) {
+export function generateContractsInitialState(options) {
   // Preloaded state
   var contractsInitialState = {}
 
@@ -12,5 +12,3 @@ function generateContractsInitialState(options) {
 
   return contractsInitialState
 }
-
-module.exports = generateContractsInitialState
