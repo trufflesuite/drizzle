@@ -280,3 +280,7 @@ An object containing information about the status of Drizzle.
 1. If they did, we replay the calls already in the store to refresh any potentially altered data. If they didn't we continue with the store data.
 
    ![Drizzle Sync Step 4](https://github.com/trufflesuite/drizzle/blob/master/readme/drizzle-sync4.png?raw=true)
+
+## License
+
+[MIT](https://github.com/trufflesuite/drizzle/blob/master/LICENSE.txt)
