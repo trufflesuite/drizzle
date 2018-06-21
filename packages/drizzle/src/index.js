@@ -1,5 +1,5 @@
 import Drizzle from './Drizzle.js'
-import generateStore from './generateStore'
+import { generateStore } from './generateStore'
 import { generateContractsInitialState } from './generateContractsInitialState'
 
 // Reducers
