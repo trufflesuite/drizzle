@@ -1,5 +1,5 @@
 import { END, eventChannel } from 'redux-saga'
-import { call, put, take, takeEvery, takeLatest } from 'redux-saga/effects'
+import { call, put, take, takeEvery, takeLatest, all } from 'redux-saga/effects'
 const BlockTracker = require('eth-block-tracker')
 
 /*
@@ -36,7 +36,7 @@ function createBlockChannel({drizzle, web3, syncAlways}) {
 }
 
 function* callCreateBlockChannel({drizzle, web3, syncAlways}) {
-  const blockChannel = yield call(createBlockChannel, {drizzle, web3})
+  const blockChannel = yield call(createBlockChannel, {drizzle, web3, syncAlways})
 
   try {
     while (true) {
@@ -76,7 +76,7 @@ function createBlockPollChannel({drizzle, interval, web3, syncAlways}) {
 }
 
 function* callCreateBlockPollChannel({drizzle, interval, web3, syncAlways}) {
-  const blockChannel = yield call(createBlockPollChannel, {drizzle, interval, web3})
+  const blockChannel = yield call(createBlockPollChannel, {drizzle, interval, web3, syncAlways})
 
   try {
     while (true) {
@@ -111,16 +111,17 @@ function* processBlockHeader({blockHeader, drizzle, web3, syncAlways}) {
 }
 
 function* processBlock({block, drizzle, web3, syncAlways}) {
+
   try {
     if (syncAlways)
     {
-      yield all(drizzle.contracts.map(contract => {
-        put({type: 'CONTRACT_SYNCING', contract})
+      yield all(Object.keys(drizzle.contracts).map(key => {
+        return put({type: 'CONTRACT_SYNCING', contract: drizzle.contracts[key]})
       }))
-      
+
       return
     }
-    
+
     const txs = block.transactions
 
     if (txs.length > 0)
