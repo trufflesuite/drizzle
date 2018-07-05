@@ -75,7 +75,7 @@ class ContractData extends Component {
     if (typeof displayData === 'array') {
       const displayListItems = displayData.map((datum, index) => {
         ;<li key={index}>
-          {String(datum)}
+          {`${datum}`}
           {pendingSpinner}
         </li>
       })
@@ -95,7 +95,7 @@ class ContractData extends Component {
               <strong>{key}</strong>
               {pendingSpinner}
               <br />
-              {String(displayData[key])}
+              {`${displayData[key]}`}
             </li>
           )
         }
@@ -108,7 +108,7 @@ class ContractData extends Component {
 
     return (
       <span>
-        {String(displayData)}
+        {`${displayData}`}
         {pendingSpinner}
       </span>
     )
