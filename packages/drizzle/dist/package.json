@@ -5,6 +5,14 @@
     "url": "http://truffleframework.com/drizzle"
   },
   "bundleDependencies": false,
+  "dependencies": {
+    "deepmerge": "^2.1.1",
+    "eth-block-tracker-es5": "^2.3.2",
+    "is-plain-object": "^2.0.4",
+    "redux": "^4.0.0",
+    "redux-saga": "^0.16.0",
+    "web3": "^1.0.0-beta.34"
+  },
   "deprecated": false,
   "description": "A reactive data store for web3 and smart contracts.",
   "keywords": [
@@ -15,5 +23,5 @@
   "license": "ISC",
   "main": "drizzle.js",
   "name": "drizzle",
-  "version": "1.2.1"
+  "version": "1.2.2"
 }
