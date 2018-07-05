@@ -11,8 +11,9 @@ module.exports = {
     libraryTarget: 'umd',
     path: path.resolve(__dirname, 'dist')
   },
+  mode: 'development',
   module: {
-    loaders: [{
+    rules: [{
       test: /\.(js)$/,
       include: path.resolve(__dirname, 'src'),
       loader: 'babel-loader',
