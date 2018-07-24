@@ -1,5 +1,5 @@
 class DrizzleContract {
-  constructor (
+  constructor(
     web3Contract,
     web3,
     name,
@@ -52,10 +52,10 @@ class DrizzleContract {
     }
   }
 
-  cacheCallFunction (fnName, fnIndex, fn) {
+  cacheCallFunction(fnName, fnIndex, fn) {
     var contract = this
 
-    return function () {
+    return function() {
       // Collect args and hash to use as key, 0x0 if no args
       var argsHash = '0x0'
       var args = arguments
@@ -90,18 +90,18 @@ class DrizzleContract {
     }
   }
 
-  cacheSendFunction (fnName, fnIndex, fn) {
+  cacheSendFunction(fnName, fnIndex, fn) {
     // NOTE: May not need fn index
     var contract = this
 
-    return function () {
+    return function() {
       var args = arguments
 
       // Generate temporary ID
       var stackId = contract.store.getState().transactionStack.length
 
       // Add ID to "transactionStack" with empty value
-      contract.store.dispatch({ type: 'PUSH_TO_STACK' })
+      contract.store.dispatch({ type: 'PUSH_TO_TXSTACK' })
 
       // Dispatch tx to saga
       // When txhash received, will be value of stack ID
@@ -119,7 +119,7 @@ class DrizzleContract {
     }
   }
 
-  generateArgsHash (args) {
+  generateArgsHash(args) {
     var web3 = this.web3
     var hashString = ''
 
