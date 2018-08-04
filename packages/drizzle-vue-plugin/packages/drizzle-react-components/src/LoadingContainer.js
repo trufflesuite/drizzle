@@ -33,7 +33,7 @@ class LoadingContainer extends Component {
           <div className="pure-g">
             <div className="pure-u-1-1">
               <h1>🦊</h1>
-              <p><strong>We can't find any Ethereum accounts!</strong> Please check and make sure Metamask or you browser are pointed at the correct network and your account is unlocked.</p>
+              <p><strong>We can't find any Ethereum accounts!</strong> Please check and make sure Metamask or your browser are pointed at the correct network and your account is unlocked.</p>
             </div>
           </div>
         </main>
