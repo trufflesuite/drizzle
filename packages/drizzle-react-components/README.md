@@ -31,4 +31,6 @@ This component wraps your entire app (but within the DrizzleProvider) and will s
 
 `method` (string, required) Method whose inputs will be used to create corresponding form fields.
 
+`sendArgs` (object) An object specifying options for the transaction to be sent; namely: `from`, `gasPrice`, `gas` and `value`. Further explanataion of these parameters can be found [here in the web3 documentation](https://web3js.readthedocs.io/en/1.0/web3-eth-contract.html#id19).
+
 `labels` (array) Custom labels; will follow ABI input ordering. Useful for friendlier names. For example "_to" becoming "Recipient Address".
