@@ -17,22 +17,30 @@ class Drizzle {
     // Wait for window load event in case of injected web3.
     windowPromise.then(() => {
       // Begin Drizzle initialization.
-      store.dispatch({type: 'DRIZZLE_INITIALIZING', drizzle: this, options})
+      store.dispatch({ type: 'DRIZZLE_INITIALIZING', drizzle: this, options })
     })
   }
 
-  addContract (contractConfig, events = []) {
-    this.store.dispatch({type: 'ADD_CONTRACT', drizzle: this, contractConfig, events, web3: this.web3})
+  addContract(contractConfig, events = []) {
+    this.store.dispatch({
+      type: 'ADD_CONTRACT',
+      drizzle: this,
+      contractConfig,
+      events,
+      web3: this.web3
+    })
   }
 
-  _addContract (drizzleContract) {
-    if (this.contracts[drizzleContract.contractName]) { throw `Contract already exists: ${drizzleContract.contractName}` }
+  _addContract(drizzleContract) {
+    if (this.contracts[drizzleContract.contractName]) {
+      throw `Contract already exists: ${drizzleContract.contractName}`
+    }
     this.contracts[drizzleContract.contractName] = drizzleContract
     this.contractList.push(drizzleContract)
   }
 
-  findContractByAddress (address) {
-    return this.contractList.find((contract) => {
+  findContractByAddress(address) {
+    return this.contractList.find(contract => {
       return contract.address.toLowerCase() === address.toLowerCase()
     })
   }

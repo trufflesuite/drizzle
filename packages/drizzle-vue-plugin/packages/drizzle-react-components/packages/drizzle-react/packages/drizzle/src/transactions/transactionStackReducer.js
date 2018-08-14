@@ -1,34 +1,25 @@
 const initialState = []
-  
+
 const transactionStackReducer = (state = initialState, action) => {
-    if (action.type === 'PUSH_TO_TXSTACK')
-    {
-        state.push('')
+  if (action.type === 'PUSH_TO_TXSTACK') {
+    state.push('')
 
-        return [
-            ...state
-        ]
-    }
+    return [...state]
+  }
 
-    if (action.type === 'POP_FROM_TXSTACK')
-    {
-        state.pop()
+  if (action.type === 'POP_FROM_TXSTACK') {
+    state.pop()
 
-        return [
-            ...state
-        ]
-    }
+    return [...state]
+  }
 
-    if (action.type === 'TX_BROADCASTED')
-    {
-        state[action.stackId] = action.txHash
+  if (action.type === 'TX_BROADCASTED') {
+    state[action.stackId] = action.txHash
 
-        return [
-            ...state
-        ]
-    }
+    return [...state]
+  }
 
-    return state
+  return state
 }
 
 export default transactionStackReducer

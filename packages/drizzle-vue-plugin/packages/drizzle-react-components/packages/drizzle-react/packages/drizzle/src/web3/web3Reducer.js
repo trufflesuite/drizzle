@@ -3,40 +3,35 @@ const initialState = {
 }
 
 const web3Reducer = (state = initialState, action) => {
-  if (action.type === 'WEB3_INITIALIZING')
-  {
+  if (action.type === 'WEB3_INITIALIZING') {
     return {
       ...state,
       status: 'initializing'
     }
   }
 
-  if (action.type === 'WEB3_INITIALIZED')
-  {
+  if (action.type === 'WEB3_INITIALIZED') {
     return {
       ...state,
       status: 'initialized'
     }
   }
 
-  if (action.type === 'WEB3_FAILED')
-  {
+  if (action.type === 'WEB3_FAILED') {
     return {
       ...state,
       status: 'failed'
     }
   }
 
-  if (action.type === 'NETWORK_ID_FETCHED')
-  {
+  if (action.type === 'NETWORK_ID_FETCHED') {
     return {
       ...state,
       networkId: action.networkId
     }
   }
 
-  if (action.type === 'NETWORK_ID_FAILED')
-  {
+  if (action.type === 'NETWORK_ID_FAILED') {
     return {
       ...state,
       networkId: action.networkId

@@ -7,7 +7,8 @@ import getAbi from './getAbi'
 
 export function generateStore(options) {
   // Redux DevTools
-  const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+  const composeEnhancers =
+    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 
   // Preloaded state
   var preloadedState = {
@@ -20,11 +21,7 @@ export function generateStore(options) {
   const store = createStore(
     reducer,
     preloadedState,
-    composeEnhancers(
-      applyMiddleware(
-        sagaMiddleware
-      )
-    )
+    composeEnhancers(applyMiddleware(sagaMiddleware))
   )
 
   sagaMiddleware.run(rootSaga)
