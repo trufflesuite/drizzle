@@ -1,6 +1,6 @@
 const INITIALIZING_CONTRACT = 'INITIALIZING_CONTRACT'
 
-export function initializingContract(results) {
+export function initializingContract (results) {
   return {
     type: INITIALIZING_CONTRACT,
     payload: results
@@ -9,7 +9,7 @@ export function initializingContract(results) {
 
 const INITIALIZED_CONTRACT = 'INITIALIZED_CONTRACT'
 
-export function initializedContract(results) {
+export function initializedContract (results) {
   return {
     type: INITIALIZED_CONTRACT,
     payload: results
@@ -18,7 +18,7 @@ export function initializedContract(results) {
 
 const GETTING_CONTRACT_VAR = 'GETTING_CONTRACT_VAR'
 
-export function gettingContractVar(results) {
+export function gettingContractVar (results) {
   return {
     type: GETTING_CONTRACT_VAR,
     payload: results
@@ -27,7 +27,7 @@ export function gettingContractVar(results) {
 
 const GOT_CONTRACT_VAR = 'GOT_CONTRACT_VAR'
 
-export function gotContractVar(results) {
+export function gotContractVar (results) {
   return {
     type: GOT_CONTRACT_VAR,
     payload: results

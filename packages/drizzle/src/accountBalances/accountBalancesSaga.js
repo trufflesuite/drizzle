@@ -1,6 +1,6 @@
 import { call, put, select, takeLatest } from 'redux-saga/effects'
 
-export function* getAccountBalances(action) {
+export function * getAccountBalances (action) {
   const accounts = yield select(getAccountsState)
   const web3 = action.web3
 
@@ -13,22 +13,21 @@ export function* getAccountBalances(action) {
       var account = accounts[i]
       var accountBalance = yield call(web3.eth.getBalance, account)
 
-      yield put({type: 'ACCOUNT_BALANCE_FETCHED', account, accountBalance})
+      yield put({ type: 'ACCOUNT_BALANCE_FETCHED', account, accountBalance })
     }
-  }
-  catch (error) {
-    yield put({type: 'ACCOUNT_BALANCE_FAILED', error})
+  } catch (error) {
+    yield put({ type: 'ACCOUNT_BALANCE_FAILED', error })
     console.error('Error fetching account ' + account + ' balance:')
     console.error(error)
   }
 
-  yield put({type: 'ACCOUNT_BALANCES_FETCHED'})
+  yield put({ type: 'ACCOUNT_BALANCES_FETCHED' })
 }
 
-const getAccountsState = (state) => state.accounts
+const getAccountsState = state => state.accounts
 
-function* accountBalancesSaga() {
+function * accountBalancesSaga () {
   yield takeLatest('ACCOUNT_BALANCES_FETCHING', getAccountBalances)
 }
 
-export default accountBalancesSaga;
+export default accountBalancesSaga

@@ -7,7 +7,7 @@ import contractsSaga from './contracts/contractsSaga'
 import drizzleStatusSaga from './drizzleStatus/drizzleStatusSaga'
 import web3Saga from './web3/web3Saga'
 
-export default function* root() {
+export default function * root () {
   yield all([
     fork(accountsSaga),
     fork(accountBalancesSaga),
