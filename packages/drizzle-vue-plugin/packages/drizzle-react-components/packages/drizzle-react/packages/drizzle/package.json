@@ -9,7 +9,10 @@
   },
   "scripts": {
     "build": "webpack --config webpack.config.js",
-    "dev": "webpack --config webpack.config.js --watch"
+    "dev": "webpack --config webpack.config.js --watch",
+    "lint": "eslint 'src/**/*.js'",
+    "lint:fix": "eslint 'src/**/*.js' --fix",
+    "format": "prettier-standard 'src/**/*.js'"
   },
   "keywords": [
     "ethereum",
@@ -38,6 +41,10 @@
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-preset-env": "^1.7.0",
+    "eslint": "^5.3.0",
+    "eslint-config-standard": "^11.0.0",
+    "prettier-standard": "^8.0.1",
+    "standard": "^11.0.1",
     "webpack-cli": "^3.0.8"
   }
 }
