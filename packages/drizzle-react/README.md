@@ -68,6 +68,11 @@ Check out the [Drizzle Truffle Box](https://github.com/truffle-box/drizzle-box) 
    // If Drizzle is initialized (and therefore web3, accounts and contracts), fetch data.
    // This will update automatically when the contract state is altered.
    var storedData = this.props.drizzleStatus.initialized ? this.contracts.SimpleStorage.methods.storedData.data() : 'Loading...'
+
+   // To access drizzle via context in constructor add given context type below
+   Home.contextTypes = {
+    drizzle: PropTypes.object
+   }
    ```
 
    The contract instance has all of its standard web3 properties and methods. For example, sending a transaction is done as normal:
