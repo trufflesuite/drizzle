@@ -13,6 +13,109 @@ Check out the [Drizzle Truffle Box](https://github.com/truffle-box/drizzle-box) 
 
 **Note**: Since Drizzle uses web3 1.0 and web sockets, be sure your development environment can support these.
 
+### Using the React Context API (For React v16.3+)
+
+If you are using React v16.3 and up, you have access to the new [React Context](https://reactjs.org/docs/context.html) API which makes use of the [render props](s) pattern.
+
+1. Setup Drizzle and then pass the `drizzle` instance into the context provider:
+
+    ```js
+    // 1. Import drizzle, drizzle-react, and your contract artifacts.
+    import { Drizzle, generateStore } from "drizzle";
+    import { DrizzleContext } from "drizzle-react";
+    import SimpleStorage from "./contracts/SimpleStorage.json";
+
+    // 2. Setup the drizzle instance.
+    const options = { contracts: [SimpleStorage] };
+    const drizzleStore = generateStore(options);
+    const drizzle = new Drizzle(options, drizzleStore);
+
+    // ...
+
+    // 3. Pass the drizzle instance into the provider and wrap it
+    //    around your app.
+    <DrizzleContext.Provider drizzle={drizzle}>
+      <App />
+    </DrizzleContext.Provider>
+    ```
+
+2. Then, in any child component of the app, we can access the `drizzle` instance as well as the `drizzleState`.
+
+    In our render tree, we use the `DrizzleContext.Consumer` component to get access to Drizzle. This component will call its function child with the following object:
+
+    ```js
+    const drizzleContext = {
+      drizzle,       // this is the drizzle instance (use this to call `cacheCall` and `cacheSend`)
+      drizzleState,  // this is the entire Drizzle state, it will always be up-to-date
+      initialized    // this boolean value will indicate when Drizzle is ready
+    }
+    ```
+
+    Usage example:
+
+    ```js
+    import React from "react";
+    import { DrizzleContext } from "drizzle-react";
+
+    export default () => (
+      <DrizzleContext.Consumer>
+        {drizzleContext => {
+          const { drizzle, drizzleState, initialized } = drizzleContext;
+      
+          if (!initialized) {
+            return "Loading...";
+          }
+
+          return (
+            <MyDrizzleApp drizzle={drizzle} drizzleState={drizzleState} />
+          );
+        }}
+      </DrizzleContext.Consumer>
+    )
+    ```
+
+3. Inside your child component (`MyDrizzleApp` in the above example), use `drizzle` and `drizzleState` from props.
+
+    This example shows reading a value from the `storedData` public getter method and then rendering it inside a child component `<DisplayValue />` (code not shown).
+
+    ```js
+    import React from "react";
+    import DisplayValue from "./DisplayValue";
+
+    export default class MyDrizzleApp extends React.Component {
+      state = { dataKey: null };
+
+      componentDidMount() {
+        const { drizzle } = this.props;
+        const contract = drizzle.contracts.SimpleStorage;
+
+        // get and save the key for the variable we are interested in
+        const dataKey = contract.methods["storedData"].cacheCall();
+        this.setState({ dataKey });
+      }
+
+      render() {
+        const { SimpleStorage } = this.props.drizzleState.contracts;
+        const storedData = SimpleStorage.storedData[this.state.dataKey];
+        return <DisplayValue value={storedData && storedData.value} />;
+      }
+    }
+    ```
+
+#### Preventing Unnecessary Re-renders (Optional)
+
+For performance reasons, you may want to prevent unnecessary re-renders. To do this, you can implement a check in the child components.
+
+In the above example, the `<DisplayValue />` component should check to see if the new props being passed in are the same as the old props. If so, then do not trigger a re-render. You have two options:
+
+1. If the value being passed in does not require a deep comparison (e.g. a simple string or number), then you can simply extend your component from [React.PureComponent](https://reactjs.org/docs/react-api.html#reactpurecomponent).
+
+2. Alternatively, you can use the [`shouldComponentUpdate()`](https://reactjs.org/docs/react-component.html#shouldcomponentupdate) API.
+
+### Using the Legacy API (for React < v16.3)
+
+We retain the old API for backwards compatibility, but please note that React itself has deprecated the legacy React Context API since v16.3 and it will not be supported in v17. When possible, please use the new React Context API.
+
 1. Import the provider.
    ```javascript
    import { DrizzleProvider } from 'drizzle-react'
