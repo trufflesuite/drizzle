@@ -15,7 +15,8 @@
     "format": "prettier-standard 'src/**/*.js'",
     "lint": "eslint 'src/**/*.js'",
     "lint:fix": "eslint 'src/**/*.js' --fix",
-    "test": "mocha"
+    "test": "NODE_ENV=development mocha -R spec --require babel-core/register",
+    "jest": "jest --notify"
   },
   "keywords": [
     "ethereum",
@@ -46,6 +47,8 @@
     "chai": "^4.1.2",
     "eslint": "^5.3.0",
     "eslint-config-standard": "^11.0.0",
+    "ganache-cli": "^6.1.8",
+    "jest": "^23.5.0",
     "mocha": "^5.2.0",
     "prettier-standard": "^8.0.1",
     "sinon": "^6.1.5",
