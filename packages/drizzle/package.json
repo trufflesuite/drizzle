@@ -1,6 +1,6 @@
 {
   "name": "drizzle",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "A reactive data-store for web3 and smart contracts.",
   "main": "dist/drizzle.js",
   "repository": {
