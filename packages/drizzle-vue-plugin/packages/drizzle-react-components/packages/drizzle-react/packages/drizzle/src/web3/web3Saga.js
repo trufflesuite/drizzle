@@ -12,7 +12,6 @@ export function* initializeWeb3({ options }) {
 
     if (window.ethereum) {
       const { ethereum } = window
-      console.log(ethereum)
       web3 = new Web3(ethereum)
       try {
         yield call(ethereum.enable)
