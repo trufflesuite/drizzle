@@ -10,8 +10,26 @@ export function * initializeWeb3 ({ options }) {
   try {
     var web3 = {}
 
+    if (window.ethereum) {
+      const { ethereum } = window
+      web3 = new Web3(ethereum)
+      try {
+        yield call(ethereum.enable)
+
+        web3.eth.cacheSendTransaction = txObject =>
+          put({ type: 'SEND_WEB3_TX', txObject, stackId, web3 })
+
+        yield put({ type: 'WEB3_INITIALIZED' })
+
+        return web3
+      } catch (error) {
+        // User denied account access...
+        console.log(error)
+      }
+    }
+
     // Checking if Web3 has been injected by the browser (Mist/MetaMask)
-    if (typeof window.web3 !== 'undefined') {
+    else if (typeof window.web3 !== 'undefined') {
       // Use Mist/MetaMask's provider.
       web3 = new Web3(window.web3.currentProvider)
       web3.eth.cacheSendTransaction = txObject =>
