@@ -15,8 +15,7 @@
     "format": "prettier-standard 'src/**/*.js'",
     "lint": "eslint 'src/**/*.js'",
     "lint:fix": "eslint 'src/**/*.js' --fix",
-    "test": "NODE_ENV=development mocha -R spec --require babel-core/register",
-    "jest": "jest --notify"
+    "test": "jest --notify"
   },
   "keywords": [
     "ethereum",
