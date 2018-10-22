@@ -11,7 +11,7 @@
     "is-plain-object": "^2.0.4",
     "redux": "^4.0.0",
     "redux-saga": "^0.16.0",
-    "web3": "^1.0.0-beta.34"
+    "web3": "^1.0.0-beta.35"
   },
   "deprecated": false,
   "description": "A reactive data store for web3 and smart contracts.",
@@ -23,5 +23,5 @@
   "license": "ISC",
   "main": "drizzle.js",
   "name": "drizzle",
-  "version": "1.2.3"
+  "version": "1.2.4"
 }
