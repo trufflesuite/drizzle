@@ -38,12 +38,12 @@ function * initializeDrizzle (action) {
 
     const syncAlways = options.syncAlways
 
-    if (web3.currentProvider.isMetaMask) {
-      // Using MetaMask, attempt block polling.
+    if (web3.currentProvider.isMetaMask && !window.ethereum) {
+      // Using old MetaMask, attempt block polling.
       const interval = options.polls.blocks
       yield put({ type: 'BLOCKS_POLLING', drizzle, interval, web3, syncAlways })
     } else {
-      // Not using MetaMask, attempt subscription block listening.
+      // Not using old MetaMask, attempt subscription block listening.
       yield put({ type: 'BLOCKS_LISTENING', drizzle, web3, syncAlways })
     }
 
