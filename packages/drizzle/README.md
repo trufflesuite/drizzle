@@ -210,8 +210,8 @@ An object consisting of the type and url of a fallback web3 provider. This is us
 }
 ```
 
-### `accounts` (array)
-An array of account addresses from `web3`.
+### `accounts` (object)
+An object of account addresses from `web3`.
 
 ### `contracts` (object)
 A series of contract state objects, indexed by the contract name as declared in its ABI.
