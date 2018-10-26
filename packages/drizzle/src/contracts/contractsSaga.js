@@ -65,24 +65,29 @@ export function * instantiateContract ({
 }) {
   const networkId = yield select(getNetworkId)
 
-  // Instantiate the contract.
-  var web3Contract = new web3.eth.Contract(
-    contractArtifact.abi,
-    contractArtifact.networks[networkId].address,
-    {
-      from: store.getState().accounts[0],
-      data: contractArtifact.deployedBytecode
-    }
-  )
+  try {
+    // Instantiate the contract.
+    var web3Contract = new web3.eth.Contract(
+      contractArtifact.abi,
+      contractArtifact.networks[networkId].address,
+      {
+        from: store.getState().accounts[0],
+        data: contractArtifact.deployedBytecode
+      }
+    )
 
-  return new DrizzleContract(
-    web3Contract,
-    web3,
-    contractArtifact.contractName,
-    store,
-    events,
-    contractArtifact
-  )
+    return new DrizzleContract(
+      web3Contract,
+      web3,
+      contractArtifact.contractName,
+      store,
+      events,
+      contractArtifact
+    )
+  } catch (error) {
+    console.error("The specified contract cannot be found on the specified network")
+    throw error
+  }
 }
 
 /*
