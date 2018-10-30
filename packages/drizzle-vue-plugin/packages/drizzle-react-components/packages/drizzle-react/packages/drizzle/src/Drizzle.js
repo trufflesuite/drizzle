@@ -1,6 +1,9 @@
 // Load as promise so that async Drizzle initialization can still resolve
 var windowPromise = new Promise((resolve, reject) => {
   window.addEventListener('load', resolve)
+  
+  // resolve in any case if we missed the load event and the document is already loaded
+  if (document.readyState === `complete`) resolve()
 })
 
 class Drizzle {
