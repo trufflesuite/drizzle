@@ -37,7 +37,6 @@ export function * addContract ({ drizzle, contractConfig, events, web3 }) {
       web3
     })
   }
-
   drizzle._addContract(drizzleContract)
 
   yield put({ type: 'CONTRACT_INITIALIZED', name: contractConfig.contractName })
@@ -64,7 +63,7 @@ export function * instantiateContract ({
   web3
 }) {
   const networkId = yield select(getNetworkId)
-
+  
   try {
     // Instantiate the contract.
     var web3Contract = new web3.eth.Contract(
@@ -83,10 +82,9 @@ export function * instantiateContract ({
       store,
       events,
       contractArtifact
-    )
-  } catch (error) {
-    console.error("The specified contract cannot be found on the specified network")
-    throw error
+    ) 
+  } catch (err) {
+    console.error(`Contract ${contractArtifact.contractName} not found on network ID: ${networkId}`)
   }
 }
 
@@ -158,7 +156,10 @@ function createTxChannel ({ txObject, stackId, sendArgs = {}, contractName }) {
         emit({ type: 'TX_SUCCESSFUL', receipt: receipt, txHash: persistTxHash })
         emit(END)
       })
-      .on('error', error => {
+      .on('error', (error, receipt) => {
+        console.error(error)
+        console.error(receipt)
+
         emit({ type: 'TX_ERROR', error: error, txHash: persistTxHash })
         emit(END)
       })
