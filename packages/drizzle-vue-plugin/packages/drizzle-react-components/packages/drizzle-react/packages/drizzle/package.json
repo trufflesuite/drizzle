@@ -8,7 +8,8 @@
     "url": "https://github.com/trufflesuite/drizzle"
   },
   "scripts": {
-    "build": "webpack --config webpack.config.js",
+    "build": "webpack --config webpack/release.config.js",
+    "build:pure": "webpack --config webpack/pure.config.js",
     "dev": "webpack --config webpack.config.js --watch",
     "lint": "eslint 'src/**/*.js'",
     "lint:fix": "eslint 'src/**/*.js' --fix",
@@ -45,6 +46,7 @@
     "prettier-standard": "^8.0.1",
     "standard": "^11.0.1",
     "webpack": "^4.16.5",
-    "webpack-cli": "^3.1.0"
+    "webpack-cli": "^3.1.0",
+    "webpack-merge": "^4.1.4"
   }
 }
