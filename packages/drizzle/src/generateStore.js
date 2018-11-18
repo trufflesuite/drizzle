@@ -3,7 +3,6 @@ import createSagaMiddleware from 'redux-saga'
 import rootSaga from './rootSaga'
 import reducer from './reducer'
 import { generateContractsInitialState } from './generateContractsInitialState'
-import getAbi from './getAbi'
 
 export function generateStore (options) {
   // Redux DevTools
