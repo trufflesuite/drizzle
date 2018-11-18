@@ -1,6 +1,6 @@
 import { END, eventChannel } from 'redux-saga'
 import { call, put, take, takeEvery, takeLatest, all } from 'redux-saga/effects'
-const BlockTracker = require('eth-block-tracker')
+const BlockTracker = require('eth-block-tracker-es5')
 
 /*
  * Listen for Blocks
