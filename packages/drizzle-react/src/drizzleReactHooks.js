@@ -48,6 +48,31 @@ export const DrizzleProvider = ({ children, drizzle }) => {
     },
     [drizzle, drizzleState]
   )
+  const useCacheEvents = useCallback(
+    (contractName, eventName, eventOptions) => {
+      const [events, setEvents] = useState()
+      const contract = useMemo(
+        () =>
+          new drizzle.web3.eth.Contract(
+            drizzle.contracts[contractName].abi,
+            drizzle.contracts[contractName].address
+          ),
+        [contractName]
+      )
+      useEffect(() => {
+        contract
+          .getPastEvents(eventName, eventOptions)
+          .then(pastEvents => setEvents(pastEvents))
+        return drizzle.contracts[contractName].events[eventName]({
+          ...eventOptions,
+          fromBlock: 'latest'
+        }).on('data', event => setEvents(events => [...events, event]))
+          .unsubscribe
+      }, [contractName, eventName, eventOptions])
+      return events
+    },
+    [drizzle]
+  )
   useEffect(
     () =>
       drizzle.store.subscribe(() => setDrizzleState(drizzle.store.getState())),
@@ -60,9 +85,10 @@ export const DrizzleProvider = ({ children, drizzle }) => {
           cacheCall,
           drizzle,
           drizzleState,
+          useCacheEvents,
           useCacheSend
         }),
-        [cacheCall, drizzle, drizzleState, useCacheSend]
+        [cacheCall, drizzle, drizzleState, useCacheEvents, useCacheSend]
       )}
     >
       {children}
