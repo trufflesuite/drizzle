@@ -4,10 +4,10 @@ import rootSaga from './rootSaga'
 import reducer from './reducer'
 import { generateContractsInitialState } from './generateContractsInitialState'
 
-export function generateStore (options) {
+export function generateStore(options) {
   // Redux DevTools
   const composeEnhancers =
-    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
+    global.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 
   // Preloaded state
   var preloadedState = {
