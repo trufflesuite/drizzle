@@ -1,8 +1,7 @@
-import { getAccounts } from '../src/accounts/accountsSaga'
+import { getAccountBalances } from '../src/accountBalances/accountBalancesSaga'
 import Ganache from 'ganache-cli'
 import Web3 from 'web3'
 import { runSaga } from 'redux-saga'
-//import configureStore from 'redux-mock-store';
 
 var web3
 
@@ -15,13 +14,15 @@ beforeAll(() => {
 
   dispatchedActions = []
   store = {
-    getState: () => ({}),
+    getState: () => ({
+      accounts: ['0xabe5c9AbceB8985F87c2532064657Ae1908F9D29']
+    }),
     dispatch: action => dispatchedActions.push(action)
   }
 })
 
-test('gets accounts', async function() {
-  await runSaga(store, getAccounts, { web3 }).done
+test('get account balances', async function() {
+  await runSaga(store, getAccountBalances, { web3 }).done
 
-  expect(dispatchedActions[0]['accounts'].length).toEqual(10)
+  expect(dispatchedActions[0].accountBalance).toEqual(String(1e20))
 })
