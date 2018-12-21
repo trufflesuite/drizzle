@@ -1,21 +1,19 @@
 import { initializeWeb3, getNetworkId } from '../src/web3/web3Saga'
-import Ganache from 'ganache-cli'
 import { runSaga } from 'redux-saga'
+
+global.window = {}
 
 let dispatchedActions
 let store
+let web3
 const options = {
   fallback: {
     type: 'ws',
-    url: 'ws://127.0.0.1:7545'
+    url: 'ws://127.0.0.1:8545'
   }
 }
-global.window = {}
-let web3
 
 beforeAll(() => {
-  //provider = Ganache.provider({seed: "drizzle", gasLimit: 7000000});
-
   dispatchedActions = []
   store = {
     getState: () => ({}),
@@ -32,5 +30,5 @@ test('get web3', async function() {
 test('get network ID', async function() {
   await runSaga(store, getNetworkId, { web3 }).done
 
-  expect(dispatchedActions[1].networkId).toEqual(5777)
+  expect(dispatchedActions[1].networkId).toEqual(6777)
 })
