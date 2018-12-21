@@ -74,9 +74,7 @@ module.exports = {
   // moduleNameMapper: {},
 
   // An array of regexp pattern strings, matched against all module paths before considered 'visible' to the module loader
-  modulePathIgnorePatterns: [
-    "<rootDir>[/\\\\](dist|node_modules)[/\\\\]"
-  ],
+  modulePathIgnorePatterns: ['<rootDir>[/\\\\](dist|node_modules)[/\\\\]'],
 
   // Activates notifications for test results
   // notify: false,
@@ -126,7 +124,7 @@ module.exports = {
   // snapshotSerializers: [],
 
   // The test environment that will be used for testing
-  testEnvironment: "node",
+  testEnvironment: '<rootDir>/test/environments/ganache-environment.js'
 
   // Options that will be passed to the testEnvironment
   // testEnvironmentOptions: {},
@@ -179,4 +177,4 @@ module.exports = {
 
   // Whether to use watchman for file crawling
   // watchman: true,
-};
+}
