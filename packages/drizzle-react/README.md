@@ -246,3 +246,205 @@ class Loading extends Component {
 
 export default Loading
 ```
+
+## React Hooks Support (Experimental)
+
+> Hooks are an upcoming feature that lets you use state and other React features without writing a class. They’re currently in React v16.7.0-alpha. - From [React Docs](https://reactjs.org/docs/hooks-intro.html).
+
+Hooks greatly simplify integration with `drizzle`, but are still a work in progress, so use at your own risk. All of the necessary APIs are on the `drizzleReactHooks` export.
+
+### Providing Context
+
+Just like with the other approaches, you'll need to wrap your app in a context provider with your `drizzle` instance.
+
+```js
+import React from 'react'
+import { drizzleReactHooks } from 'drizzle-react'
+import setUpDrizzle from './set-up-drizzle'
+import App from './app'
+
+const drizzle = setUpDrizzle()
+export default () => (
+  <drizzleReactHooks.DrizzleProvider drizzle={drizzle}>
+    <App />
+  </drizzleReactHooks.DrizzleProvider>
+)
+```
+
+### Reading State
+
+The first of the two main hooks exported is a `mapStateToProps` like function for reading from the `drizzle` store. We use this state selector approach, a la `redux`, to avoid rerendering all components when unrelated parts of the store change.
+
+```js
+import React from 'react'
+import { drizzleReactHooks } from 'drizzle-react'
+import Accounts from './components/accounts'
+
+export default () => {
+  const drizzleState = drizzleReactHooks.useDrizzleState(drizzleState => ({
+    accounts: drizzleState.accounts
+  }))
+  return <Accounts accounts={drizzleState.accounts} />
+}
+```
+
+### Using Drizzle
+
+The second of the two main hooks exported is a function that returns your `drizzle` instance, a `cacheCall` function, and two other hooks, `useCacheEvents` and `useCacheSend`.
+
+```js
+import React from 'react'
+import { drizzleReactHooks } from 'drizzle-react'
+
+export default () => {
+  const {
+    cacheCall,
+    drizzle,
+    useCacheEvents,
+    useCacheSend
+  } = drizzleReactHooks.useDrizzle()
+  // return ...
+}
+```
+
+#### `cacheCall`
+
+This is the hooks version of `drizzle`'s `cacheCall`.
+
+##### Signature:
+
+- `contractName` - _The name of the contract in your `drizzle` config._
+- `methodName` - _The name of the method in the contract's ABI._
+- `...args` - _Arguments passed to the `web3` call._
+
+  **Returns:** _The result of the `web3` call._
+
+##### Example:
+
+```js
+import React from 'react'
+import { drizzleReactHooks } from 'drizzle-react'
+import Balance from './components/balance'
+
+export default () => {
+  const { cacheCall } = drizzleReactHooks.useDrizzle()
+  const drizzleState = drizzleReactHooks.useDrizzleState(drizzleState => ({
+    accounts: drizzleState.accounts
+  }))
+  return (
+    <Balance
+      balance={cacheCall('MyToken', 'balanceOf', drizzleState.accounts[0])}
+    />
+  )
+}
+```
+
+#### `useCacheEvents`
+
+This is a hook for arbitrary event queries in a `cacheCall` like manner for when the `events` key of your `drizzle` config is not flexible enough.
+
+##### Signature:
+
+- `contractName` - _The name of the contract in your `drizzle` config._
+- `eventName` - _The name of the event in the contract's ABI._
+- `eventOptions` - _The `web3` [event listener options object](https://web3js.readthedocs.io/en/1.0/web3-eth-contract.html#contract-events)._
+
+  **Returns:** _An up to date array with all the events from the created listener._
+
+##### Example:
+
+```js
+import React, { useMemo } from 'react'
+import { drizzleReactHooks } from 'drizzle-react'
+import Transfers from './components/transfers'
+
+export default () => {
+  const { useCacheEvents } = drizzleReactHooks.useDrizzle()
+  const drizzleState = drizzleReactHooks.useDrizzleState(drizzleState => ({
+    accounts: drizzleState.accounts
+  }))
+  return (
+    <Transfers
+      transfers={useCacheEvents(
+        'MyToken',
+        'Transfer',
+        // Use memoization to only recreate listener when account changes.
+        useMemo(
+          () => ({
+            filter: { from: drizzleState.accounts[0] },
+            fromBlock: 0
+          }),
+          [drizzleState.accounts[0]]
+        )
+      )}
+    />
+  )
+}
+```
+
+#### `useCacheSend`
+
+This is a hook for sending and listening to transactions.
+
+##### Signature:
+
+- `contractName` - _The name of the contract in your `drizzle` config._
+- `methodName` - _The name of the method in the contract's ABI._
+- `...args` - _Arguments passed to the `web3` call._
+
+##### Example:
+
+```js
+import React, { useCallback } from 'react'
+import { drizzleReactHooks } from 'drizzle-react'
+import TransferForm from './components/transfer-form'
+import TransactionStatuses from './components/transaction-statuses'
+
+export default () => {
+  const { useCacheSend } = drizzleReactHooks.useDrizzle()
+  const { send, transactions } = useCacheSend('MyToken', 'transfer')
+  return (
+    <>
+      <TransferForm
+        onSubmit={
+          // Use memoization to avoid unnecessary rerenders.
+          useCallback(({ to, value }) => send(to, value), [])
+        }
+      />
+      <TransactionStatuses
+        transactionStatuses={transactions.map(t => t.status)}
+      />
+    </>
+  )
+}
+```
+
+### Hooks Initializer Component
+
+We also export a general initializer component for wrapping your hooks enabled app.
+
+```js
+import React from 'react'
+import { drizzleReactHooks } from 'drizzle-react'
+import setUpDrizzle from './set-up-drizzle'
+import Error from './components/error'
+import LoadingContractsAndAccounts from './components/loading-contracts-and-accounts'
+import LoadingWeb3 from './components/loading-web3'
+import App from './app'
+
+const drizzle = setUpDrizzle()
+export default () => (
+  <drizzleReactHooks.DrizzleProvider drizzle={drizzle}>
+    <drizzleReactHooks.Initializer
+      // Optional `node` to render on errors. Defaults to `'Error.'`.
+      error="There was an error."
+      // Optional `node` to render while loading contracts and accounts. Defaults to `'Loading contracts and accounts.'`.
+      loadingContractsAndAccounts="Also still loading."
+      // Optional `node` to render while loading `web3`. Defaults to `'Loading web3.'`.
+      loadingWeb3="Still loading."
+    >
+      <App />
+    </drizzleReactHooks.Initializer>
+  </drizzleReactHooks.DrizzleProvider>
+)
+```
