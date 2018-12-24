@@ -8,6 +8,7 @@ import React, {
   useState
 } from 'react'
 import PropTypes from 'prop-types'
+import debounce from 'debounce'
 import shallowequal from 'shallowequal'
 
 const Context = createContext()
@@ -18,36 +19,66 @@ export const useDrizzleState = mapState => {
   const stateRef = useRef(state)
   useEffect(
     () =>
-      drizzle.store.subscribe(() => {
-        const newState = mapState(drizzle.store.getState())
-        if (!shallowequal(stateRef.current, newState)) {
-          stateRef.current = newState
-          setState(newState)
-        }
-      }),
+      drizzle.store.subscribe(
+        debounce(() => {
+          const newState = mapState(drizzle.store.getState())
+          if (!shallowequal(stateRef.current, newState)) {
+            stateRef.current = newState
+            setState(newState)
+          }
+        })
+      ),
     [drizzle.store]
   )
   return state
 }
 
 export const DrizzleProvider = ({ children, drizzle }) => {
-  const cacheCall = useCallback(
-    (contractName, methodName, ...args) => {
-      const cacheKey = drizzle.contracts[contractName].methods[
-        methodName
-      ].cacheCall(...args)
-      const drizzleState = drizzle.store.getState()
-      return (
-        drizzleState.contracts[contractName][methodName][cacheKey] &&
-        drizzleState.contracts[contractName][methodName][cacheKey].value
-      )
+  const useCacheCall = useCallback(
+    (contractNameOrContractNames, methodNameOrFunction, ...args) => {
+      const isFunction = typeof methodNameOrFunction === 'function'
+      const drizzleState = useDrizzleState(drizzleState => {
+        if (isFunction)
+          return contractNameOrContractNames.reduce((acc, contractName) => {
+            acc[contractName] = drizzleState.contracts[contractName]
+            return acc
+          }, {})
+        else {
+          const cacheKey = drizzle.contracts[
+            contractNameOrContractNames
+          ].methods[methodNameOrFunction].cacheCall(...args)
+          return {
+            value:
+              drizzleState.contracts[contractNameOrContractNames][
+                methodNameOrFunction
+              ][cacheKey] &&
+              drizzleState.contracts[contractNameOrContractNames][
+                methodNameOrFunction
+              ][cacheKey].value
+          }
+        }
+      })
+      return isFunction
+        ? methodNameOrFunction((contractName, methodName, ...args) => {
+            const cacheKey = drizzle.contracts[contractName].methods[
+              methodName
+            ].cacheCall(...args)
+            return (
+              drizzleState[contractName][methodName][cacheKey] &&
+              drizzleState[contractName][methodName][cacheKey].value
+            )
+          })
+        : drizzleState.value
     },
-    [drizzle.contracts, drizzle.store]
+    [drizzle.contracts]
   )
   const useCacheSend = useCallback(
     (contractName, methodName) => {
       const [stackIDs, setStackIDs] = useState([])
-      const drizzleState = drizzle.store.getState()
+      const drizzleState = useDrizzleState(drizzleState => ({
+        transactionStack: drizzleState.transactionStack,
+        transactions: drizzleState.transactions
+      }))
       return {
         send: (...args) =>
           setStackIDs(stackIDs => [
@@ -62,7 +93,7 @@ export const DrizzleProvider = ({ children, drizzle }) => {
         )
       }
     },
-    [drizzle.store, drizzle.contracts]
+    [drizzle.contracts]
   )
   const useCacheEvents = useCallback(
     (contractName, eventName, eventOptions) => {
@@ -93,12 +124,12 @@ export const DrizzleProvider = ({ children, drizzle }) => {
     <Context.Provider
       value={useMemo(
         () => ({
-          cacheCall,
           drizzle,
+          useCacheCall,
           useCacheEvents,
           useCacheSend
         }),
-        [cacheCall, drizzle, useCacheEvents, useCacheSend]
+        [drizzle, useCacheCall, useCacheEvents, useCacheSend]
       )}
     >
       {children}
@@ -118,13 +149,13 @@ export const Initializer = ({
   loadingWeb3
 }) => {
   const drizzleState = useDrizzleState(drizzleState => ({
-    drizzleStatus: drizzleState.drizzleStatus,
-    web3: drizzleState.web3
+    drizzleStatusInitialized: drizzleState.drizzleStatus.initialized,
+    web3Status: drizzleState.web3.status
   }))
-  if (drizzleState.drizzleStatus.initialized) return children
-  if (drizzleState.web3.status === 'initialized')
+  if (drizzleState.drizzleStatusInitialized) return children
+  if (drizzleState.web3Status === 'initialized')
     return loadingContractsAndAccounts
-  if (drizzleState.web3.status === 'failed') return error
+  if (drizzleState.web3Status === 'failed') return error
   return loadingWeb3
 }
 
