@@ -307,11 +307,11 @@ export default () => {
 }
 ```
 
-#### `cacheCall`
+#### `useCacheCall`
 
-This is the hooks version of `drizzle`'s `cacheCall`.
+This is the hooks version of `drizzle`'s `cacheCall`. It has two modes, a single call mode for simple 1 to 1 mappings to contract methods, and a multi call mode for calling multiple contract methods in loops and/or conditionals. Note that this multi call mode is required because hooks depend on execution index so they can't be called from dynamic loops or conditionals. [More info here](https://reactjs.org/docs/hooks-rules.html).
 
-##### Signature:
+##### Single Call Signature:
 
 - `contractName` - _The name of the contract in your `drizzle` config._
 - `methodName` - _The name of the method in the contract's ABI._
@@ -319,7 +319,7 @@ This is the hooks version of `drizzle`'s `cacheCall`.
 
   **Returns:** _The result of the `web3` call._
 
-##### Example:
+##### Single Call Example:
 
 ```js
 import React from 'react'
@@ -327,13 +327,45 @@ import { drizzleReactHooks } from 'drizzle-react'
 import Balance from './components/balance'
 
 export default () => {
-  const { cacheCall } = drizzleReactHooks.useDrizzle()
+  const { useCacheCall } = drizzleReactHooks.useDrizzle()
+  const drizzleState = drizzleReactHooks.useDrizzleState(drizzleState => ({
+    account: drizzleState.accounts[0]
+  }))
+  return (
+    <Balance
+      balance={useCacheCall('MyToken', 'balanceOf', drizzleState.account)}
+    />
+  )
+}
+```
+
+##### Multi Call Signature:
+
+- `contractNames` - _An array of names of contracts in your `drizzle` config. The hook will update whenever one of these contracts synchronizes._
+- `func` - _A function that the hook will call with the single call function as its only argument on every update._
+
+  **Returns:** _The result of `func`._
+
+##### Multi Call Example:
+
+```js
+import React from 'react'
+import { drizzleReactHooks } from 'drizzle-react'
+import Balance from './components/balance'
+
+export default () => {
+  const { useCacheCall } = drizzleReactHooks.useDrizzle()
   const drizzleState = drizzleReactHooks.useDrizzleState(drizzleState => ({
     accounts: drizzleState.accounts
   }))
   return (
     <Balance
-      balance={cacheCall('MyToken', 'balanceOf', drizzleState.accounts[0])}
+      balance={useCacheCall(['MyToken'], call =>
+        drizzleState.accounts.reduce(
+          (sum, account) => sum + (call('MyToken', 'balanceOf', account) || 0),
+          0
+        )
+      )}
     />
   )
 }
@@ -361,7 +393,7 @@ import Transfers from './components/transfers'
 export default () => {
   const { useCacheEvents } = drizzleReactHooks.useDrizzle()
   const drizzleState = drizzleReactHooks.useDrizzleState(drizzleState => ({
-    accounts: drizzleState.accounts
+    account: drizzleState.accounts[0]
   }))
   return (
     <Transfers
@@ -371,10 +403,10 @@ export default () => {
         // Use memoization to only recreate listener when account changes.
         useMemo(
           () => ({
-            filter: { from: drizzleState.accounts[0] },
+            filter: { from: drizzleState.account },
             fromBlock: 0
           }),
-          [drizzleState.accounts[0]]
+          [drizzleState.account]
         )
       )}
     />
