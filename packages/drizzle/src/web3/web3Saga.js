@@ -6,18 +6,23 @@ var Web3 = require('web3')
  * Initialization
  */
 
-export function * initializeWeb3 ({ options }) {
+export function* initializeWeb3({ options }) {
   try {
     var web3 = {}
+
+    if (options.customProvider) {
+      web3 = new Web3(options.customProvider)
+
+      yield put({ type: 'WEB3_INITIALIZED' })
+
+      return web3
+    }
 
     if (window.ethereum) {
       const { ethereum } = window
       web3 = new Web3(ethereum)
       try {
         yield call(ethereum.enable)
-
-        web3.eth.cacheSendTransaction = txObject =>
-          put({ type: 'SEND_WEB3_TX', txObject, stackId, web3 })
 
         yield put({ type: 'WEB3_INITIALIZED' })
 
@@ -30,41 +35,33 @@ export function * initializeWeb3 ({ options }) {
       // Checking if Web3 has been injected by the browser (Mist/MetaMask)
       // Use Mist/MetaMask's provider.
       web3 = new Web3(window.web3.currentProvider)
-      web3.eth.cacheSendTransaction = txObject =>
-        put({ type: 'SEND_WEB3_TX', txObject, stackId, web3 })
 
       console.log('Injected web3 detected.')
 
       yield put({ type: 'WEB3_INITIALIZED' })
 
       return web3
-    } else {
-      if (options.fallback) {
-        // Attempt fallback if no web3 injection.
-        console.log('No web3 instance injected, using fallback.')
+    } else if (options.fallback) {
+      // Attempt fallback if no web3 injection.
+      console.log('No web3 instance injected, using fallback.')
 
-        switch (options.fallback.type) {
-          case 'ws':
-            var provider = new Web3.providers.WebsocketProvider(
-              options.fallback.url
-            )
-            web3 = new Web3(provider)
+      switch (options.fallback.type) {
+        case 'ws':
+          var provider = new Web3.providers.WebsocketProvider(
+            options.fallback.url
+          )
+          web3 = new Web3(provider)
 
-            // Attach drizzle functions
-            web3.eth['cacheSendTransaction'] = txObject =>
-              put({ type: 'SEND_WEB3_TX', txObject, stackId, web3 })
+          yield put({ type: 'WEB3_INITIALIZED' })
 
-            yield put({ type: 'WEB3_INITIALIZED' })
+          return web3
 
-            return web3
-
-            break
-          default:
-            // Invalid options; throw.
-            throw 'Invalid web3 fallback provided.'
-        }
+          break
+        default:
+          // Invalid options; throw.
+          throw 'Invalid web3 fallback provided.'
       }
-
+    } else {
       // Out of web3 options; throw.
       throw 'Cannot find injected web3 or valid fallback.'
     }
@@ -79,7 +76,7 @@ export function * initializeWeb3 ({ options }) {
  * Network ID
  */
 
-export function * getNetworkId ({ web3 }) {
+export function* getNetworkId({ web3 }) {
   try {
     const networkId = yield call(web3.eth.net.getId)
 
@@ -98,7 +95,7 @@ export function * getNetworkId ({ web3 }) {
  * Send Transaction
  */
 
-function createTxChannel ({ txObject, stackId, web3 }) {
+function createTxChannel({ txObject, stackId, web3 }) {
   var persistTxHash
 
   return eventChannel(emit => {
@@ -137,7 +134,7 @@ function createTxChannel ({ txObject, stackId, web3 }) {
   })
 }
 
-function * callSendTx ({ txObject, stackId, web3 }) {
+function* callSendTx({ txObject, stackId, web3 }) {
   const txChannel = yield call(createTxChannel, { txObject, stackId, web3 })
 
   try {
@@ -150,7 +147,7 @@ function * callSendTx ({ txObject, stackId, web3 }) {
   }
 }
 
-function * web3Saga () {
+function* web3Saga() {
   yield takeLatest('NETWORK_ID_FETCHING', getNetworkId)
   yield takeEvery('SEND_WEB3_TX', callSendTx)
 }
