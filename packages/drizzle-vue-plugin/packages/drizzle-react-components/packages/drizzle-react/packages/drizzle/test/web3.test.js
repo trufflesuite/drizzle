@@ -7,12 +7,9 @@ global.window = {}
 let dispatchedActions
 let store
 let web3
-/*const options = {
-  fallback: {
-    type: 'ws',
-    url: 'ws://127.0.0.1:8545'
-  }
-};*/
+const options = {
+  customProvider: global.provider
+}
 
 beforeAll(() => {
   dispatchedActions = []
@@ -22,16 +19,16 @@ beforeAll(() => {
   }
 })
 
-/*test('get web3', async function() {
-  web3 = await runSaga(store, initializeWeb3, { options }).done;
+test('get web3', async function() {
+  web3 = await runSaga(store, initializeWeb3, { options }).done
 
-  expect(dispatchedActions[0].type).toEqual('WEB3_INITIALIZED');
-});*/
+  // First action dispatched
+  expect(dispatchedActions[0].type).toEqual('WEB3_INITIALIZED')
+})
 
 test('get network ID', async function() {
-  web3 = new Web3(global.provider)
-
   await runSaga(store, getNetworkId, { web3 }).done
 
-  expect(dispatchedActions[0].networkId).toEqual(6777)
+  // Second action dispatched
+  expect(dispatchedActions[1].networkId).toEqual(6777)
 })
