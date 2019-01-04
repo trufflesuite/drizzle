@@ -10,8 +10,8 @@ export function* initializeWeb3({ options }) {
   try {
     var web3 = {}
 
-    if (options.customProvider) {
-      web3 = new Web3(options.customProvider)
+    if (options.web3.customProvider) {
+      web3 = new Web3(options.web3.customProvider)
 
       yield put({ type: 'WEB3_INITIALIZED' })
 

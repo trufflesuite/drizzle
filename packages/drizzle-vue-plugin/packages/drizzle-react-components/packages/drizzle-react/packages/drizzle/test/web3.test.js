@@ -8,7 +8,9 @@ let dispatchedActions
 let store
 let web3
 const options = {
-  customProvider: global.provider
+  web3: {
+    customProvider: global.provider
+  }
 }
 
 beforeAll(() => {
