@@ -89,7 +89,9 @@ export const DrizzleProvider = ({ children, drizzle }) => {
           ]),
         transactions: stackIDs.map(
           stackID =>
-            drizzleState.transactions[drizzleState.transactionStack[stackID]]
+            drizzleState.transactions[
+              drizzleState.transactionStack[stackID] || 'undefined'
+            ]
         )
       }
     },
