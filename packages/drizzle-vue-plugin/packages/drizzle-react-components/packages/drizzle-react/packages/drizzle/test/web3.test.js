@@ -1,11 +1,10 @@
 import { initializeWeb3, getNetworkId } from '../src/web3/web3Saga'
 import { runSaga } from 'redux-saga'
+import { mockDrizzleStore } from './utils/helpers'
 
 global.window = {}
 
-let dispatchedActions
-let mockStore
-let web3
+let mockStore, dispatchedActions, web3
 const options = {
   web3: {
     customProvider: global.provider
@@ -13,11 +12,7 @@ const options = {
 }
 
 beforeAll(() => {
-  dispatchedActions = []
-  mockStore = {
-    getState: () => ({}),
-    dispatch: action => dispatchedActions.push(action)
-  }
+  ;[mockStore, dispatchedActions] = mockDrizzleStore()
 })
 
 test('get web3', async () => {

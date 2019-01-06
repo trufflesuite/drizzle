@@ -1,23 +1,17 @@
-import { getAccounts } from '../src/accounts/accountsSaga';
-import Web3 from 'web3';
-import { runSaga } from 'redux-saga';
+import { getAccounts } from '../src/accounts/accountsSaga'
+import { runSaga } from 'redux-saga'
+import { mockDrizzleStore, mockWeb3 } from './utils/helpers'
 
-let web3;
-let dispatchedActions;
-let store;
+let web3, dispatchedActions, mockStore
 
 beforeAll(() => {
-  web3 = new Web3(global.provider);
+  ;[mockStore, dispatchedActions] = mockDrizzleStore()
+  web3 = mockWeb3()
+})
 
-  dispatchedActions = [];
-  store = {
-    getState: () => ({}),
-    dispatch: action => dispatchedActions.push(action)
-  };
-});
+test('gets accounts', async () => {
+  await runSaga(mockStore, getAccounts, { web3 }).done
 
-test('gets accounts', async function() {
-  await runSaga(store, getAccounts, { web3 }).done;
-
-  expect(dispatchedActions[0]['accounts'].length).toEqual(10);
-});
+  const defaultNumberOfAccounts = 10
+  expect(dispatchedActions[0]['accounts']).toHaveLength(defaultNumberOfAccounts)
+})
