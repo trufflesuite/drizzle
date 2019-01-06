@@ -12,7 +12,7 @@ const options = {
 }
 
 beforeAll(() => {
-  ;[mockStore, dispatchedActions] = mockDrizzleStore()
+  [mockStore, dispatchedActions] = mockDrizzleStore()
 })
 
 test('get web3', async () => {
