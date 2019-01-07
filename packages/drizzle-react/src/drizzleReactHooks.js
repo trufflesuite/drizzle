@@ -79,6 +79,12 @@ export const DrizzleProvider = ({ children, drizzle }) => {
         transactionStack: drizzleState.transactionStack,
         transactions: drizzleState.transactions
       }))
+      const transactions = stackIDs.map(
+        stackID =>
+          drizzleState.transactions[
+            drizzleState.transactionStack[stackID] || 'undefined'
+          ]
+      )
       return {
         send: (...args) =>
           setStackIDs(stackIDs => [
@@ -87,12 +93,10 @@ export const DrizzleProvider = ({ children, drizzle }) => {
               ...args
             )
           ]),
-        transactions: stackIDs.map(
-          stackID =>
-            drizzleState.transactions[
-              drizzleState.transactionStack[stackID] || 'undefined'
-            ]
-        )
+        status:
+          transactions[transactions.length - 1] &&
+          transactions[transactions.length - 1].status,
+        transactions
       }
     },
     [drizzle.contracts]
