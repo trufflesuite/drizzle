@@ -38,8 +38,8 @@ const transactionsReducer = (state = initialState, action) => {
   if (action.type === 'TX_ERROR') {
     return {
       ...state,
-      [action.txHash]: {
-        ...state[action.txHash],
+      [action.stackTempKey]: {
+        ...state[action.stackTempKey],
         status: 'error',
         error: action.error
       }
