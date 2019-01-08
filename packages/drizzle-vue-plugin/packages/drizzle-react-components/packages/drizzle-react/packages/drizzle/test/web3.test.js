@@ -12,7 +12,7 @@ const options = {
 }
 
 beforeAll(() => {
-  [mockStore, dispatchedActions] = mockDrizzleStore()
+  ;[mockStore, dispatchedActions] = mockDrizzleStore()
 })
 
 test('get web3', async () => {
@@ -28,3 +28,14 @@ test('get network ID', async () => {
   // Second action dispatched
   expect(dispatchedActions[1].networkId).toEqual(6777)
 })
+
+/* Todo:
+ *   1. test all (happy) code paths
+ *       a) window.ethereum
+ *       b) window.web3 etc..
+ *       c) passing in provider (currently tested)
+ *       d) passing in URL
+ *
+ *   2. invalid/error paths (sad)
+ *       a) errors in web3
+ *  */
