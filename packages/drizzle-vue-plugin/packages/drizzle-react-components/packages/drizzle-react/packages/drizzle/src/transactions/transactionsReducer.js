@@ -41,7 +41,9 @@ const transactionsReducer = (state = initialState, action) => {
       [action.stackTempKey]: {
         ...state[action.stackTempKey],
         status: 'error',
-        error: action.error
+        error: {
+          message: action.error && action.error.message
+        }
       }
     }
   }
