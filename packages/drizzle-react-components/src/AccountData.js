@@ -32,7 +32,7 @@ class AccountData extends Component {
     const units = this.props.units ? this.props.units.charAt(0).toUpperCase() + this.props.units.slice(1) : 'Wei'
 
     // Convert to given units.
-    if (this.props.units) {
+    if (this.props.units && typeof balance !== 'undefined') {
       balance = this.context.drizzle.web3.utils.fromWei(balance, this.props.units)
     }
 
