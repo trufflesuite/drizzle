@@ -6,7 +6,7 @@ var Web3 = require('web3')
  * Initialization
  */
 
-export function * initializeWeb3 ({ options }) {
+export function* initializeWeb3({ options }) {
   try {
     var web3 = {}
 
@@ -26,10 +26,8 @@ export function * initializeWeb3 ({ options }) {
         // User denied account access...
         console.log(error)
       }
-    }
-
-    // Checking if Web3 has been injected by the browser (Mist/MetaMask)
-    else if (typeof window.web3 !== 'undefined') {
+    } else if (typeof window.web3 !== 'undefined') {
+      // Checking if Web3 has been injected by the browser (Mist/MetaMask)
       // Use Mist/MetaMask's provider.
       web3 = new Web3(window.web3.currentProvider)
       web3.eth.cacheSendTransaction = txObject =>
@@ -81,7 +79,7 @@ export function * initializeWeb3 ({ options }) {
  * Network ID
  */
 
-export function * getNetworkId ({ web3 }) {
+export function* getNetworkId({ web3 }) {
   try {
     const networkId = yield call(web3.eth.net.getId)
 
@@ -100,7 +98,7 @@ export function * getNetworkId ({ web3 }) {
  * Send Transaction
  */
 
-function createTxChannel ({ txObject, stackId, web3 }) {
+function createTxChannel({ txObject, stackId, web3 }) {
   var persistTxHash
 
   return eventChannel(emit => {
@@ -139,7 +137,7 @@ function createTxChannel ({ txObject, stackId, web3 }) {
   })
 }
 
-function * callSendTx ({ txObject, stackId, web3 }) {
+function* callSendTx({ txObject, stackId, web3 }) {
   const txChannel = yield call(createTxChannel, { txObject, stackId, web3 })
 
   try {
@@ -152,7 +150,7 @@ function * callSendTx ({ txObject, stackId, web3 }) {
   }
 }
 
-function * web3Saga () {
+function* web3Saga() {
   yield takeLatest('NETWORK_ID_FETCHING', getNetworkId)
   yield takeEvery('SEND_WEB3_TX', callSendTx)
 }
