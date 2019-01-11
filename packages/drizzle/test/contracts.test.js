@@ -4,8 +4,7 @@
 jest.mock('../src/DrizzleContract')
 import MockedDrizzleContract from '../src/DrizzleContract'
 import { runSaga } from 'redux-saga'
-import {
-  /* addContract, instantiateContract, */
+import { /* addContract, instantiateContract, */
   createContractEventChannel,
   instantiateWeb3Contract
 } from '../src/contracts/contractsSaga'
@@ -19,13 +18,13 @@ const contractName = 'SimpleStorage'
 const web3Provider = { customProvider: global.provider }
 
 beforeAll(() => {
-  ;[mockedStore] = mockDrizzleStore({
-    TheGoodsContract: {
+  [mockedStore] = mockDrizzleStore({
+    'TheGoodsContract': {
       events: []
     }
   })
 
-  let spy = jest.fn()
+  let spy = jest.fn();
   let mockedContract = {
     events: {
       ReallyCoolEvent: spy
@@ -46,17 +45,10 @@ test('instantiateWeb3Contract', async () => {
     web3: web3Provider
   }
 
-  const aContract = await runSaga(mockedStore, instantiateWeb3Contract, options)
-    .done
+  const aContract = await runSaga(mockedStore, instantiateWeb3Contract, options).done
   expect(MockedDrizzleContract).toHaveBeenCalledTimes(1)
 
-  const expectedArgs = [
-    mockWeb3Contract,
-    web3Provider,
-    mockContractName,
-    mockedStore,
-    mockContractEvents
-  ]
+  const expectedArgs = [mockWeb3Contract, web3Provider, mockContractName, mockedStore, mockContractEvents]
   expect(MockedDrizzleContract).toHaveBeenCalledWith(...expectedArgs)
 
   // It returns a Contract with the proper shape
@@ -70,23 +62,20 @@ describe('it receives contract events', () => {
   const eventOptions = {}
 
   beforeEach(() => {
-    eventListener = createContractEventChannel({
-      mockedContract,
-      eventName,
-      eventOptions
-    })
+    eventListener = createContractEventChannel({ mockedContract, eventName, eventOptions })
   })
 
   test('listens for contract events', async () => {
     // call the set function
+    
 
-    eventListener.take(event => {
+    eventListener.take((event) => {
       expect(event.type).toEqual('BLOCK_RECEIVED')
     })
   })
 
   test('unsubscribes from contract events', () => {
-    eventListener.take(event => {
+    eventListener.take((event) => {
       expect(event.type).toEqual('@@redux-saga/CHANNEL_END')
     })
 
