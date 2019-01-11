@@ -1,7 +1,10 @@
 const Ganache = require('ganache-core')
 const NodeEnvironment = require('jest-environment-node')
 
+const defaultSeed = 'drizzle'
+const defaultNetworkId = 6777
 const defaultAccounts = [
+  // based on default Mnemonic
   '0x8aDB46251E9cd45b5027501766531825C04a2E06',
   '0xb50CF9eD8f60605bEbB967776925f21Ba5c81D5D',
   '0x7fC9AD8C7A3232Aed94d6C68728D22D722694824',
@@ -15,21 +18,18 @@ const defaultAccounts = [
 ]
 
 class GanacheEnvironment extends NodeEnvironment {
-  /* constructor(config) {
-   *   super(config)
-   * } */
-
   async setup() {
     await super.setup()
 
     // Startup a Ganache server.
     this.global.provider = Ganache.provider({
-      seed: 'drizzle',
-      network_id: 6777,
+      seed: defaultSeed,
+      network_id: defaultNetworkId,
       gasLimit: 7000000
     })
 
     this.global.accounts = defaultAccounts
+    this.global.defaultNetworkId = defaultNetworkId
   }
 }
 
