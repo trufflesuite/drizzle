@@ -1,6 +1,6 @@
-const path = require('path');
+const path = require('path')
 
-process.env.BABEL_ENV = 'production';
+process.env.BABEL_ENV = 'production'
 
 module.exports = {
   devtool: 'inline-source-map',
@@ -14,7 +14,7 @@ module.exports = {
   module: {
     rules: [{
       test: /\.(js)$/,
-      include: path.resolve(__dirname, 'src'),
+      include: path.resolve(__dirname, '../src'),
       loader: 'babel-loader',
       options: {
         presets: ['env'],
@@ -27,4 +27,4 @@ module.exports = {
       }
     }]
   }
-};
+}

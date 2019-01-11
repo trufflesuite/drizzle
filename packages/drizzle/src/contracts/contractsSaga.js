@@ -63,7 +63,7 @@ export function * instantiateContract ({
   web3
 }) {
   const networkId = yield select(getNetworkId)
-  
+
   try {
     // Instantiate the contract.
     var web3Contract = new web3.eth.Contract(
@@ -82,9 +82,13 @@ export function * instantiateContract ({
       store,
       events,
       contractArtifact
-    ) 
+    )
   } catch (err) {
-    console.error(`Contract ${contractArtifact.contractName} not found on network ID: ${networkId}`)
+    console.error(
+      `Contract ${
+        contractArtifact.contractName
+      } not found on network ID: ${networkId}`
+    )
   }
 }
 
@@ -133,7 +137,13 @@ function * callListenForContractEvent ({ contract, eventName, eventOptions }) {
  * Send and Cache
  */
 
-function createTxChannel ({ txObject, stackId, sendArgs = {}, contractName }) {
+function createTxChannel ({
+  txObject,
+  stackId,
+  sendArgs = {},
+  contractName,
+  stackTempKey
+}) {
   var persistTxHash
 
   return eventChannel(emit => {
@@ -160,7 +170,7 @@ function createTxChannel ({ txObject, stackId, sendArgs = {}, contractName }) {
         console.error(error)
         console.error(receipt)
 
-        emit({ type: 'TX_ERROR', error: error, txHash: persistTxHash })
+        emit({ type: 'TX_ERROR', error: error, stackTempKey })
         emit(END)
       })
 
@@ -172,7 +182,14 @@ function createTxChannel ({ txObject, stackId, sendArgs = {}, contractName }) {
   })
 }
 
-function * callSendContractTx ({ contract, fnName, fnIndex, args, stackId }) {
+function * callSendContractTx ({
+  contract,
+  fnName,
+  fnIndex,
+  args,
+  stackId,
+  stackTempKey
+}) {
   // Check for type of object and properties indicative of call/send options.
   if (args.length) {
     const finalArg = args.length > 1 ? args[args.length - 1] : args[0]
@@ -200,7 +217,8 @@ function * callSendContractTx ({ contract, fnName, fnIndex, args, stackId }) {
     txObject,
     stackId,
     sendArgs,
-    contractName
+    contractName,
+    stackTempKey
   })
 
   try {

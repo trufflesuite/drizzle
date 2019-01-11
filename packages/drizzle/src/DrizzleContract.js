@@ -98,10 +98,12 @@ class DrizzleContract {
       var args = arguments
 
       // Generate temporary ID
-      var stackId = contract.store.getState().transactionStack.length
+      const transactionStack = contract.store.getState().transactionStack
+      const stackId = transactionStack.length
+      const stackTempKey = `TEMP_${new Date().getTime()}`
 
-      // Add ID to "transactionStack" with empty value
-      contract.store.dispatch({type: 'PUSH_TO_TXSTACK'})
+      // Add ID to "transactionStack" with temp value, will be overwritten on TX_BROADCASTED
+      contract.store.dispatch({ type: 'PUSH_TO_TXSTACK', stackTempKey })
 
       // Dispatch tx to saga
       // When txhash received, will be value of stack ID
@@ -111,7 +113,8 @@ class DrizzleContract {
         fnName,
         fnIndex,
         args,
-        stackId
+        stackId,
+        stackTempKey
       })
 
       // return stack ID
