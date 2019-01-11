@@ -25,13 +25,13 @@ describe('listening for blocks', () => {
       value: 200
     })
 
-    blockListener.take(event => {
+    blockListener.take((event) => {
       expect(event.type).toEqual('BLOCK_RECEIVED')
     })
   })
 
   test('unsubscribes from block headers', () => {
-    blockListener.take(event => {
+    blockListener.take((event) => {
       expect(event.type).toEqual('@@redux-saga/CHANNEL_END')
     })
 
@@ -51,13 +51,13 @@ describe('polling for blocks', () => {
       value: 200
     })
 
-    blockPoller.take(event => {
+    blockPoller.take((event) => {
       expect(event.type).toEqual('BLOCK_FOUND')
     })
   })
 
   test('terminates from block polling', () => {
-    blockPoller.take(event => {
+    blockPoller.take((event) => {
       expect(event.type).toEqual('@@redux-saga/CHANNEL_END')
     })
 
