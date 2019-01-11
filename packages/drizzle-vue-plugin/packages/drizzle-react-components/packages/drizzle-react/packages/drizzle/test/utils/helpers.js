@@ -44,7 +44,9 @@ const mockWeb3Assets = async () => {
     abi,
     byteCode,
     deployedByteCode,
-    networks: { 6777: { address: deployedByteCode._address } }
+    networks: {
+      [global.defaultNetworkId]: { address: deployedByteCode._address }
+    }
   }
 
   return { web3Provider, accounts, truffleArtifact }

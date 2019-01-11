@@ -1,32 +1,139 @@
 import { initializeWeb3, getNetworkId } from '../src/web3/web3Saga'
 import { runSaga } from 'redux-saga'
+import { call, put } from 'redux-saga/effects'
 import { mockDrizzleStore } from './utils/helpers'
 
-global.window = {}
+let mockedStore, dispatchedActions, web3, web3Options
 
-let mockedStore, dispatchedActions, web3
-const options = {
-  web3: {
-    customProvider: global.provider
-  }
-}
+describe('Loads Web3', () => {
+  /*   describe('with customProvider', () => {
+   *     beforeAll(async () => {
+   *       global.window = {}
+   *       ;[mockedStore, dispatchedActions] = mockDrizzleStore()
+   *       web3Options = { web3: { customProvider: global.provider } }
+   *       web3 = await runSaga(mockedStore, initializeWeb3, {
+   *         options: web3Options
+   *       }).done
+   *     })
+   *
+   *     test('get web3', async () => {
+   *       // First action dispatched
+   *       expect(dispatchedActions[0].type).toEqual('WEB3_INITIALIZED')
+   *     })
+   *
+   *     test('get network ID', async () => {
+   *       await runSaga(mockedStore, getNetworkId, { web3 }).done
+   *
+   *       // Second action dispatched
+   *       expect(dispatchedActions[1].networkId).toEqual(global.defaultNetworkId)
+   *     })
+   *   })
+   *
+   *   describe('with ethereum', () => {
+   *     let mEnable
+   *     beforeAll(async () => {
+   *       global.window = {}
+   *       ;[mockedStore, dispatchedActions] = mockDrizzleStore()
+   *       mEnable = jest.fn((...args) => `hi ${args[0]}`)
+   *
+   *       // mock can force an exception
+   *       // mEnable = jest.fn(() => { throw new Error('oopsie') })
+   *       //
+   *
+   *       global.provider.enable = mEnable
+   *       global.window.ethereum = global.provider
+   *
+   *       web3 = await runSaga(mockedStore, initializeWeb3, { options: {} }).done
+   *     })
+   *
+   *     test('get web3', async () => {
+   *       // First action dispatched
+   *       expect(dispatchedActions[0].type).toEqual('WEB3_INITIALIZED')
+   *
+   *       // console.log('mEnable', mEnable)
+   *       // Todo: The mocked function does not register when called from the saga,
+   *       //       but it is required for this code-path.
+   *       // mEnable('whoa') // proves it is invokable
+   *       // expect(mEnable).toHaveBeenCalledTimes(1)
+   *     })
+   *
+   *     test('get network ID', async () => {
+   *       await runSaga(mockedStore, getNetworkId, { web3 }).done
+   *
+   *       // Second action dispatched
+   *       expect(dispatchedActions[1].networkId).toEqual(global.defaultNetworkId)
+   *     })
+   *   })
+   *
+   *   describe('with injected web3', () => {
+   *     beforeAll(async () => {
+   *       global.window = {}
+   *       ;[mockedStore, dispatchedActions] = mockDrizzleStore()
+   *       global.window.web3 = { currentProvider: global.provider }
+   *
+   *       web3 = await runSaga(mockedStore, initializeWeb3, { options: {} }).done
+   *     })
+   *
+   *     test('get web3', async () => {
+   *       // First action dispatched
+   *       expect(dispatchedActions[0].type).toEqual('WEB3_INITIALIZED')
+   *     })
+   *
+   *     test('get network ID', async () => {
+   *       await runSaga(mockedStore, getNetworkId, { web3 }).done
+   *
+   *       // Second action dispatched
+   *       expect(dispatchedActions[1].networkId).toEqual(global.defaultNetworkId)
+   *     })
+   *   })
+   *
+   *   describe('with websocket fallback web3', () => {
+   *     let mWebSocketProvider
+   *
+   *     beforeAll(async () => {
+   *       global.window = {}
+   *       ;[mockedStore, dispatchedActions] = mockDrizzleStore()
+   *       const options = {
+   *         fallback: {
+   *           type: 'ws',
+   *           url: 'ws://localhost:12345'
+   *         }
+   *       }
+   *
+   *       mWebSocketProvider = jest.fn()
+   *
+   *       global.provider.providers = { WebSocketProvider: mWebSocketProvider }
+   *       web3 = await runSaga(mockedStore, initializeWeb3, { options }).done
+   *     })
+   *
+   *     test('get web3', async () => {
+   *       // First action dispatched
+   *       expect(dispatchedActions[0].type).toEqual('WEB3_INITIALIZED')
+   *
+   *       // Todo: mock function callstate is not available for inspecting.
+   *       //       related to jest fn and redux-sagas?
+   *       // expect(mWebSocketProvider).toHaveBeenCalledTimes(1)
+   *     })
+   *   })  */
 
-beforeAll(() => {
-  [mockedStore, dispatchedActions] = mockDrizzleStore()
-})
+  describe('Exhausts options and fails', () => {
+    beforeAll(async () => {
+      global.window = {}
+      ;[mockedStore, dispatchedActions] = mockDrizzleStore()
+      web3Options = {}
+    })
 
-test('get web3', async () => {
-  web3 = await runSaga(mockedStore, initializeWeb3, { options }).done
-
-  // First action dispatched
-  expect(dispatchedActions[0].type).toEqual('WEB3_INITIALIZED')
-})
-
-test('get network ID', async () => {
-  await runSaga(mockedStore, getNetworkId, { web3 }).done
-
-  // Second action dispatched
-  expect(dispatchedActions[1].networkId).toEqual(6777)
+    test('Throws', async () => {
+      const gen = initializeWeb3({ options: web3Options })
+      const error = 'Cannot find injected web3 or valid fallback.'
+      let value = gen.next()
+      value = gen.next()
+      console.log('VALUE', value)
+      const got = gen.throw(error).value
+      console.log('got', got)
+      expect(got).toEqual(put({ type: 'WEB3_FAILED', error }))
+    })
+  })
 })
 
 /* Notes:
@@ -34,20 +141,6 @@ test('get network ID', async () => {
  *      drizzle started web3 initialization?
  *
  * Todo:
- *   1. test all (happy) code paths
- *       a) window.ethereum
- *       b) window.web3 etc..
- *       c) passing in provider (currently tested)
- *       d) passing in URL
+ *   [] Test failure cases above
  *
- *   2. invalid/error paths (sad)
- *       a) errors in web3
- *
- * Paths to verify based on states
- *   1. WEB3_INITIALIZING
- *   2. WEB3_INITIALIZED
- *   3. WEB3_FAILED
- *   4. NETWORK_ID_FETCHING
- *   5. NETWORK_ID_FETCHED
- *   6. NETWORK_ID_FAILED
  *  */
