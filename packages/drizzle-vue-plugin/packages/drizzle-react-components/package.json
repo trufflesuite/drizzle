@@ -1,6 +1,6 @@
 {
   "name": "drizzle-react-components",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Put some Drizzle on your React components.",
   "main": "dist/drizzle-react-components.js",
   "scripts": {
