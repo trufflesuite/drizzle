@@ -2,15 +2,15 @@ import { getAccounts } from '../src/accounts/accountsSaga'
 import { runSaga } from 'redux-saga'
 import { mockDrizzleStore, mockWeb3 } from './utils/helpers'
 
-let web3, dispatchedActions, mockStore
+let mockedWeb3, dispatchedActions, mockedStore
 
 beforeAll(() => {
-  [mockStore, dispatchedActions] = mockDrizzleStore()
-  web3 = mockWeb3()
+  ;[mockedStore, dispatchedActions] = mockDrizzleStore()
+  mockedWeb3 = mockWeb3()
 })
 
 test('gets accounts', async () => {
-  await runSaga(mockStore, getAccounts, { web3 }).done
+  await runSaga(mockedStore, getAccounts, { web3: mockedWeb3 }).done
 
   const defaultNumberOfAccounts = 10
   expect(dispatchedActions[0]['accounts']).toHaveLength(defaultNumberOfAccounts)
