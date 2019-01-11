@@ -6,15 +6,13 @@ var Web3 = require('web3')
  * Initialization
  */
 
-export function * initializeWeb3 ({ options }) {
+export function* initializeWeb3({ options }) {
   try {
     var web3 = {}
 
-    if (options.web3.customProvider) {
+    if (options && options.web3 && options.web3.customProvider) {
       web3 = new Web3(options.web3.customProvider)
-
       yield put({ type: 'WEB3_INITIALIZED' })
-
       return web3
     }
 
@@ -23,9 +21,7 @@ export function * initializeWeb3 ({ options }) {
       web3 = new Web3(ethereum)
       try {
         yield call(ethereum.enable)
-
         yield put({ type: 'WEB3_INITIALIZED' })
-
         return web3
       } catch (error) {
         // User denied account access...
@@ -35,28 +31,20 @@ export function * initializeWeb3 ({ options }) {
       // Checking if Web3 has been injected by the browser (Mist/MetaMask)
       // Use Mist/MetaMask's provider.
       web3 = new Web3(window.web3.currentProvider)
-
-      console.log('Injected web3 detected.')
-
       yield put({ type: 'WEB3_INITIALIZED' })
 
       return web3
     } else if (options.fallback) {
       // Attempt fallback if no web3 injection.
-      console.log('No web3 instance injected, using fallback.')
-
       switch (options.fallback.type) {
         case 'ws':
           var provider = new Web3.providers.WebsocketProvider(
             options.fallback.url
           )
           web3 = new Web3(provider)
-
           yield put({ type: 'WEB3_INITIALIZED' })
-
           return web3
 
-          break
         default:
           // Invalid options; throw.
           throw 'Invalid web3 fallback provided.'
@@ -76,7 +64,7 @@ export function * initializeWeb3 ({ options }) {
  * Network ID
  */
 
-export function * getNetworkId ({ web3 }) {
+export function* getNetworkId({ web3 }) {
   try {
     const networkId = yield call(web3.eth.net.getId)
 
@@ -95,7 +83,7 @@ export function * getNetworkId ({ web3 }) {
  * Send Transaction
  */
 
-function createTxChannel ({ txObject, stackId, web3 }) {
+function createTxChannel({ txObject, stackId, web3 }) {
   var persistTxHash
 
   return eventChannel(emit => {
@@ -134,7 +122,7 @@ function createTxChannel ({ txObject, stackId, web3 }) {
   })
 }
 
-function * callSendTx ({ txObject, stackId, web3 }) {
+function* callSendTx({ txObject, stackId, web3 }) {
   const txChannel = yield call(createTxChannel, { txObject, stackId, web3 })
 
   try {
@@ -147,7 +135,7 @@ function * callSendTx ({ txObject, stackId, web3 }) {
   }
 }
 
-function * web3Saga () {
+function* web3Saga() {
   yield takeLatest('NETWORK_ID_FETCHING', getNetworkId)
   yield takeEvery('SEND_WEB3_TX', callSendTx)
 }
