@@ -26,10 +26,8 @@ export function * initializeWeb3 ({ options }) {
         // User denied account access...
         console.log(error)
       }
-    }
-
-    // Checking if Web3 has been injected by the browser (Mist/MetaMask)
-    else if (typeof window.web3 !== 'undefined') {
+    } else if (typeof window.web3 !== 'undefined') {
+      // Checking if Web3 has been injected by the browser (Mist/MetaMask)
       // Use Mist/MetaMask's provider.
       web3 = new Web3(window.web3.currentProvider)
       web3.eth.cacheSendTransaction = txObject =>

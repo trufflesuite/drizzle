@@ -63,7 +63,7 @@ export function * instantiateContract ({
   web3
 }) {
   const networkId = yield select(getNetworkId)
-  
+
   try {
     // Instantiate the contract.
     var web3Contract = new web3.eth.Contract(
@@ -82,9 +82,13 @@ export function * instantiateContract ({
       store,
       events,
       contractArtifact
-    ) 
+    )
   } catch (err) {
-    console.error(`Contract ${contractArtifact.contractName} not found on network ID: ${networkId}`)
+    console.error(
+      `Contract ${
+        contractArtifact.contractName
+      } not found on network ID: ${networkId}`
+    )
   }
 }
 

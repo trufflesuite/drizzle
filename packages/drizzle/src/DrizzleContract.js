@@ -101,7 +101,7 @@ class DrizzleContract {
       var stackId = contract.store.getState().transactionStack.length
 
       // Add ID to "transactionStack" with empty value
-      contract.store.dispatch({type: 'PUSH_TO_TXSTACK'})
+      contract.store.dispatch({ type: 'PUSH_TO_TXSTACK' })
 
       // Dispatch tx to saga
       // When txhash received, will be value of stack ID
