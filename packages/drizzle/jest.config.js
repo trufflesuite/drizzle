@@ -74,9 +74,7 @@ module.exports = {
   // moduleNameMapper: {},
 
   // An array of regexp pattern strings, matched against all module paths before considered 'visible' to the module loader
-  modulePathIgnorePatterns: [
-    "<rootDir>[/\\\\](dist|node_modules)[/\\\\]"
-  ],
+  modulePathIgnorePatterns: ['<rootDir>[/\\\\](dist|node_modules)[/\\\\]'],
 
   // Activates notifications for test results
   // notify: false,
@@ -121,7 +119,6 @@ module.exports = {
 
   // The path to a module that runs some code to configure or set up the testing framework before each test
   // setupTestFrameworkScriptFile: null,
-  setupTestFrameworkScriptFile: 'jest-generator',
 
   // A list of paths to snapshot serializer modules Jest should use for snapshot testing
   // snapshotSerializers: [],
@@ -180,4 +177,4 @@ module.exports = {
 
   // Whether to use watchman for file crawling
   // watchman: true,
-};
+}
