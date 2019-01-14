@@ -3,7 +3,7 @@ import { runSaga } from 'redux-saga'
 import { mockDrizzleStore, mockWeb3 } from './utils/helpers'
 
 let web3, dispatchedActions, mockedStore
-const state = { accounts: ['0x8adb46251e9cd45b5027501766531825c04a2e06'] }
+const state = { accounts: global.accounts }
 
 beforeAll(() => {
   ;[mockedStore, dispatchedActions] = mockDrizzleStore(state)
