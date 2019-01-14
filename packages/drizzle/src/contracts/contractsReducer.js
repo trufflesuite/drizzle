@@ -28,6 +28,11 @@ const contractsReducer = (state = initialState, action) => {
     }
   }
 
+  if (action.type === 'CONTRACT_DELETE') {
+    const { [action.contractName]: omitted, ...rest } = state
+    return rest
+  }
+
   if (action.type === 'CONTRACT_SYNCING') {
     const contractName = action.contract.contractName
 
