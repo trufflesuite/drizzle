@@ -51,8 +51,7 @@ describe('Loads Web3', () => {
       global.provider.enable = mEnable
       global.window.ethereum = global.provider
 
-      resolvedWeb3 = await runSaga(mockedStore, initializeWeb3, { options: {} })
-        .done
+      resolvedWeb3 = await runSaga(mockedStore, initializeWeb3, { options: {} }).done
     })
 
     test('get web3', async () => {
@@ -87,8 +86,7 @@ describe('Loads Web3', () => {
       ;[mockedStore, dispatchedActions] = mockDrizzleStore()
       global.window.web3 = { currentProvider: global.provider }
 
-      resolvedWeb3 = await runSaga(mockedStore, initializeWeb3, { options: {} })
-        .done
+      resolvedWeb3 = await runSaga(mockedStore, initializeWeb3, { options: {} }).done
     })
 
     test('get web3', async () => {
@@ -127,8 +125,7 @@ describe('Loads Web3', () => {
       mWebSocketProvider = jest.fn()
       global.provider.providers = { WebSocketProvider: mWebSocketProvider }
 
-      resolvedWeb3 = await runSaga(mockedStore, initializeWeb3, { options })
-        .done
+      resolvedWeb3 = await runSaga(mockedStore, initializeWeb3, { options }).done
     })
 
     test('get web3', async () => {
