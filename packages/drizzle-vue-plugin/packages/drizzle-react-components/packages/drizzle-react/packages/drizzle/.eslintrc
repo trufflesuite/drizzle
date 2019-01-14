@@ -2,6 +2,13 @@
   "extends": ["standard", "plugin:jest/recommended"],
   "plugins": ["jest"],
   "rules": {
+    "semi": [0],
+    "space-before-function-paren": ["error", {
+    				      "anonymous": "ignore",
+    				      "named": "never",
+    				      "asyncArrow": "ignore"
+                                   }],
+    "generator-star-spacing": ["error", {"before": false, "after": true}],
     "import/first": "ignore",
     "jest/no-disabled-tests": "warn",
     "jest/no-focused-tests": "error",
