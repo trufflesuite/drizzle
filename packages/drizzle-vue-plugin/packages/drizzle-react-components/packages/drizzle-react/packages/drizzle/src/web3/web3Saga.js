@@ -1,4 +1,5 @@
 import { call, put, select, takeEvery, takeLatest } from 'redux-saga/effects'
+import * as Action from './constants'
 
 var Web3 = require('web3')
 
@@ -12,7 +13,7 @@ export function* initializeWeb3({ options }) {
 
     if (options && options.web3 && options.web3.customProvider) {
       web3 = new Web3(options.web3.customProvider)
-      yield put({ type: 'WEB3_INITIALIZED' })
+      yield put({ type: Action.WEB3_INITIALIZED })
       return web3
     }
 
@@ -21,7 +22,7 @@ export function* initializeWeb3({ options }) {
       web3 = new Web3(ethereum)
       try {
         yield call(ethereum.enable)
-        yield put({ type: 'WEB3_INITIALIZED' })
+        yield put({ type: Action.WEB3_INITIALIZED })
         return web3
       } catch (error) {
         // User denied account access...
@@ -31,7 +32,7 @@ export function* initializeWeb3({ options }) {
       // Checking if Web3 has been injected by the browser (Mist/MetaMask)
       // Use Mist/MetaMask's provider.
       web3 = new Web3(window.web3.currentProvider)
-      yield put({ type: 'WEB3_INITIALIZED' })
+      yield put({ type: Action.WEB3_INITIALIZED })
 
       return web3
     } else if (options.fallback) {
@@ -42,19 +43,19 @@ export function* initializeWeb3({ options }) {
             options.fallback.url
           )
           web3 = new Web3(provider)
-          yield put({ type: 'WEB3_INITIALIZED' })
+          yield put({ type: Action.WEB3_INITIALIZED })
           return web3
 
         default:
           // Invalid options; throw.
-          throw 'Invalid web3 fallback provided.'
+          throw new Error('Invalid web3 fallback provided.')
       }
     } else {
       // Out of web3 options; throw.
-      throw 'Cannot find injected web3 or valid fallback.'
+      throw new Error('Cannot find injected web3 or valid fallback.')
     }
   } catch (error) {
-    yield put({ type: 'WEB3_FAILED', error })
+    yield put({ type: Action.WEB3_FAILED, error })
     console.error('Error intializing web3:')
     console.error(error)
   }
@@ -68,76 +69,19 @@ export function* getNetworkId({ web3 }) {
   try {
     const networkId = yield call(web3.eth.net.getId)
 
-    yield put({ type: 'NETWORK_ID_FETCHED', networkId })
+    yield put({ type: Action.NETWORK_ID_FETCHED, networkId })
 
     return networkId
   } catch (error) {
-    yield put({ type: 'NETWORK_ID_FAILED', error })
+    yield put({ type: Action.NETWORK_ID_FAILED, error })
 
     console.error('Error fetching network ID:')
     console.error(error)
   }
 }
 
-/*
- * Send Transaction
- */
-
-function createTxChannel({ txObject, stackId, web3 }) {
-  var persistTxHash
-
-  return eventChannel(emit => {
-    const txPromiEvent = web3.eth
-      .sendTransaction(txObject)
-      .on('transactionHash', txHash => {
-        persistTxHash = txHash
-
-        emit({ type: 'W3TX_BROADCASTED', txHash, stackId })
-      })
-      .on('confirmation', (confirmationNumber, receipt) => {
-        emit({
-          type: 'W3TX_CONFIRMAITON',
-          confirmationReceipt: receipt,
-          txHash: persistTxHash
-        })
-      })
-      .on('receipt', receipt => {
-        emit({
-          type: 'W3TX_SUCCESSFUL',
-          receipt: receipt,
-          txHash: persistTxHash
-        })
-        emit(END)
-      })
-      .on('error', error => {
-        emit({ type: 'W3TX_ERROR', error: error, txHash: persistTxHash })
-        emit(END)
-      })
-
-    const unsubscribe = () => {
-      txPromiEvent.off()
-    }
-
-    return unsubscribe
-  })
-}
-
-function* callSendTx({ txObject, stackId, web3 }) {
-  const txChannel = yield call(createTxChannel, { txObject, stackId, web3 })
-
-  try {
-    while (true) {
-      var event = yield take(txChannel)
-      yield put(event)
-    }
-  } finally {
-    txChannel.close()
-  }
-}
-
 function* web3Saga() {
   yield takeLatest('NETWORK_ID_FETCHING', getNetworkId)
-  yield takeEvery('SEND_WEB3_TX', callSendTx)
 }
 
 export default web3Saga

@@ -2,6 +2,7 @@ import { initializeWeb3, getNetworkId } from '../src/web3/web3Saga'
 import { runSaga } from 'redux-saga'
 import { put } from 'redux-saga/effects'
 import { mockDrizzleStore } from './utils/helpers'
+import * as Action from '../src/web3/constants'
 
 let mockedStore, dispatchedActions, web3Options, resolvedWeb3
 
@@ -18,7 +19,7 @@ describe('Loads Web3', () => {
 
     test('get web3', async () => {
       // First action dispatched
-      expect(dispatchedActions[0].type).toEqual('WEB3_INITIALIZED')
+      expect(dispatchedActions[0].type).toEqual(Action.WEB3_INITIALIZED)
 
       // is it a Web3 object?
       expect(resolvedWeb3).toHaveProperty('currentProvider')
@@ -50,12 +51,13 @@ describe('Loads Web3', () => {
       global.provider.enable = mEnable
       global.window.ethereum = global.provider
 
-      resolvedWeb3 = await runSaga(mockedStore, initializeWeb3, { options: {} }).done
+      resolvedWeb3 = await runSaga(mockedStore, initializeWeb3, { options: {} })
+        .done
     })
 
     test('get web3', async () => {
       // First action dispatched
-      expect(dispatchedActions[0].type).toEqual('WEB3_INITIALIZED')
+      expect(dispatchedActions[0].type).toEqual(Action.WEB3_INITIALIZED)
 
       // console.log('mEnable', mEnable)
       // Todo: The mocked function does not register when called from the saga,
@@ -85,12 +87,13 @@ describe('Loads Web3', () => {
       ;[mockedStore, dispatchedActions] = mockDrizzleStore()
       global.window.web3 = { currentProvider: global.provider }
 
-      resolvedWeb3 = await runSaga(mockedStore, initializeWeb3, { options: {} }).done
+      resolvedWeb3 = await runSaga(mockedStore, initializeWeb3, { options: {} })
+        .done
     })
 
     test('get web3', async () => {
       // First action dispatched
-      expect(dispatchedActions[0].type).toEqual('WEB3_INITIALIZED')
+      expect(dispatchedActions[0].type).toEqual(Action.WEB3_INITIALIZED)
     })
 
     test('get network ID', async () => {
@@ -124,12 +127,13 @@ describe('Loads Web3', () => {
       mWebSocketProvider = jest.fn()
       global.provider.providers = { WebSocketProvider: mWebSocketProvider }
 
-      resolvedWeb3 = await runSaga(mockedStore, initializeWeb3, { options }).done
+      resolvedWeb3 = await runSaga(mockedStore, initializeWeb3, { options })
+        .done
     })
 
     test('get web3', async () => {
       // First action dispatched
-      expect(dispatchedActions[0].type).toEqual('WEB3_INITIALIZED')
+      expect(dispatchedActions[0].type).toEqual(Action.WEB3_INITIALIZED)
 
       // Todo: mock function callstate is not available for inspecting.
       //       related to jest fn and redux-sagas?
@@ -154,8 +158,8 @@ describe('Loads Web3', () => {
     })
 
     test('with failure', async () => {
-      const error = 'Cannot find injected web3 or valid fallback.'
-      expect(gen.next().value).toEqual(put({ type: 'WEB3_FAILED', error }))
+      const error = new Error('Cannot find injected web3 or valid fallback.')
+      expect(gen.next().value).toEqual(put({ type: Action.WEB3_FAILED, error }))
     })
   })
 })
