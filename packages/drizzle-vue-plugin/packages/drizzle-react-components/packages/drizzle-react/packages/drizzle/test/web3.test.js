@@ -44,25 +44,16 @@ describe('Loads Web3', () => {
       ;[mockedStore, dispatchedActions] = mockDrizzleStore()
       mEnable = jest.fn((...args) => `hi ${args[0]}`)
 
-      // mock can force an exception
-      // mEnable = jest.fn(() => { throw new Error('oopsie') })
-      //
-
       global.provider.enable = mEnable
       global.window.ethereum = global.provider
 
-      resolvedWeb3 = await runSaga(mockedStore, initializeWeb3, { options: {} }).done
+      resolvedWeb3 = await runSaga(mockedStore, initializeWeb3, { options: {} })
+        .done
     })
 
     test('get web3', async () => {
       // First action dispatched
       expect(dispatchedActions[0].type).toEqual(Action.WEB3_INITIALIZED)
-
-      // console.log('mEnable', mEnable)
-      // Todo: The mocked function does not register when called from the saga,
-      //       but it is required for this code-path.
-      // mEnable('whoa') // proves it is invokable
-      // expect(mEnable).toHaveBeenCalledTimes(1)
 
       // is it a Web3 object?
       expect(resolvedWeb3).toHaveProperty('currentProvider')
@@ -86,7 +77,8 @@ describe('Loads Web3', () => {
       ;[mockedStore, dispatchedActions] = mockDrizzleStore()
       global.window.web3 = { currentProvider: global.provider }
 
-      resolvedWeb3 = await runSaga(mockedStore, initializeWeb3, { options: {} }).done
+      resolvedWeb3 = await runSaga(mockedStore, initializeWeb3, { options: {} })
+        .done
     })
 
     test('get web3', async () => {
@@ -125,16 +117,13 @@ describe('Loads Web3', () => {
       mWebSocketProvider = jest.fn()
       global.provider.providers = { WebSocketProvider: mWebSocketProvider }
 
-      resolvedWeb3 = await runSaga(mockedStore, initializeWeb3, { options }).done
+      resolvedWeb3 = await runSaga(mockedStore, initializeWeb3, { options })
+        .done
     })
 
     test('get web3', async () => {
       // First action dispatched
       expect(dispatchedActions[0].type).toEqual(Action.WEB3_INITIALIZED)
-
-      // Todo: mock function callstate is not available for inspecting.
-      //       related to jest fn and redux-sagas?
-      // expect(mWebSocketProvider).toHaveBeenCalledTimes(1)
 
       // is it a Web3 object?
       expect(resolvedWeb3).toHaveProperty('currentProvider')
