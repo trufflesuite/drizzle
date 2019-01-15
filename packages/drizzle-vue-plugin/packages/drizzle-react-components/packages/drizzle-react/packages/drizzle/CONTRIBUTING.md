@@ -77,42 +77,7 @@ First clone this repository and install NPM dependencies:
     $ npm install
     $ npm test
 
-You will be greeted by Jest's Watch Usage command interface:
-```
-No tests found related to files changed since last commit.
-Press `a` to run all tests, or run Jest with `--watchAll`.
-
-Watch Usage
- › Press a to run all tests.
- › Press f to run only failed tests.
- › Press p to filter by a filename regex pattern.
- › Press t to filter by a test name regex pattern.
- › Press q to quit watch mode.
- › Press Enter to trigger a test run.
-```
-
-Press `a` to execute all tests and hopefull you will be greeted with successful
-results.
-
-```
- PASS  test/accounts.test.js
- PASS  test/accountBalances.test.js
-
- RUNS  test/contracts/create.test.js
- PASS  test/web3.test.jsjs
- PASS  test/blocks.test.js
-
- RUNS  test/contracts/create.test.js
- PASS  test/contracts/create.test.js
-
-Test Suites: 5 passed, 5 total
-Tests:       16 passed, 16 total
-Snapshots:   0 total
-Time:        2.796s
-Ran all test suites.
-
-```
-Then, run the build command :
+If all is good, then run the build command :
 
     $ npm run build
 
