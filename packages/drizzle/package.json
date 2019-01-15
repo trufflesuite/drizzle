@@ -15,7 +15,7 @@
     "format": "prettier-standard 'src/**/*.js'",
     "lint": "eslint 'src/**/*.js'",
     "lint:fix": "eslint 'src/**/*.js' --fix",
-    "test": "jest --notify --watch",
+    "test": "jest --notify",
     "test:debug": "node --inspect node_modules/.bin/jest --runInBand"
   },
   "keywords": [
