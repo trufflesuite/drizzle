@@ -9,6 +9,7 @@ module.exports = {
     filename: 'drizzle.js',
     library: 'drizzle',
     libraryTarget: 'umd',
+    globalObject: "typeof self !== 'undefined' ? self : this",
     path: path.resolve(__dirname, 'dist')
   },
   mode: 'development',
