@@ -17,39 +17,45 @@ const mockDrizzleStore = (initialState = {}) => {
 }
 
 /**
- * mockWeb3
+ * getWeb3
+ * @param {object} provider
  *
  * @returns {Object} A Web3 provider sourced from `global.provider`
  */
-const mockWeb3 = () => new Web3(global.provider)
+const getWeb3 = (provider = global.provider) => new Web3(provider)
 
 /**
- * mockWeb3Assets deploys a contract on ganache provider
+ * getWeb3Assets deploys a contract on ganache provider
  *
- * @returns {Object} with web3Provider, accounts & truffleArtifact
+ * @returns {Object} with web3, accounts & truffleArtifact
  */
-const mockWeb3Assets = async () => {
+const getWeb3Assets = async () => {
   const abi = require('./data/TestContract-abi.json')
   const byteCode = require('./data/TestContract-byteCode.json')
-  const web3Provider = new Web3(global.provider)
-  const accounts = await web3Provider.eth.getAccounts() // use global.accounts?
+  // const web3 = new Web3(global.provider)
+  const web3 = getWeb3()
+  const accounts = await web3.eth.getAccounts() // use global.accounts?
 
-  const instance = new web3Provider.eth.Contract(abi)
-  const deployedByteCode = await instance.deploy({ data: byteCode.object }).send({ from: accounts[0], gas: 150000 })
+  const instance = new web3.eth.Contract(abi)
+  const deployedByteCode = await instance
+    .deploy({ data: byteCode.object })
+    .send({ from: accounts[0], gas: 150000 })
 
   const truffleArtifact = {
     contractName: 'TestContract',
     abi,
     byteCode,
     deployedByteCode,
-    networks: { [global.defaultNetworkId]: { address: deployedByteCode._address } }
+    networks: {
+      [global.defaultNetworkId]: { address: deployedByteCode._address }
+    }
   }
 
-  return { web3Provider, accounts, truffleArtifact }
+  return { web3, accounts, truffleArtifact }
 }
 
 module.exports = {
   mockDrizzleStore,
-  mockWeb3,
-  mockWeb3Assets
+  getWeb3,
+  getWeb3Assets
 }

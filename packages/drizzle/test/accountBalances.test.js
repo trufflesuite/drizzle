@@ -1,13 +1,13 @@
 import { getAccountBalances } from '../src/accountBalances/accountBalancesSaga'
 import { runSaga } from 'redux-saga'
-import { mockDrizzleStore, mockWeb3 } from './utils/helpers'
+import { mockDrizzleStore, getWeb3 } from './utils/helpers'
 
 let web3, dispatchedActions, mockedStore
 const state = { accounts: global.accounts }
 
 beforeAll(() => {
   ;[mockedStore, dispatchedActions] = mockDrizzleStore(state)
-  web3 = mockWeb3()
+  web3 = getWeb3()
 })
 
 test('get account balances', async () => {
