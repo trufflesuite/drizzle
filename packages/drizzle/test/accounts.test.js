@@ -5,7 +5,7 @@ import { mockDrizzleStore, getWeb3 } from './utils/helpers'
 let web3, dispatchedActions, mockedStore
 
 beforeAll(() => {
-  ;[mockedStore, dispatchedActions] = mockDrizzleStore()
+  [mockedStore, dispatchedActions] = mockDrizzleStore()
   web3 = getWeb3()
 })
 
