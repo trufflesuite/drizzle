@@ -4,9 +4,9 @@ import { put } from 'redux-saga/effects'
 import { mockDrizzleStore } from './utils/helpers'
 import * as Action from '../src/web3/constants'
 
-let mockedStore, dispatchedActions, web3Options, resolvedWeb3
-
 describe('Loads Web3', () => {
+  let mockedStore, dispatchedActions, web3Options, resolvedWeb3
+
   describe('with customProvider', () => {
     beforeAll(async () => {
       global.window = {}
@@ -47,7 +47,8 @@ describe('Loads Web3', () => {
       global.provider.enable = mockedEnable
       global.window.ethereum = global.provider
 
-      resolvedWeb3 = await runSaga(mockedStore, initializeWeb3, { options: {} }).done
+      resolvedWeb3 = await runSaga(mockedStore, initializeWeb3, { options: {} })
+        .done
     })
 
     test('get web3', async () => {
@@ -76,7 +77,8 @@ describe('Loads Web3', () => {
       ;[mockedStore, dispatchedActions] = mockDrizzleStore()
       global.window.web3 = { currentProvider: global.provider }
 
-      resolvedWeb3 = await runSaga(mockedStore, initializeWeb3, { options: {} }).done
+      resolvedWeb3 = await runSaga(mockedStore, initializeWeb3, { options: {} })
+        .done
     })
 
     test('get web3', async () => {
@@ -115,7 +117,8 @@ describe('Loads Web3', () => {
       mWebSocketProvider = jest.fn()
       global.provider.providers = { WebSocketProvider: mWebSocketProvider }
 
-      resolvedWeb3 = await runSaga(mockedStore, initializeWeb3, { options }).done
+      resolvedWeb3 = await runSaga(mockedStore, initializeWeb3, { options })
+        .done
     })
 
     test('get web3', async () => {
