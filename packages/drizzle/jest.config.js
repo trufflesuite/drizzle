@@ -9,5 +9,9 @@ module.exports = {
   modulePathIgnorePatterns: ['<rootDir>[/\\\\](dist|node_modules)[/\\\\]'],
 
   // The test environment that will be used for testing
-  testEnvironment: '<rootDir>/test/environments/ganache-environment.js'
+  testEnvironment: '<rootDir>/test/environments/ganache-environment.js',
+
+  transform: {
+    '^.+\\.js': '<rootDir>/jest.transform.js'
+  }
 }
