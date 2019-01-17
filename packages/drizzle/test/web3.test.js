@@ -38,23 +38,26 @@ describe('Loads Web3', () => {
   })
 
   describe('with ethereum', () => {
-    let mockedEnable
+    let mockedEthereumEnable
+    let gen
+
     beforeAll(async () => {
       global.window = {}
       ;[mockedStore, dispatchedActions] = mockDrizzleStore()
-      mockedEnable = jest.fn()
 
-      global.provider.enable = mockedEnable
+      mockedEthereumEnable = jest.fn()
+      global.provider.enable = mockedEthereumEnable
       global.window.ethereum = global.provider
 
-      resolvedWeb3 = await runSaga(mockedStore, initializeWeb3, { options: {} }).done
+      gen = initializeWeb3({ options: {} })
     })
 
     test('get web3', async () => {
-      // First action dispatched
-      expect(dispatchedActions[0].type).toEqual(Action.WEB3_INITIALIZED)
+      expect(gen.next().value.CALL.fn).toBe(mockedEthereumEnable)
+      expect(gen.next().value.PUT.action.type).toBe(Action.WEB3_INITIALIZED)
 
       // is it a Web3 object?
+      resolvedWeb3 = gen.next().value
       expect(resolvedWeb3).toHaveProperty('currentProvider')
       expect(resolvedWeb3).toHaveProperty('BatchRequest')
       expect(resolvedWeb3).toHaveProperty('version')
@@ -64,9 +67,7 @@ describe('Loads Web3', () => {
 
     test('get network ID', async () => {
       await runSaga(mockedStore, getNetworkId, { web3: resolvedWeb3 }).done
-
-      // Second action dispatched
-      expect(dispatchedActions[1].networkId).toEqual(global.defaultNetworkId)
+      expect(dispatchedActions[0].networkId).toEqual(global.defaultNetworkId)
     })
   })
 
@@ -76,7 +77,8 @@ describe('Loads Web3', () => {
       ;[mockedStore, dispatchedActions] = mockDrizzleStore()
       global.window.web3 = { currentProvider: global.provider }
 
-      resolvedWeb3 = await runSaga(mockedStore, initializeWeb3, { options: {} }).done
+      resolvedWeb3 = await runSaga(mockedStore, initializeWeb3, { options: {} })
+        .done
     })
 
     test('get web3', async () => {
@@ -115,7 +117,8 @@ describe('Loads Web3', () => {
       mWebSocketProvider = jest.fn()
       global.provider.providers = { WebSocketProvider: mWebSocketProvider }
 
-      resolvedWeb3 = await runSaga(mockedStore, initializeWeb3, { options }).done
+      resolvedWeb3 = await runSaga(mockedStore, initializeWeb3, { options })
+        .done
     })
 
     test('get web3', async () => {
