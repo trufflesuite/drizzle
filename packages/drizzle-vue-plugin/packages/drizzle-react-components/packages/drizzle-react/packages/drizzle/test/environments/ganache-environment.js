@@ -3,7 +3,8 @@ const NodeEnvironment = require('jest-environment-node')
 
 const defaultSeed = 'drizzle'
 const defaultNetworkId = 6777
-const defaultAccounts = [ // based on default Mnemonic
+const defaultAccounts = [
+  // based on default Mnemonic
   '0x8aDB46251E9cd45b5027501766531825C04a2E06',
   '0xb50CF9eD8f60605bEbB967776925f21Ba5c81D5D',
   '0x7fC9AD8C7A3232Aed94d6C68728D22D722694824',
@@ -29,6 +30,12 @@ class GanacheEnvironment extends NodeEnvironment {
 
     this.global.accounts = defaultAccounts
     this.global.defaultNetworkId = defaultNetworkId
+  }
+
+  async teardown() {
+    // close  provider engine gracefully
+    this.global.provider.close(() => {})
+    await super.teardown()
   }
 }
 
