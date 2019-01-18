@@ -1,13 +1,8 @@
 const babelJest = require('babel-jest')
+const webpackConfig = require('./webpack/base.config')
 
-const options = {
-  'presets': ['env'],
-  'plugins': [
-    'babel-plugin-transform-runtime',
-    'babel-plugin-transform-es2015-arrow-functions',
-    'babel-plugin-transform-object-rest-spread',
-    'babel-plugin-syntax-async-functions'
-  ]
-}
-
-module.exports = babelJest.createTransformer(options)
+/* Jest needs to know how to transform our source.  Use the same transformation
+ * options/rules specified in webpack configuration.
+ */
+const { options: babelOptions } = webpackConfig.module.rules[0]
+module.exports = babelJest.createTransformer(babelOptions)
