@@ -12,9 +12,10 @@
     "build": "webpack --config webpack/release.config.js",
     "build:pure": "webpack --config webpack/pure.config.js",
     "dev": "webpack --config webpack.config.js --watch",
+    "format": "prettier-standard 'src/**/*.js' 'test/**/*.js'",
     "lint": "eslint 'src/**/*.js'",
     "lint:fix": "eslint 'src/**/*.js' --fix",
-    "format": "prettier-standard 'src/**/*.js'"
+    "test": "jest --notify"
   },
   "keywords": [
     "ethereum",
@@ -44,6 +45,9 @@
     "babel-preset-env": "^1.7.0",
     "eslint": "^5.3.0",
     "eslint-config-standard": "^11.0.0",
+    "eslint-plugin-jest": "^22.1.2",
+    "ganache-core": "^2.3.3",
+    "jest": "^23.6.0",
     "prettier-standard": "^8.0.1",
     "standard": "^11.0.1",
     "webpack": "^4.16.5",

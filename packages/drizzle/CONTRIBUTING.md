@@ -29,14 +29,16 @@ How Can I Contribute?
 
 All contributions are welcome!
 
-If you run into an issue, the first step is to reach out in [our community Gitter channel](https://gitter.im/ConsenSys/truffle),
-in case others have run into the problem or know how to help.
+If you run into an issue, the first step is to reach out in [our community
+Gitter channel](https://gitter.im/ConsenSys/truffle), in case others have run
+into the problem or know how to help.
 
-To report a problem or to suggest a new feature, [open a GitHub Issue](https://github.com/trufflesuite/drizzle/issues/new).
-This will help the Drizzle maintainers become aware of the problem and prioritize
-a fix.
+To report a problem or to suggest a new feature, [open a GitHub
+Issue](https://github.com/trufflesuite/drizzle/issues/new).  This will help the
+Drizzle maintainers become aware of the problem and prioritize a fix.
 
-For code contributions, for either new features or bug fixes, see [Development](#development).
+For code contributions, for either new features or bug fixes, see
+[Development](#development).
 
 If you're looking to make a substantial change, you may want to reach out first
 to give us a heads up.
@@ -47,13 +49,17 @@ Development
 
 ### Overview
 
-Drizzle has two companion libraries ([`drizzle-react`](https://github.com/trufflesuite/drizzle-react) and [`drizzle-react-components`](https://github.com/trufflesuite/drizzle-react-components)), each with their own
-NPM packages.
+Drizzle has two companion libraries
+([`drizzle-react`](https://github.com/trufflesuite/drizzle-react) and
+[`drizzle-react-components`](https://github.com/trufflesuite/drizzle-react-components)),
+each with their own NPM packages.
 
 The content of this guide applies to those companion libraries as well.
 
-This repository ([trufflesuite/drizzle](https://github.com/trufflesuite/drizzle))
-contains the core logic for storing and updating chaindata in a [Redux](https://github.com/reduxjs/redux) store.
+This repository
+([trufflesuite/drizzle](https://github.com/trufflesuite/drizzle)) contains the
+core logic for storing and updating chaindata in a
+[Redux](https://github.com/reduxjs/redux) store.
 
 ### Development Requirements
 
@@ -69,8 +75,9 @@ First clone this repository and install NPM dependencies:
     $ git clone git@github.com:trufflesuite/drizzle.git
     $ cd drizzle
     $ npm install
+    $ npm test
 
-Then, run the build command :
+If all is good, then run the build command :
 
     $ npm run build
 
@@ -87,11 +94,12 @@ You're ready to use your local developement version of Drizzle in your project.
 
 ### Forks, Branches, and Pull Requests
 
-Community contributions to Drizzle require that you first fork the
-repositor(y|ies) you are modifying. After your modifications, push changes to
+Community contributions to Drizzle require that you first fork each
+repository you wish to modify. After your modifications, push changes to
 your fork(s) and submit a pull request upstream to `trufflesuite`'s fork(s).
 
-See GitHub documentation about [Collaborating with issues and pull requests](https://help.github.com/categories/collaborating-with-issues-and-pull-requests/)
+See GitHub documentation about [Collaborating with issues and pull
+requests](https://help.github.com/categories/collaborating-with-issues-and-pull-requests/)
 for more information.
 
 > :exclamation: **Note:** _Drizzle development uses a long-lived `develop` branch for new (non-hotfix)
