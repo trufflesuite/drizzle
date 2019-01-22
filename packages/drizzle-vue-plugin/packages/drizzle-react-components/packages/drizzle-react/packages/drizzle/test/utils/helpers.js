@@ -37,14 +37,18 @@ const getWeb3Assets = async () => {
   const accounts = await web3.eth.getAccounts() // use global.accounts?
 
   const instance = new web3.eth.Contract(abi)
-  const deployedByteCode = await instance.deploy({ data: byteCode.object }).send({ from: accounts[0], gas: 150000 })
+  const deployedByteCode = await instance
+    .deploy({ data: byteCode.object })
+    .send({ from: accounts[0], gas: 150000 })
 
   const truffleArtifact = {
     contractName: 'TestContract',
     abi,
     byteCode,
     deployedByteCode,
-    networks: { [global.defaultNetworkId]: { address: deployedByteCode._address } }
+    networks: {
+      [global.defaultNetworkId]: { address: deployedByteCode._address }
+    }
   }
 
   return { web3, accounts, truffleArtifact }
