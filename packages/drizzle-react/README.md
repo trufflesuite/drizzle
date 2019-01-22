@@ -15,7 +15,7 @@ Check out the [Drizzle Truffle Box](https://github.com/truffle-box/drizzle-box) 
 
 ### Using the React Context API (For React v16.3+)
 
-If you are using React v16.3 and up, you have access to the new [React Context](https://reactjs.org/docs/context.html) API which makes use of the [render props](s) pattern.
+If you are using React v16.3 and up, you have access to the new [React Context](https://reactjs.org/docs/context.html) API which makes use of the [render props](https://reactjs.org/docs/render-props.html) pattern.
 
 1. Setup Drizzle and then pass the `drizzle` instance into the context provider:
 
