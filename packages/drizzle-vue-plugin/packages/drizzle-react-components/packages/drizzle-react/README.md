@@ -263,7 +263,7 @@ import { drizzleReactHooks } from 'drizzle-react'
 import setUpDrizzle from './set-up-drizzle'
 import App from './app'
 
-const drizzle = setUpDrizzle()
+const drizzle = setupDrizzle() // Instantiate drizzle instance as you normally would.
 export default () => (
   <drizzleReactHooks.DrizzleProvider drizzle={drizzle}>
     <App />
@@ -464,7 +464,7 @@ import LoadingContractsAndAccounts from './components/loading-contracts-and-acco
 import LoadingWeb3 from './components/loading-web3'
 import App from './app'
 
-const drizzle = setUpDrizzle()
+const drizzle = setupDrizzle() // Instantiate drizzle instance as you normally would.
 export default () => (
   <drizzleReactHooks.DrizzleProvider drizzle={drizzle}>
     <drizzleReactHooks.Initializer
