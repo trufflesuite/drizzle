@@ -288,6 +288,8 @@ export default () => {
 }
 ```
 
+You can also pass it an optional second parameter of any type that will be memoized and checked for shallow equality with the last call's on every call. If the shallow equality test fails, it will instantly call your `mapStateToProps` without waiting for an update from the `drizzle` store. This is useful when your `mapStateToProps` function depends on external variables and you want it to rerun immediately when they change to avoid race conditions in other parts of your code.
+
 ### Using Drizzle
 
 The second of the two main hooks exported is a function that returns your `drizzle` instance, a `cacheCall` function, and two other hooks, `useCacheEvents` and `useCacheSend`.

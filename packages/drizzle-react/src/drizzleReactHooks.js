@@ -13,14 +13,23 @@ import shallowequal from 'shallowequal'
 
 const Context = createContext()
 export const useDrizzle = () => useContext(Context)
-export const useDrizzleState = mapState => {
+export const useDrizzleState = (mapState, args) => {
   const { drizzle } = useDrizzle()
   const mapStateRef = useRef(mapState)
   mapStateRef.current = mapState
+  const argsRef = useRef(args)
   const [state, setState] = useState(
     mapStateRef.current(drizzle.store.getState())
   )
   const stateRef = useRef(state)
+  if (!shallowequal(argsRef.current, args)) {
+    argsRef.current = args
+    const newState = mapStateRef.current(drizzle.store.getState())
+    if (!shallowequal(stateRef.current, newState)) {
+      stateRef.current = newState
+      setState(newState)
+    }
+  }
   useEffect(() => {
     const debouncedHandler = debounce(() => {
       const newState = mapStateRef.current(drizzle.store.getState())
@@ -35,7 +44,7 @@ export const useDrizzleState = mapState => {
       debouncedHandler.clear()
     }
   }, [drizzle.store])
-  return state
+  return stateRef.current
 }
 
 export const DrizzleProvider = ({ children, drizzle }) => {
@@ -62,7 +71,7 @@ export const DrizzleProvider = ({ children, drizzle }) => {
               ][cacheKey].value
           }
         }
-      })
+      }, args)
       return isFunction
         ? methodNameOrFunction((contractName, methodName, ...args) => {
             const cacheKey = drizzle.contracts[contractName].methods[
