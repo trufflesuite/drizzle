@@ -42,6 +42,24 @@ export function * addContract ({ drizzle, contractConfig, events, web3 }) {
   yield put({ type: 'CONTRACT_INITIALIZED', name: contractConfig.contractName })
 }
 
+export function * deleteContract ({ drizzle, contractName }) {
+  drizzle.contractList = drizzle.contractList.filter(
+    contract => contract.contractName !== contractName
+  )
+
+  const {
+    [contractName]: omittedContract,
+    ...restContracts
+  } = drizzle.contracts
+  drizzle.contracts = restContracts
+
+  const {
+    [contractName]: omittedLoading,
+    ...restLoadingContract
+  } = drizzle.loadingContract
+  drizzle.loadingContract = restLoadingContract
+}
+
 /*
  * Instantiation
  */
@@ -368,6 +386,7 @@ function * contractsSaga () {
   yield takeEvery('CONTRACT_SYNCING', callSyncContract)
   yield takeEvery('LISTEN_FOR_EVENT', callListenForContractEvent)
   yield takeEvery('ADD_CONTRACT', addContract)
+  yield takeEvery('DELETE_CONTRACT', deleteContract)
 }
 
 export default contractsSaga

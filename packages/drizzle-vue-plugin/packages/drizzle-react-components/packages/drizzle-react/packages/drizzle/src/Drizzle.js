@@ -60,6 +60,14 @@ class Drizzle {
     this.contractList.push(drizzleContract)
   }
 
+  deleteContract (contractName) {
+    this.store.dispatch({
+      type: 'DELETE_CONTRACT',
+      drizzle: this,
+      contractName
+    })
+  }
+
   findContractByAddress (address) {
     return this.contractList.find(contract => {
       return contract.address.toLowerCase() === address.toLowerCase()
