@@ -15,11 +15,15 @@ const Context = createContext()
 export const useDrizzle = () => useContext(Context)
 export const useDrizzleState = mapState => {
   const { drizzle } = useDrizzle()
-  const [state, setState] = useState(mapState(drizzle.store.getState()))
+  const mapStateRef = useRef(mapState)
+  mapStateRef.current = mapState
+  const [state, setState] = useState(
+    mapStateRef.current(drizzle.store.getState())
+  )
   const stateRef = useRef(state)
   useEffect(() => {
     const debouncedHandler = debounce(() => {
-      const newState = mapState(drizzle.store.getState())
+      const newState = mapStateRef.current(drizzle.store.getState())
       if (!shallowequal(stateRef.current, newState)) {
         stateRef.current = newState
         setState(newState)
