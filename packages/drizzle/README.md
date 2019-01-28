@@ -110,6 +110,20 @@ dispatch({type: 'ADD_CONTRACT', drizzle, contractConfig, events, web3})
 this.context.drizzle.addContract(contractConfig, events)
 ```
 
+## Deleting contracts
+
+You can also delete contracts using either `drizzle.deleteContract()` or the `DELETE_CONTRACT` action.
+
+```javascript
+const contractName = "MyContract"
+
+// Using an action
+dispatch({type: 'DELETE_CONTRACT', drizzle, contractName})
+
+// Or using the Drizzle context object
+this.context.drizzle.deleteContract(contractName)
+```
+
 ## Options
 
 Drizzle has a number of configuration options so it only keeps track of exactly the data you need. Here's the full list of options along with their default values.
