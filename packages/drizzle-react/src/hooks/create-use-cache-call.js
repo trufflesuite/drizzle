@@ -1,24 +1,27 @@
 import { useDrizzleState } from '.'
 
 export default drizzle => (
-  contractNameOrContractNames,
+  contractNameOrNames,
   methodNameOrFunction,
   ...args
 ) => {
   const isFunction = typeof methodNameOrFunction === 'function'
   const drizzleState = useDrizzleState(drizzleState => {
     if (isFunction) {
-      return contractNameOrContractNames.reduce((acc, contractName) => {
-        acc[contractName] = drizzleState.contracts[contractName]
-        return acc
-      }, {})
+      return contractNameOrNames.reduce(
+        (acc, contractName) => ({
+          ...acc,
+          [contractName]: drizzleState.contracts[contractName]
+        }),
+        {}
+      )
     } else {
-      const instance = drizzle.contracts[contractNameOrContractNames]
+      const instance = drizzle.contracts[contractNameOrNames]
       const cacheKey = instance.methods[methodNameOrFunction].cacheCall(...args)
       const cache =
-        drizzleState.contracts[contractNameOrContractNames][
-          methodNameOrFunction
-        ][cacheKey]
+        drizzleState.contracts[contractNameOrNames][methodNameOrFunction][
+          cacheKey
+        ]
       return {
         value: cache && cache.value
       }
