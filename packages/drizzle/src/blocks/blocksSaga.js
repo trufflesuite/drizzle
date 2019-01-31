@@ -119,6 +119,10 @@ function * processBlockHeader ({ blockHeader, drizzle, web3, syncAlways }) {
 
 function * processBlock ({ block, drizzle, web3, syncAlways }) {
   try {
+    // Emit block for addition to store.
+    // Regardless of syncing success/failure, this is still the latest block.
+    yield put({ type: 'BLOCK_PROCESSING', block })
+
     if (syncAlways) {
       yield all(
         Object.keys(drizzle.contracts).map(key => {
