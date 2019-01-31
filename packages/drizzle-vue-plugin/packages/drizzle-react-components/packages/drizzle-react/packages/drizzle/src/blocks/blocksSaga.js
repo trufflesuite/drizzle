@@ -6,7 +6,7 @@ const BlockTracker = require('eth-block-tracker-es5')
  * Listen for Blocks
  */
 
-function createBlockChannel ({ drizzle, web3, syncAlways }) {
+export function createBlockChannel ({ drizzle, web3, syncAlways }) {
   return eventChannel(emit => {
     const blockEvents = web3.eth
       .subscribe('newBlockHeaders', (error, result) => {
@@ -56,7 +56,12 @@ function * callCreateBlockChannel ({ drizzle, web3, syncAlways }) {
  * Poll for Blocks
  */
 
-function createBlockPollChannel ({ drizzle, interval, web3, syncAlways }) {
+export function createBlockPollChannel ({
+  drizzle,
+  interval,
+  web3,
+  syncAlways
+}) {
   return eventChannel(emit => {
     const blockTracker = new BlockTracker({
       provider: web3.currentProvider,
