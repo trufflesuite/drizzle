@@ -17,7 +17,7 @@ Drizzle is a collection of front-end libraries that make writing dapp frontends 
 
 1. Import the provider.
    ```javascript
-   import { Drizzle, generateStore } from 'drizzle'
+   import { Drizzle } from 'drizzle'
    ```
 
 1. Create an `options` object and pass in the desired contract artifacts for Drizzle to instantiate. Other options are available, see [the Options section](#options) below.
@@ -32,9 +32,10 @@ Drizzle is a collection of front-end libraries that make writing dapp frontends 
      ]
    }
 
-   const drizzleStore = generateStore(this.props.options)
-   const drizzle = new Drizzle(this.props.options, drizzleStore)
+   const drizzle = new Drizzle(options)
    ```
+
+   **Note**: The above assumes you have no existing redux store and generates a new one. To use your existing redux store, see our documentation for [Using an Existing Redux Store](https://www.truffleframework.com/docs/drizzle/using-an-existing-redux-store).
 
 1. Get contract data. Calling the `cacheCall()` function on a contract will execute the desired call and return a corresponding key so the data can be retrieved from the store. When a new block is received, Drizzle will refresh the store automatically _if_ any transactions in the block touched our contract. For more information on how this works, see [How Data Stays Fresh](#how-data-stays-fresh).
 
@@ -146,6 +147,7 @@ Drizzle has a number of configuration options so it only keeps track of exactly 
   },
   syncAlways,
   web3: {
+    customProvider,
     fallback: {
       type
       url
@@ -155,9 +157,9 @@ Drizzle has a number of configuration options so it only keeps track of exactly 
 ```
 
 ### `contracts` (array)
-An array of either contract artifact files or Web3 Contract objects.  The objects have a `contractName` and `web3Contract` key.
+An array of either contract artifact files or Web3 contract objects. The objects have a `contractName` and `web3Contract` key.
 
-I.e.
+i.e.
 
 ```
 contracts: [
@@ -181,6 +183,24 @@ If `true`, will replay all contract calls at every block. This is useful if your
 ### `web3` (object)
 Options regarding `web3` instantiation.
 
+#### `customProvider` (object)
+A valid web3 `provider` object. For example, you may wish to programatically create a Ganache provider for testing:
+
+```
+// Create a Ganache provider.
+const testingProvider = Ganache.provider({
+  gasLimit: 7000000
+})
+
+const options = {
+  web3: {
+    customProvider: testingProvider
+  }
+}
+
+const drizzle = new Drizzle(options)
+```
+
 #### `fallback` (object)
 An object consisting of the type and url of a fallback web3 provider. This is used if no injected provider, such as MetaMask or Mist, is detected.
 
@@ -193,6 +213,9 @@ An object consisting of the type and url of a fallback web3 provider. This is us
 ```javascript
 {
   accounts,
+  accountBalances: {
+    address
+  }
   contracts: {
     contractName: {
       initialized,
@@ -206,6 +229,10 @@ An object consisting of the type and url of a fallback web3 provider. This is us
       }
     }
   },
+  currentBlock,
+  drizzleStatus: {
+    initialized
+  },
   transactions: {
     txHash: {
       confirmations,
@@ -215,25 +242,24 @@ An object consisting of the type and url of a fallback web3 provider. This is us
     }
   },
   transactionStack,
-  drizzleStatus: {
-    initialized
-  },
   web3: {
     status
   }
 }
 ```
 
-### `accounts` (object)
-An object of account addresses from `web3`.
+## `accounts` (array)
+An array of account addresses from `web3`.
 
-### `contracts` (object)
+## `accountBalances` (object)
+An object whose keys are account addresses and values are account balances (in Wei).
+
+## `contracts` (object)
 A series of contract state objects, indexed by the contract name as declared in its ABI.
 
-#### `contractName` (object)
+### `contractName` (object)
 
 `initialized` (boolean): `true` once contract is fully instantiated.
-
 `synced` (boolean): `false` if contract state changes have occurred in a block and Drizzle is re-running its calls.
 
 `events` (array): An array of event objects. Drizzle will only listen for the events we declared in options.
@@ -241,18 +267,29 @@ A series of contract state objects, indexed by the contract name as declared in 
 The contract's state also includes the state of each constant function called on the contract (`callerFunctionName`). The functions are indexed by name, and contain the outputs indexed by a hash of the arguments passed during the call (`argsHash`). If no arguments were passed, the hash is `0x0`. Drizzle reads from the store for you, so it should be unnecessary to touch this data cache manually.
 
 `args` (array): Arguments passed to function call.
-
 `value` (mixed): Value returned from function call.
 
-### `transactions` (object)
+### `currentBlock` (object)
+An object the latest block as an object resulting from [`web3.getBlock()`](https://web3js.readthedocs.io/en/1.0/web3-eth.html#getblock). This is updated once the block is received from a subscription or fetched via polling, but before any processing takes place.
+
+## `drizzleStatus` (object)
+An object containing information about the status of Drizzle.
+
+`initialized` (boolean): `true` once:
+*   `web3` is found or instantiated
+*   Account addresses are stored in state
+*   All contracts are instantiated
+
+### `initialized` (boolean)
+`false` by default, becomes true once a `web3` instance is found and the accounts and contracts are fetched.
+
+## `transactions` (object)
 A series of transaction objects, indexed by transaction hash.
 
-#### `txHash` (object)
+### `txHash` (object)
 
 `confirmations` (array): After the initial receipt, further confirmation receipts (up to the 24th).
-
 `error` (object): contains the returned error if any.
-
 `receipt` (object): contains the first transaction receipt received from a transaction's `success` event.
 
 `status` (string): `true` or `false` depending on transaction status
@@ -262,18 +299,10 @@ A series of transaction objects, indexed by transaction hash.
 
 For more in-depth information on the Ethereum transaction lifecycle, [check out this great blog post](https://medium.com/blockchannel/life-cycle-of-an-ethereum-transaction-e5c66bae0f6e).
 
-### `transactionStack` (array)
-In some cases, a transaction may be malformed and not even make it to being broadcasted. To keep track of this, an empty string will be added to this array and replaced with the transaction hash once broascasted. The `cacheSend()` method will return a `stackId`, which will allow you to observe this process for your own transaction status indicator UI.
+## `transactionStack` (array)
+In cases where a user cancels a transaction or the transaction is malformed and unable to be broadcasted, it won't receive a hash. To keep track of these cases, a temporary ID will be added to this array and replaced with the transaction hash once broadcasted. The `cacheSend()` method will return a `stackId`, which will allow you get the temporary ID to observe this process for your own transaction status indicator UI.
 
-### `drizzleStatus` (object)
-An object containing information about the status of Drizzle.
-
-#### `initialized` (boolean): `true` once:
-*   `web3` is found or instantiated
-*   Account addresses are stored in state
-*   All contracts are instantiated
-
-### `web3` (object)
+## `web3` (object)
 
 `status` (string): `initializing`, `initialized` and `failed` are possible options. Useful for triggering warnings if `web3` fails to instantiate.
 
