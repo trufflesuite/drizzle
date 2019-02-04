@@ -3,3 +3,5 @@ node_js:
   - "node"
   - "--lts"
 cache: npm
+install:
+  - npm install https://github.com/frozeman/WebSocket-Node#browserifyCompatible
