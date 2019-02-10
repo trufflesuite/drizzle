@@ -1,4 +1,5 @@
 import { generateContractInitialState } from '../generateContractInitialState'
+import * as EventActions from './constants'
 
 const initialState = {}
 
@@ -109,7 +110,7 @@ const contractsReducer = (state = initialState, action) => {
    * Contract Events
    */
 
-  if (action.type === 'EVENT_FIRED') {
+  if (action.type === EventActions.EVENT_FIRED) {
     return {
       ...state,
       [action.name]: {
