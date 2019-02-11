@@ -1,6 +1,6 @@
 import Drizzle from './Drizzle.js'
 import { generateStore } from './generateStore'
-import { generateContractsInitialState } from './generateContractsInitialState'
+import { generateContractsInitialState } from './contractStateUtils'
 
 // Events
 import * as EventActions from './contracts/constants'
