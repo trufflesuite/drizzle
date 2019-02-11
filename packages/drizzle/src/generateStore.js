@@ -3,7 +3,7 @@ import { createStore, applyMiddleware, compose, combineReducers } from 'redux'
 import createSagaMiddleware from 'redux-saga'
 import drizzleSagas from './rootSaga'
 import drizzleReducers from './reducer'
-import { generateContractsInitialState } from './generateContractsInitialState'
+import { generateContractsInitialState } from './contractStateUtils'
 
 const composeSagas = sagas =>
   function*() {

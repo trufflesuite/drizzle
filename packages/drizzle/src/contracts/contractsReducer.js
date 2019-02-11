@@ -1,4 +1,4 @@
-import { generateContractInitialState } from '../generateContractInitialState'
+import { generateContractInitialState } from '../contractStateUtils'
 import * as EventActions from './constants'
 
 const initialState = {}
