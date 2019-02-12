@@ -13,16 +13,33 @@ class ContractData extends Component {
     // Fetch initial value from chain and return cache key for reactive updates.
     var methodArgs = this.props.methodArgs ? this.props.methodArgs : []
 
+    this.contracts = context.drizzle.contracts
     this.state = {
       dataKey: this.contracts[this.props.contract].methods[
         this.props.method
       ].cacheCall(...methodArgs)
     }
 
-    this.contracts = context.drizzle.contracts
-
     // Get the contract ABI
     const abi = this.contracts[this.props.contract].abi
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { methodArgs, contract, method } = this.props
+
+    const didContractChange = contract !== nextProps.contract
+    const didMethodChange = method !== nextProps.method
+    const didArgsChange =
+      methodArgs &&
+      JSON.stringify(methodArgs) !== JSON.stringify(nextProps.methodArgs)
+
+    if (didContractChange || didMethodChange || didArgsChange) {
+      this.setState({
+        dataKey: this.contracts[nextProps.contract].methods[
+          nextProps.method
+        ].cacheCall(...nextProps.methodArgs)
+      })
+    }
   }
 
   render() {
