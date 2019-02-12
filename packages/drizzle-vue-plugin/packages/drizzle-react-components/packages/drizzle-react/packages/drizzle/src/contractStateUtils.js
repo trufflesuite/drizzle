@@ -21,6 +21,5 @@ export const generateContractInitialState = contractConfig =>
 export const generateContractsInitialState = options =>
   options.contracts.reduce((state, contract) => {
     state[contract.contractName] = generateContractInitialState(contract)
-    console.log('state', state)
     return state
   }, {})
