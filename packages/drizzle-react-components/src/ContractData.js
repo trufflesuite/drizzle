@@ -30,7 +30,6 @@ class ContractData extends Component {
     const didContractChange = contract !== nextProps.contract
     const didMethodChange = method !== nextProps.method
     const didArgsChange =
-      methodArgs &&
       JSON.stringify(methodArgs) !== JSON.stringify(nextProps.methodArgs)
 
     if (didContractChange || didMethodChange || didArgsChange) {
