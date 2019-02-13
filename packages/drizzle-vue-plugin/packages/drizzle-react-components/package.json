@@ -27,6 +27,8 @@
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-react": "^6.24.1",
+    "drizzle": "^1.2.4",
+    "drizzle-react": "^1.2.0",
     "react-redux": "^5.0.6",
     "uglifyjs-webpack-plugin": "^1.2.4",
     "webpack": "^3.5.3"
