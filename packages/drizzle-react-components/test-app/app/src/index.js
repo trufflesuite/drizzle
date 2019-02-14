@@ -1,8 +1,8 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import './index.css'
-import App from './react-15/App'
-// import App from './react-16.3/App';
+// import App from './react-15/App';
+import App from './react-16.3/App'
 import * as serviceWorker from './serviceWorker'
 
 ReactDOM.render(<App />, document.getElementById('root'))
