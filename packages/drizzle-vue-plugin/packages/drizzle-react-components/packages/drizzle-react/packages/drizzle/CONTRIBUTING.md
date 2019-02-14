@@ -18,7 +18,6 @@ Contents
   - [Forks, Branches, and Pull Requests](#forks-branches-and-pull-requests)
     - [Branching Model](#branching-model)
     - [Working on a Branch](#working-on-a-branch)
-    - [The dist/ Directory](#the-dist-directory)
 
 [Additional Notes](#additional-notes)
 
@@ -77,7 +76,7 @@ To use this in a project, use `npm link`:
     $ cd my-project-root
     $ npm link drizzle
 
-You're ready to use your local developement version of Drizzle in your project.
+You're ready to use your local development version of Drizzle in your project.
 
 ### Forks, Branches, and Pull Requests
 
