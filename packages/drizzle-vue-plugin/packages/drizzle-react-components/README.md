@@ -34,3 +34,19 @@ This component wraps your entire app (but within the DrizzleProvider) and will s
 `sendArgs` (object) An object specifying options for the transaction to be sent; namely: `from`, `gasPrice`, `gas` and `value`. Further explanataion of these parameters can be found [here in the web3 documentation](https://web3js.readthedocs.io/en/1.0/web3-eth-contract.html#id19).
 
 `labels` (array) Custom labels; will follow ABI input ordering. Useful for friendlier names. For example "_to" becoming "Recipient Address".
+
+## Test App
+
+A test app has been included at `./test-app`. 
+
+### Installation
+
+1. `cd ./test-app`
+1. Install dependencies: `npm install`
+1. Start your development blockchain: `truffle develop`
+1. (In Truffle develop console) Compile contracts: `compile` 
+1. (In Truffle develop console) Migrate contracts: `migrate`
+1. In another terminal window: `cd ./app`
+1. Install dependencies: `npm install`
+1. Start dev server: `npm start`
+
