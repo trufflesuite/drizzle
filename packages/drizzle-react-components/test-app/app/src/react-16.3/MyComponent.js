@@ -3,7 +3,7 @@ import { newContextComponents } from 'drizzle-react-components'
 import { DrizzleContext } from 'drizzle-react'
 import logo from '../logo.png'
 
-const { AccountData, ContractData } = newContextComponents
+const { AccountData, ContractData, ContractForm } = newContextComponents
 
 export default ({ accounts }) => (
   <DrizzleContext.Consumer>
@@ -49,6 +49,12 @@ export default ({ accounts }) => (
                 method="storedData"
               />
             </p>
+            <ContractForm
+              drizzle={drizzle}
+              drizzleState={drizzleState}
+              contract="SimpleStorage"
+              method="set"
+            />
           </div>
         </div>
       )
