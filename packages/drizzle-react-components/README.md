@@ -50,3 +50,5 @@ A test app has been included at `./test-app`.
 1. Install dependencies: `npm install`
 1. Start dev server: `npm start`
 
+NOTE: Make sure to `migrate --reset` your contracts and reset your Metamask account when switching between test apps, otherwise errors may occur.
+
