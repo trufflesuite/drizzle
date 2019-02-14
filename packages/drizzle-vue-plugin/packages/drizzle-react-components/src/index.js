@@ -2,9 +2,9 @@ import AccountData from './AccountData.js'
 import ContractData from './ContractData.js'
 import ContractForm from './ContractForm.js'
 import LoadingContainer from './LoadingContainer.js'
-import AccountDataNew from './react-16.3/AccountData'
-import ContractDataNew from './react-16.3/ContractData'
-import ContractFormNew from './react-16.3/ContractForm'
+import AccountDataNew from './new-context-api/AccountData'
+import ContractDataNew from './new-context-api/ContractData'
+import ContractFormNew from './new-context-api/ContractForm'
 
 const newContextComponents = {
   AccountData: AccountDataNew,
