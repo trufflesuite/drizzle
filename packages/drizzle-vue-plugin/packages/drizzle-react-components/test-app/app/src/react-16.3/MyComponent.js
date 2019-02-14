@@ -3,7 +3,7 @@ import { newContextComponents } from 'drizzle-react-components'
 import { DrizzleContext } from 'drizzle-react'
 import logo from '../logo.png'
 
-const { AccountData } = newContextComponents
+const { AccountData, ContractData } = newContextComponents
 
 export default ({ accounts }) => (
   <DrizzleContext.Consumer>
@@ -32,6 +32,23 @@ export default ({ accounts }) => (
               units="ether"
               precision="3"
             />
+          </div>
+
+          <div className="section">
+            <h2>SimpleStorage</h2>
+            <p>
+              This shows a simple ContractData component with no arguments,
+              along with a form to set its value.
+            </p>
+            <p>
+              <strong>Stored Value: </strong>
+              <ContractData
+                drizzle={drizzle}
+                drizzleState={drizzleState}
+                contract="SimpleStorage"
+                method="storedData"
+              />
+            </p>
           </div>
         </div>
       )
