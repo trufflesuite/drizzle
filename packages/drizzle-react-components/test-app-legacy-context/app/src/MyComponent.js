@@ -1,11 +1,11 @@
-import React from 'react'
+import React from "react";
 import {
   AccountData,
   ContractData,
-  ContractForm
-} from 'drizzle-react-components'
+  ContractForm,
+} from "drizzle-react-components";
 
-import logo from '../logo.png'
+import logo from "./logo.png";
 
 export default ({ accounts }) => (
   <div className="App">
@@ -47,7 +47,7 @@ export default ({ accounts }) => (
           contract="TutorialToken"
           method="totalSupply"
           methodArgs={[{ from: accounts[0] }]}
-        />{' '}
+        />{" "}
         <ContractData contract="TutorialToken" method="symbol" hideIndicator />
       </p>
       <p>
@@ -62,7 +62,7 @@ export default ({ accounts }) => (
       <ContractForm
         contract="TutorialToken"
         method="transfer"
-        labels={['To Address', 'Amount to Send']}
+        labels={["To Address", "Amount to Send"]}
       />
     </div>
     <div className="section">
@@ -84,4 +84,4 @@ export default ({ accounts }) => (
       <ContractData contract="ComplexStorage" method="singleDD" />
     </div>
   </div>
-)
+);

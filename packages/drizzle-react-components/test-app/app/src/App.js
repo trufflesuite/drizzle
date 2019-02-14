@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import { Drizzle, generateStore } from 'drizzle';
 import { DrizzleContext } from "drizzle-react";
 
-import "../App.css";
+import "./App.css";
 
-import drizzleOptions from "../drizzleOptions";
+import drizzleOptions from "./drizzleOptions";
 import MyComponent from "./MyComponent";
 
 const drizzleStore = generateStore(drizzleOptions);
