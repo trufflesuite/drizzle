@@ -8,7 +8,7 @@ import ContractFormNew from './react-16.3/ContractForm'
 
 const newContextComponents = {
   AccountData: AccountDataNew,
-  ContractData: ContractDataNew
+  ContractData: ContractDataNew,
   ContractForm: ContractFormNew
 }
 
