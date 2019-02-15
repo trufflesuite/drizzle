@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Drizzle, generateStore } from 'drizzle'
+import { Drizzle } from 'drizzle'
 import { DrizzleContext } from 'drizzle-react'
 
 import './App.css'
