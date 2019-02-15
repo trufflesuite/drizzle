@@ -41,5 +41,16 @@
     "react-redux": "^5.0.6",
     "uglifyjs-webpack-plugin": "^1.2.4",
     "webpack": "^3.5.3"
+  },
+  "lint-staged": {
+    "*.js": [
+      "eslint --fix",
+      "git add"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   }
 }
