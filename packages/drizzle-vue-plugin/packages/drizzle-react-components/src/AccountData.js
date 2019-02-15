@@ -7,7 +7,7 @@ import PropTypes from 'prop-types'
  */
 
 class AccountData extends Component {
-  constructor(props, context) {
+  constructor(props) {
     super(props)
 
     this.precisionRound = this.precisionRound.bind(this)
@@ -57,6 +57,14 @@ class AccountData extends Component {
 
 AccountData.contextTypes = {
   drizzle: PropTypes.object
+}
+
+AccountData.propTypes = {
+  accounts: PropTypes.arrayOf(PropTypes.string),
+  accountBalances: PropTypes.arrayOf(PropTypes.string),
+  accountIndex: PropTypes.number.isRequired,
+  units: PropTypes.string,
+  precision: PropTypes.number
 }
 
 /*
