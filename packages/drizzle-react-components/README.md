@@ -3,9 +3,9 @@ A set of useful components for common UI elements.
 
 ## Components
 
-We provide components that support the React 16.3+ context and also the legacy context . The legacy context components will be deprecated in 2.0 with breaking changes in the `drizzle-react-components` API.
+We provide components that support the React 16.3+ context API and also the legacy context API. The legacy context components will be deprecated in 2.0 with breaking changes to the `drizzle-react-components` API. We recommend that users go with the new context components where possible.
 
-Currently this is how you import them:
+For 1.x.x this is how you import the different components:
 
 ### React 16.3+ Context Components
 
