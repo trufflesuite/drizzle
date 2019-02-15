@@ -8,9 +8,9 @@ import PropTypes from 'prop-types'
 
 class AccountData extends Component {
   constructor(props, context) {
-    super(props);
+    super(props)
 
-    this.precisionRound = this.precisionRound.bind(this);
+    this.precisionRound = this.precisionRound.bind(this)
   }
 
   precisionRound(number, precision) {
@@ -20,20 +20,23 @@ class AccountData extends Component {
 
   render() {
     // No accounts found.
-    if(Object.keys(this.props.accounts).length === 0) {
-      return (
-        <span>Initializing...</span>
-      )
+    if (Object.keys(this.props.accounts).length === 0) {
+      return <span>Initializing...</span>
     }
 
     // Get account address and balance.
     const address = this.props.accounts[this.props.accountIndex]
     var balance = this.props.accountBalances[address]
-    const units = this.props.units ? this.props.units.charAt(0).toUpperCase() + this.props.units.slice(1) : 'Wei'
+    const units = this.props.units
+      ? this.props.units.charAt(0).toUpperCase() + this.props.units.slice(1)
+      : 'Wei'
 
     // Convert to given units.
     if (this.props.units && typeof balance !== 'undefined') {
-      balance = this.context.drizzle.web3.utils.fromWei(balance, this.props.units)
+      balance = this.context.drizzle.web3.utils.fromWei(
+        balance,
+        this.props.units
+      )
     }
 
     // Adjust to given precision.
@@ -41,10 +44,12 @@ class AccountData extends Component {
       balance = this.precisionRound(balance, this.props.precision)
     }
 
-    return(
+    return (
       <div>
         <h4>{address}</h4>
-        <p>{balance} {units}</p>
+        <p>
+          {balance} {units}
+        </p>
       </div>
     )
   }
@@ -61,7 +66,7 @@ AccountData.contextTypes = {
 const mapStateToProps = state => {
   return {
     accounts: state.accounts,
-    accountBalances: state.accountBalances    
+    accountBalances: state.accountBalances
   }
 }
 
