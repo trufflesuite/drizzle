@@ -3,7 +3,33 @@ A set of useful components for common UI elements.
 
 ## Components
 
-### LoadingContainer
+We provide components that support the React 16.3+ context API and also the legacy context API. The legacy context components will be deprecated in 2.0 with breaking changes to the `drizzle-react-components` API. We recommend usage of the new context components where possible.
+
+For 1.x.x this is how you import the different components:
+
+### React 16.3+ Context Components
+
+```
+import { newContextComponents } from "drizzle-react-components";
+const { AccountData, ContractData, ContractForm } = newContextComponents;
+```
+
+Note that `LoadingContainer` is not provided with the new context components.
+
+### Legacy Context Components
+
+```
+import {
+  AccountData,
+  ContractData,
+  ContractForm,
+  LoadingContainer
+} from "drizzle-react-components";
+```
+
+Refer to the included [test apps](#test-apps) for usage examples.
+
+### LoadingContainer (Legacy only)
 
 This component wraps your entire app (but within the DrizzleProvider) and will show a loading screen until Drizzle, and therefore web3 and your contracts, are initialized.
 
@@ -35,9 +61,9 @@ This component wraps your entire app (but within the DrizzleProvider) and will s
 
 `labels` (array) Custom labels; will follow ABI input ordering. Useful for friendlier names. For example "_to" becoming "Recipient Address".
 
-## Test App
+## Test Apps
 
-A test app has been included at `./test-app`. 
+A test app targeting the React 16.3+ context API has been included at `./test-app`. And one targeting the legacy context API can be found at `test-app-legacy-context`.
 
 ### Installation
 
@@ -49,4 +75,6 @@ A test app has been included at `./test-app`.
 1. In another terminal window: `cd ./app`
 1. Install dependencies: `npm install`
 1. Start dev server: `npm start`
+
+NOTE: Make sure to `migrate --reset` your contracts and reset your Metamask account when switching between test apps, otherwise errors may occur.
 
