@@ -51,4 +51,12 @@ class AccountData extends Component {
   }
 }
 
+AccountData.propTypes = {
+  drizzle: PropTypes.object.isRequired,
+  drizzleState: PropTypes.object.isRequired,
+  accountIndex: PropTypes.number.isRequired,
+  units: PropTypes.string,
+  precision: PropTypes.number
+}
+
 export default AccountData
