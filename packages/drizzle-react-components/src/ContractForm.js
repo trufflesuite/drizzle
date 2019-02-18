@@ -33,7 +33,8 @@ class ContractForm extends Component {
     this.state = initialState;
   }
 
-  handleSubmit() {
+  handleSubmit(event) {
+    event.preventDefault();
     if (this.props.sendArgs) {
       return this.contracts[this.props.contract].methods[
         this.props.method
@@ -64,7 +65,7 @@ class ContractForm extends Component {
 
   render() {
     return (
-      <form className="pure-form pure-form-stacked">
+      <form className="pure-form pure-form-stacked" onSubmit={this.handleSubmit}>
         {this.inputs.map((input, index) => {
           var inputType = this.translateType(input.type);
           var inputLabel = this.props.labels
