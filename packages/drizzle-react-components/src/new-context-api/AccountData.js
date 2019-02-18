@@ -1,4 +1,3 @@
-import { drizzleConnect } from "drizzle-react";
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 
@@ -16,20 +15,20 @@ class AccountData extends Component {
 
   render() {
     // No accounts found.
-    if (Object.keys(this.props.accounts).length === 0) {
+    if (Object.keys(this.props.drizzleState.accounts).length === 0) {
       return <span>Initializing...</span>;
     }
 
     // Get account address and balance.
-    const address = this.props.accounts[this.props.accountIndex];
-    var balance = this.props.accountBalances[address];
+    const address = this.props.drizzleState.accounts[this.props.accountIndex];
+    var balance = this.props.drizzleState.accountBalances[address];
     const units = this.props.units
       ? this.props.units.charAt(0).toUpperCase() + this.props.units.slice(1)
       : "Wei";
 
     // Convert to given units.
     if (this.props.units && typeof balance !== "undefined") {
-      balance = this.context.drizzle.web3.utils.fromWei(
+      balance = this.props.drizzle.web3.utils.fromWei(
         balance,
         this.props.units,
       );
@@ -51,27 +50,12 @@ class AccountData extends Component {
   }
 }
 
-AccountData.contextTypes = {
-  drizzle: PropTypes.object,
-};
-
 AccountData.propTypes = {
-  accounts: PropTypes.arrayOf(PropTypes.string),
-  accountBalances: PropTypes.arrayOf(PropTypes.string),
+  drizzle: PropTypes.object.isRequired,
+  drizzleState: PropTypes.object.isRequired,
   accountIndex: PropTypes.number.isRequired,
   units: PropTypes.string,
   precision: PropTypes.number,
 };
 
-/*
- * Export connected component.
- */
-
-const mapStateToProps = state => {
-  return {
-    accounts: state.accounts,
-    accountBalances: state.accountBalances,
-  };
-};
-
-export default drizzleConnect(AccountData, mapStateToProps);
+export default AccountData;
