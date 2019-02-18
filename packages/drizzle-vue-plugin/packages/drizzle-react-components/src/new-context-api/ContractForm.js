@@ -1,16 +1,14 @@
-import { drizzleConnect } from "drizzle-react";
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 
 class ContractForm extends Component {
-  constructor(props, context) {
+  constructor(props) {
     super(props);
 
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
 
-    this.contracts = context.drizzle.contracts;
-    this.utils = context.drizzle.web3.utils;
+    this.contracts = props.drizzle.contracts;
 
     // Get the contract ABI
     const abi = this.contracts[this.props.contract].abi;
@@ -35,22 +33,15 @@ class ContractForm extends Component {
   }
 
   handleSubmit() {
-    const convertedInputs = this.inputs.map((input, index) => {
-      if (input.type === 'bytes32') {
-        return this.utils.toHex(this.state[input.name])
-      }
-      return this.state[input.name];
-    })
-
     if (this.props.sendArgs) {
       return this.contracts[this.props.contract].methods[
         this.props.method
-      ].cacheSend(...convertedInputs, this.props.sendArgs);
+      ].cacheSend(...Object.values(this.state), this.props.sendArgs);
     }
 
-    return this.contracts[this.props.contract].methods[
-      this.props.method
-    ].cacheSend(...convertedInputs);
+    this.contracts[this.props.contract].methods[this.props.method].cacheSend(
+      ...Object.values(this.state),
+    );
   }
 
   handleInputChange(event) {
@@ -103,25 +94,12 @@ class ContractForm extends Component {
   }
 }
 
-ContractForm.contextTypes = {
-  drizzle: PropTypes.object,
-};
-
 ContractForm.propTypes = {
+  drizzle: PropTypes.object.isRequired,
   contract: PropTypes.string.isRequired,
   method: PropTypes.string.isRequired,
   sendArgs: PropTypes.object,
   labels: PropTypes.arrayOf(PropTypes.string),
 };
 
-/*
- * Export connected component.
- */
-
-const mapStateToProps = state => {
-  return {
-    contracts: state.contracts,
-  };
-};
-
-export default drizzleConnect(ContractForm, mapStateToProps);
+export default ContractForm;
