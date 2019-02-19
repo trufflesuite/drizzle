@@ -1,15 +1,14 @@
-import { drizzleConnect } from "drizzle-react";
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 
 class ContractData extends Component {
-  constructor(props, context) {
+  constructor(props) {
     super(props);
 
     // Fetch initial value from chain and return cache key for reactive updates.
     var methodArgs = this.props.methodArgs ? this.props.methodArgs : [];
 
-    this.contracts = context.drizzle.contracts;
+    this.contracts = props.drizzle.contracts;
     this.state = {
       dataKey: this.contracts[this.props.contract].methods[
         this.props.method
@@ -17,8 +16,7 @@ class ContractData extends Component {
     };
   }
 
-  // Will not fix legacy component
-  // eslint-disable-next-line react/no-deprecated
+  // TODO refactor this
   componentWillReceiveProps(nextProps) {
     const { methodArgs, contract, method } = this.props;
 
@@ -37,8 +35,10 @@ class ContractData extends Component {
   }
 
   render() {
+    const { drizzle, drizzleState } = this.props;
+
     // Contract is not yet intialized.
-    if (!this.props.contracts[this.props.contract].initialized) {
+    if (!drizzleState.contracts[this.props.contract].initialized) {
       return <span>Initializing...</span>;
     }
 
@@ -46,14 +46,14 @@ class ContractData extends Component {
     if (
       !(
         this.state.dataKey in
-        this.props.contracts[this.props.contract][this.props.method]
+        drizzleState.contracts[this.props.contract][this.props.method]
       )
     ) {
       return <span>Fetching...</span>;
     }
 
     // Show a loading spinner for future updates.
-    var pendingSpinner = this.props.contracts[this.props.contract].synced
+    var pendingSpinner = drizzleState.contracts[this.props.contract].synced
       ? ""
       : " 🔄";
 
@@ -62,18 +62,19 @@ class ContractData extends Component {
       pendingSpinner = "";
     }
 
-    var displayData = this.props.contracts[this.props.contract][
-      this.props.method
-    ][this.state.dataKey].value;
+    var displayData =
+      drizzleState.contracts[this.props.contract][this.props.method][
+        this.state.dataKey
+      ].value;
 
     // Optionally convert to UTF8
     if (this.props.toUtf8) {
-      displayData = this.context.drizzle.web3.utils.hexToUtf8(displayData);
+      displayData = drizzle.web3.utils.hexToUtf8(displayData);
     }
 
     // Optionally convert to Ascii
     if (this.props.toAscii) {
-      displayData = this.context.drizzle.web3.utils.hexToAscii(displayData);
+      displayData = drizzle.web3.utils.hexToAscii(displayData);
     }
 
     // If return value is an array
@@ -120,12 +121,9 @@ class ContractData extends Component {
   }
 }
 
-ContractData.contextTypes = {
-  drizzle: PropTypes.object,
-};
-
 ContractData.propTypes = {
-  contracts: PropTypes.array.isRequired,
+  drizzle: PropTypes.object.isRequired,
+  drizzleState: PropTypes.object.isRequired,
   contract: PropTypes.string.isRequired,
   method: PropTypes.string.isRequired,
   methodArgs: PropTypes.array,
@@ -134,14 +132,4 @@ ContractData.propTypes = {
   toAscii: PropTypes.bool,
 };
 
-/*
- * Export connected component.
- */
-
-const mapStateToProps = state => {
-  return {
-    contracts: state.contracts,
-  };
-};
-
-export default drizzleConnect(ContractData, mapStateToProps);
+export default ContractData;
