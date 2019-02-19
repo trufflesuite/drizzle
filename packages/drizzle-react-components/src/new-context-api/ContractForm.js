@@ -1,81 +1,83 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 
 class ContractForm extends Component {
   constructor(props) {
-    super(props)
+    super(props);
 
-    this.handleInputChange = this.handleInputChange.bind(this)
-    this.handleSubmit = this.handleSubmit.bind(this)
+    this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
 
-    this.contracts = props.drizzle.contracts
+    this.contracts = props.drizzle.contracts;
 
     // Get the contract ABI
-    const abi = this.contracts[this.props.contract].abi
+    const abi = this.contracts[this.props.contract].abi;
 
-    this.inputs = []
-    var initialState = {}
+    this.inputs = [];
+    var initialState = {};
 
     // Iterate over abi for correct function.
     for (var i = 0; i < abi.length; i++) {
       if (abi[i].name === this.props.method) {
-        this.inputs = abi[i].inputs
+        this.inputs = abi[i].inputs;
 
         for (var j = 0; j < this.inputs.length; j++) {
-          initialState[this.inputs[j].name] = ''
+          initialState[this.inputs[j].name] = "";
         }
 
-        break
+        break;
       }
     }
 
-    this.state = initialState
+    this.state = initialState;
   }
 
-  handleSubmit() {
+  handleSubmit(event) {
+    event.preventDefault();
+
     const convertedInputs = this.inputs.map((input, index) => {
       if (input.type === 'bytes32') {
         return this.utils.toHex(this.state[input.name])
       }
-      return this.state[input.name]
+      return this.state[input.name];
     })
 
     if (this.props.sendArgs) {
       return this.contracts[this.props.contract].methods[
         this.props.method
-      ].cacheSend(...convertedInputs, this.props.sendArgs)
+      ].cacheSend(...convertedInputs, this.props.sendArgs);
     }
 
     return this.contracts[this.props.contract].methods[
       this.props.method
-    ].cacheSend(...convertedInputs)
+    ].cacheSend(...convertedInputs);
   }
 
   handleInputChange(event) {
-    this.setState({ [event.target.name]: event.target.value })
+    this.setState({ [event.target.name]: event.target.value });
   }
 
   translateType(type) {
     switch (true) {
       case /^uint/.test(type):
-        return 'number'
+        return "number";
       case /^string/.test(type) || /^bytes/.test(type):
-        return 'text'
+        return "text";
       case /^bool/.test(type):
-        return 'checkbox'
+        return "checkbox";
       default:
-        return 'text'
+        return "text";
     }
   }
 
   render() {
     return (
-      <form className="pure-form pure-form-stacked">
+      <form className="pure-form pure-form-stacked" onSubmit={this.handleSubmit}>
         {this.inputs.map((input, index) => {
-          var inputType = this.translateType(input.type)
+          var inputType = this.translateType(input.type);
           var inputLabel = this.props.labels
             ? this.props.labels[index]
-            : input.name
+            : input.name;
           // check if input type is struct and if so loop out struct fields as well
           return (
             <input
@@ -86,7 +88,7 @@ class ContractForm extends Component {
               placeholder={inputLabel}
               onChange={this.handleInputChange}
             />
-          )
+          );
         })}
         <button
           key="submit"
@@ -97,7 +99,7 @@ class ContractForm extends Component {
           Submit
         </button>
       </form>
-    )
+    );
   }
 }
 
@@ -106,7 +108,7 @@ ContractForm.propTypes = {
   contract: PropTypes.string.isRequired,
   method: PropTypes.string.isRequired,
   sendArgs: PropTypes.object,
-  labels: PropTypes.arrayOf(PropTypes.string)
-}
+  labels: PropTypes.arrayOf(PropTypes.string),
+};
 
-export default ContractForm
+export default ContractForm;
