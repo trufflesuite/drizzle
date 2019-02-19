@@ -32,17 +32,25 @@ class ContractForm extends Component {
     this.state = initialState;
   }
 
-  handleSubmit() {
+  handleSubmit(event) {
     event.preventDefault();
+
+    const convertedInputs = this.inputs.map((input, index) => {
+      if (input.type === 'bytes32') {
+        return this.utils.toHex(this.state[input.name])
+      }
+      return this.state[input.name];
+    })
+
     if (this.props.sendArgs) {
       return this.contracts[this.props.contract].methods[
         this.props.method
-      ].cacheSend(...Object.values(this.state), this.props.sendArgs);
+      ].cacheSend(...convertedInputs, this.props.sendArgs);
     }
 
-    this.contracts[this.props.contract].methods[this.props.method].cacheSend(
-      ...Object.values(this.state),
-    );
+    return this.contracts[this.props.contract].methods[
+      this.props.method
+    ].cacheSend(...convertedInputs);
   }
 
   handleInputChange(event) {
