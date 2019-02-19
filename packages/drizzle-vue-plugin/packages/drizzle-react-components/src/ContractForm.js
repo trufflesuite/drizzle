@@ -34,7 +34,9 @@ class ContractForm extends Component {
     this.state = initialState;
   }
 
-  handleSubmit() {
+  handleSubmit(event) {
+    event.preventDefault();
+
     const convertedInputs = this.inputs.map((input, index) => {
       if (input.type === 'bytes32') {
         return this.utils.toHex(this.state[input.name])
@@ -72,7 +74,7 @@ class ContractForm extends Component {
 
   render() {
     return (
-      <form className="pure-form pure-form-stacked">
+      <form className="pure-form pure-form-stacked" onSubmit={this.handleSubmit}>
         {this.inputs.map((input, index) => {
           var inputType = this.translateType(input.type);
           var inputLabel = this.props.labels
