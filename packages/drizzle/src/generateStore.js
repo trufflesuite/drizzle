@@ -30,8 +30,18 @@ export function generateStore({
   appSagas = [],
   appMiddlewares = [],
   initialAppState = {},
-  disableReduxDevTools = false
+  disableReduxDevTools = false,
+  ...options
 }) {
+  // oh boy! Not elegant, 不好！
+  // Note: This is for backwards compatibility. Pre version(todo: insert
+  // version) of generate had a signature of `generateStore(options)`.
+  //
+  // This hack of {...options} exists to capture usage of prior versions. The
+  // following line checks for the newer drizzleOptions and falls back to the
+  // rest-constructed options variable
+  //
+  drizzleOptions = drizzleOptions || options
   // Redux DevTools
   const composeEnhancers = !disableReduxDevTools
     ? global.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
