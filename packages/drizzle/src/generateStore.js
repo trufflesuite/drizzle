@@ -16,9 +16,8 @@ const composeSagas = sagas =>
  *
  * @param {object} config - The configuration object
  * @param {object} config.drizzleOptions - drizzle configuration object
- * @param {object} [config.reducers={}] - application level reducers to include in store
- * @param {object[]} [config.appSagas=[]] - application saga middlewares to include in store
- * @param {object[]} [config.appMiddlewares=[]] - application middlewares to include in store
+ * @param {object} [config.reducers={}] - application level reducers to include in drizzle's redux store
+ * @param {object[]} [config.appSagas=[]] - application sagas to be managed by drizzle's saga middleware
  * @param {object} [config.initialAppState={}] - application store tree initial value
  * @param {boolean} [config.disableReduxDevTools=false] - disable redux devtools hook
  * @returns {object} Redux store
@@ -28,41 +27,35 @@ export function generateStore({
   drizzleOptions,
   appReducers = {},
   appSagas = [],
-  appMiddlewares = [],
   initialAppState = {},
   disableReduxDevTools = false,
   ...options
 }) {
-  // oh boy! Not elegant, 不好！
-  // Note: This is for backwards compatibility. Pre version(todo: insert
-  // version) of generate had a signature of `generateStore(options)`.
+  // Note: Preserve backwards compatibility for passing options to `generageStore`.
+  // in drizzle v1.3.3 and prior of generate had a signature of `generateStore(options)`.
   //
-  // This hack of {...options} exists to capture usage of prior versions. The
-  // following line checks for the newer drizzleOptions and falls back to the
-  // rest-constructed options variable
+  // {...options} exists to capture previous signature. The following line
+  // checks for the newer drizzleOptions and falls back to the rest-constructed
+  // options variable.
   //
   drizzleOptions = drizzleOptions || options
-  // Redux DevTools
+
   const composeEnhancers = !disableReduxDevTools
     ? global.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
     : compose
 
-  // Preloaded state
-  let preloadedState = {
+  let initialState = {
     contracts: generateContractsInitialState(drizzleOptions),
     ...initialAppState
   }
 
   const sagaMiddleware = createSagaMiddleware()
-
-  // consolidate all redux middleware
-  const allMiddlewares = [sagaMiddleware, ...appMiddlewares]
-  // and reducers
+  const allMiddlewares = [sagaMiddleware]
   const allReducers = { ...drizzleReducers, ...appReducers }
 
   const store = createStore(
     combineReducers(allReducers),
-    preloadedState,
+    initialState,
     composeEnhancers(applyMiddleware(...allMiddlewares))
   )
 
