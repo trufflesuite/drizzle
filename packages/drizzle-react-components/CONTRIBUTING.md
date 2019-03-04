@@ -44,4 +44,4 @@ These tips will make it easier to review and eventually merge your PRs.
 
 1. Keep your PRs small and atomic. Only resolve the issue you are targetting. Don't mix refactors with features/bugfixes, it bloats the diff and makes it hard to see what code is related to the actual feature/bugfix.
 
-1. If it's a new feature, add an example implementation to the `test-app` and update `README.md`.
+1. If it's a new feature, add an example implementation to the `test-app` and `test-app-legacy-context` and update `README.md`.
