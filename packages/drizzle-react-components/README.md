@@ -39,6 +39,12 @@ This component wraps your entire app (but within the DrizzleProvider) and will s
 
 ### AccountData
 
+`accountIndex` (number, required) Index of account from which to retrieve balance.
+
+`units` (string) Unit to display either value in. Default is `wei`. See full list of units [here in the web3 documentation](https://web3js.readthedocs.io/en/1.0/web3-utils.html#fromwei).
+
+`precision` (number) The number of digits after the decimal point to display.
+
 ### ContractData
 
 `contract` (string, required) Name of the contract to call.
