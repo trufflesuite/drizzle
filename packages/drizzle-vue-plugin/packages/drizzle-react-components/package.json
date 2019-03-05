@@ -17,6 +17,10 @@
     "email": "josh@trufflesuite.com",
     "url": "http://truffleframework.com/"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/trufflesuite/drizzle-react-components"
+  },
   "license": "ISC",
   "dependencies": {
     "prop-types": "^15.5.10",
