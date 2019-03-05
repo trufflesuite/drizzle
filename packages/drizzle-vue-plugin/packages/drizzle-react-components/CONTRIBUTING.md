@@ -18,7 +18,7 @@ In order to develop Drizzle React Components (DRC), you'll need:
 First clone this repository and install NPM dependencies:
 
     $ git clone git@github.com:trufflesuite/drizzle-react-components.git
-    $ cd drizzle-react-componetns
+    $ cd drizzle-react-components
     $ npm install
 
 If all is good, then run the build command:
