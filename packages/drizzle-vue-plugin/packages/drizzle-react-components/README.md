@@ -14,7 +14,7 @@ import { newContextComponents } from "drizzle-react-components";
 const { AccountData, ContractData, ContractForm } = newContextComponents;
 ```
 
-Note that `LoadingContainer` is not provided with the new context components.
+`LoadingContainer` is not provided with the new context components currently. Also note that you must pass in `drizzle` and `drizzleState` for each of these components.
 
 ### Legacy Context Components
 
@@ -36,6 +36,14 @@ This component wraps your entire app (but within the DrizzleProvider) and will s
 `loadingComp` (component) The component displayed while Drizzle initializes.
 
 `errorComp` (component) The component displayed if Drizzle initialization fails.
+
+### AccountData
+
+`accountIndex` (number, required) Index of account from which to retrieve balance.
+
+`units` (string) Unit to display either value in. Default is `wei`. See full list of units [here in the web3 documentation](https://web3js.readthedocs.io/en/1.0/web3-utils.html#fromwei).
+
+`precision` (number) The number of digits after the decimal point to display.
 
 ### ContractData
 
