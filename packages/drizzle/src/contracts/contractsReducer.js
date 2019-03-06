@@ -80,7 +80,8 @@ const contractsReducer = (state = initialState, action) => {
             ...state[action.name][action.variable][action.argsHash],
             args: action.args,
             fnIndex: action.fnIndex,
-            value: action.value
+            value: action.value,
+            error: null
           }
         }
       }
@@ -98,6 +99,7 @@ const contractsReducer = (state = initialState, action) => {
             ...state[action.name][action.variable][action.argsHash],
             args: action.args,
             fnIndex: action.fnIndex,
+            value: null,
             error: action.error
           }
         }
