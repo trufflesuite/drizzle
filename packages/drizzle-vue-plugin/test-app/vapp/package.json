@@ -1,0 +1,30 @@
+{
+  "name": "vapp",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint"
+  },
+  "dependencies": {
+    "@drizzle/vue-plugin": "^0.1.0",
+    "drizzle": "^1.3.3",
+    "lodash": "^4.17.11",
+    "prettier": "^1.12.1",
+    "rxjs": "^6.4.0",
+    "rxjs-compat": "^6.4.0",
+    "vue": "^2.6.8",
+    "vuex": "^3.0.1"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^3.4.0",
+    "@vue/cli-plugin-eslint": "^3.4.0",
+    "@vue/cli-service": "^3.4.0",
+    "@vue/eslint-config-prettier": "^4.0.1",
+    "babel-eslint": "^10.0.1",
+    "eslint": "^5.15.0",
+    "eslint-plugin-vue": "^5.0.0",
+    "vue-template-compiler": "^2.6.8"
+  }
+}
