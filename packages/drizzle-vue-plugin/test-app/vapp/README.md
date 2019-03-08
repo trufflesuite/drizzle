@@ -1,25 +1,10 @@
 # Test app
 
 ## Project setup
-
-**NOTE** @drizzle/vue-plugin is not published on npm.
-
-To build in the interim:
-* Clone from [@drizzle/vue-plugin
-   repo](https://github.com/cds-consensys/drizzle-vue-plugin)
-
-   ```
-   $ git clone git@github.com:cds-consensys/drizzle-vue-plugin.github
-   $ cd drizzle-vue-plugin
-   $ npm install
-   $ npm run build:bundle
-   $ npm link
-   ```
-
-* Now from the root of the Test app
-    ```
-    $ npm link @drizzle/vue-plugin
-    ```
+```
+$ npm install
+$ npm run serve
+```
 
 ### Compiles and hot-reloads for development
 ```
