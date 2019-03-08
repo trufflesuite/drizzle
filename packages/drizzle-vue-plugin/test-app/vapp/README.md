@@ -1,8 +1,16 @@
 # Test app
 
+Background -
+
+1. web3 development - introduction to truffle and how we can isolate it to work on front end;
+1. one way - is to use `truffle develop` (port 9545) and to use incognito mode in chrome.
+
 ## Project setup
 ```
-$ npm install
+terminal 1: npm i && use truffle develop
+terminal 2: npmi && npm run serve
+use incognito window
+regular window - need accounts imported into MM
 $ npm run serve
 ```
 
