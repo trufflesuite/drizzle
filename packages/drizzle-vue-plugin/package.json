@@ -16,7 +16,6 @@
     "*.js",
     "*.md"
   ],
-
   "dependencies": {
     "drizzle": "^1.3.3",
     "lodash": "^4.17.11",
