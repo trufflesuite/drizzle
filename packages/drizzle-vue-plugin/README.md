@@ -51,24 +51,24 @@ drizzle-vue-plugin adapts [Drizzle](https://github.com/trufflesuite/drizzle) for
    ```js
    // main.js
 
-   mport Vue from 'vue'
-   mport App from './App.vue'
-   mport Vuex from 'vuex'
+   import Vue from 'vue'
+   import App from './App.vue'
+   import Vuex from 'vuex'
 
-   mport drizzleVuePlugin from 'TODO: TBD name of package'
-   mport drizzleOptions from './drizzleOptions'
+   import drizzleVuePlugin from 'TODO: TBD name of package'
+   import drizzleOptions from './drizzleOptions'
 
    // Register Vuex
-   ue.use(Vuex)
+   Vue.use(Vuex)
 
    // Create and configure your Vuex Store
-   onst store = new Vuex.Store({ state: {} })
+   const store = new Vuex.Store({ state: {} })
 
    // Register the drizzleVuePlugin
-   ue.use(drizzleVuePlugin, { store, drizzleOptions })
+   Vue.use(drizzleVuePlugin, { store, drizzleOptions })
 
    // Register the store instance with the Root Vue instance
-   ew Vue({
+   new Vue({
     store,
     render: h => h(App)
    ).$mount('#app')
