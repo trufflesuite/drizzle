@@ -1,38 +1,41 @@
 # Test app
 
-Background -
+## Background
 
-1. web3 development - introduction to truffle and how we can isolate it to work on front end;
-1. one way - is to use `truffle develop` (port 9545) and to use incognito mode in chrome.
+Truffle Suite has the tools to isolate and simulate an Ethereum node allowing
+you to concentrate on Front End development. In this setup we will use Truffle
+Developer Console to manage and deploy our Smart contracts to a test Ethereum
+node.
 
-## Project setup
+## Project Setup
+
+1. Start truffle develop console from the `test-app` folder
 ```
-terminal 1: npm i && use truffle develop
-terminal 2: npmi && npm run serve
-use incognito window
-regular window - need accounts imported into MM
+$ npx truffle develop
+
+```
+
+2. Compile and migrate the solidity contracts to the test environment. It is
+   successful when you see a summary with 4 total deployments.
+
+```
+truffle(develop)> migrate
+...
+...
+...
+Summary
+=======
+> Total deployments:   4
+> Final cost:          0.06728452 ETH
+
+truffle(develop)>
+```
+
+3. **In another terminal**, navigate to the `test-app/vapp` folder and start the
+   vue development server.
+
+```
 $ npm run serve
 ```
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build:bundle
-```
-
-### Run your tests
-```
-npm run test
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+Todo: Link to video or asciinema.
