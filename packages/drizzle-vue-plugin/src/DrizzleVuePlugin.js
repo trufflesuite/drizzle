@@ -41,9 +41,9 @@ const DrizzleVuePlugin = {
     // drizzle-accounts, drizzle-contracts, drizzle-contract-form ?
     // What's idomatic in Vue?
     //
-    Vue.component('Accounts', Accounts)
-    Vue.component('Contract', Contract)
-    Vue.component('ContractForm', ContractForm)
+    Vue.component('drizzle-account', Accounts)
+    Vue.component('drizzle-contract', Contract)
+    Vue.component('drizzle-contract-form', ContractForm)
   }
 }
 

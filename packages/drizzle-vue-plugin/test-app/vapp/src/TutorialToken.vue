@@ -1,14 +1,14 @@
 <template>
   <div v-if="isDrizzleInitialized">
-    <Contract contractName="TutorialToken" method="totalSupply" />
-    <Contract contractName="TutorialToken" method="symbol" />
-    <Contract
+    <drizzle-contract contractName="TutorialToken" method="totalSupply" />
+    <drizzle-contract contractName="TutorialToken" method="symbol" />
+    <drizzle-contract
       contractName="TutorialToken"
       method="balanceOf"
       :methodArgs="accounts"
     />
 
-    <ContractForm
+    <drizzle-contract-form
       contractName="TutorialToken"
       method="transfer"
       :labels="transferLabels"

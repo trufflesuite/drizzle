@@ -2,7 +2,7 @@
   <div v-if="isDrizzleInitialized" id="app">
     <img alt="Vue logo" src="./assets/logo.png" />
     <h2>Show the Accounts</h2>
-    <Accounts />
+    <drizzle-account />
 
     <h2>Tutorial Token</h2>
     <TutorialToken />

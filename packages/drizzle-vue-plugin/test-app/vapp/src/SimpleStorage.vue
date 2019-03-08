@@ -1,8 +1,8 @@
 <template>
   <div v-if="isDrizzleInitialized">
     <div>
-      <Contract contractName="SimpleStorage" method="storedData" />
-      <ContractForm contractName="SimpleStorage" method="set" />
+      <drizzle-contract contractName="SimpleStorage" method="storedData" />
+      <drizzle-contract-form contractName="SimpleStorage" method="set" />
     </div>
   </div>
 
