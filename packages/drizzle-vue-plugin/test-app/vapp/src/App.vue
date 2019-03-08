@@ -1,8 +1,9 @@
 <template>
   <div v-if="isDrizzleInitialized" id="app">
     <img alt="Vue logo" src="./assets/logo.png" />
+
     <h2>Show the Accounts</h2>
-    <drizzle-account />
+    <drizzle-account units="Ether" :precision="2" />
 
     <h2>Tutorial Token</h2>
     <TutorialToken />
