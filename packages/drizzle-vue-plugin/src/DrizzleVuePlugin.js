@@ -28,6 +28,7 @@ const DrizzleVuePlugin = {
 
     const drizzleInstance = new Drizzle(drizzleOptions)
     drizzleAdapterService(drizzleInstance)(store)
+    store.dispatch('drizzle/STARTUP', drizzleInstance)
 
     // TODO: More drizzle Specific component names
     // drizzle-accounts, drizzle-contracts, drizzle-contract-form ?
