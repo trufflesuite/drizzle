@@ -7,12 +7,10 @@ import Contract from './components/Contract'
 import ContractForm from './components/ContractForm'
 
 import { Drizzle } from 'drizzle'
-//import drizzleOptions from './drizzleOptions'
 import drizzleAdapterService from './store/DrizzleAdapterService'
 
 const DrizzleVuePlugin = {
   install(Vue, { store, drizzleOptions }) {
-    console.groupCollapsed('Drizzle Plugin Registration')
     if (!store) {
       throw new Error('Please provide a vuex store.')
     }
@@ -20,8 +18,6 @@ const DrizzleVuePlugin = {
     if (!drizzleOptions) {
       throw new Error('Please provide drizzle configuration (drizzleOptions).')
     }
-
-    console.log('Registering vuex store')
 
     // TODO: The inevetable name conflict will happen,
     //       come up with a better drizzle specific name
@@ -31,11 +27,7 @@ const DrizzleVuePlugin = {
     store.registerModule('drizzle', drizzleM)
 
     const drizzleInstance = new Drizzle(drizzleOptions)
-    const { subscriptions } = drizzleAdapterService(drizzleInstance)(store)
-    console.log('subscriptions', subscriptions)
-    store.dispatch('drizzle/STARTUP', drizzleInstance)
-
-    console.log('Registering Drizzle Components')
+    drizzleAdapterService(drizzleInstance)(store)
 
     // TODO: More drizzle Specific component names
     // drizzle-accounts, drizzle-contracts, drizzle-contract-form ?
@@ -44,8 +36,6 @@ const DrizzleVuePlugin = {
     Vue.component('Accounts', Accounts)
     Vue.component('Contract', Contract)
     Vue.component('ContractForm', ContractForm)
-
-    console.groupEnd()
   }
 }
 
