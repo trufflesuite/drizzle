@@ -28,6 +28,13 @@ const DrizzleVuePlugin = {
 
     const drizzleInstance = new Drizzle(drizzleOptions)
     drizzleAdapterService(drizzleInstance)(store)
+
+    // There's a known race condition issue with vue-devtools that doesn't
+    // record the first few dispatched actions to vuex state. Rest assured
+    // This action is processed by the vuex state manager.
+    //
+    // Issue: https://github.com/vuejs/vue-devtools/issues/408
+    //
     store.dispatch('drizzle/STARTUP', drizzleInstance)
 
     // TODO: More drizzle Specific component names
