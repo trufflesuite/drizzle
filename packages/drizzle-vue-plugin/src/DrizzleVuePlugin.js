@@ -37,10 +37,7 @@ const DrizzleVuePlugin = {
     //
     store.dispatch('drizzle/STARTUP', drizzleInstance)
 
-    // TODO: More drizzle Specific component names
-    // drizzle-accounts, drizzle-contracts, drizzle-contract-form ?
-    // What's idomatic in Vue?
-    //
+    // Register components
     Vue.component('drizzle-account', Accounts)
     Vue.component('drizzle-contract', Contract)
     Vue.component('drizzle-contract-form', ContractForm)
