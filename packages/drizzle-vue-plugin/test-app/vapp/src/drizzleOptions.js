@@ -10,7 +10,7 @@ const options = {
       url: 'ws://127.0.0.1:9545'
     }
   },
-  contracts: [SimpleStorage,ComplexStorage, TutorialToken],
+  contracts: [SimpleStorage, ComplexStorage, TutorialToken],
   events: {
     SimpleStorage: ['StorageSet']
   },
