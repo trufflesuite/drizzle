@@ -9,6 +9,7 @@ class ContractForm extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
 
     this.contracts = props.drizzle.contracts;
+    this.utils = props.drizzle.web3.utils;
 
     // Get the contract ABI
     const abi = this.contracts[this.props.contract].abi;
@@ -35,12 +36,12 @@ class ContractForm extends Component {
   handleSubmit(event) {
     event.preventDefault();
 
-    const convertedInputs = this.inputs.map((input, index) => {
-      if (input.type === 'bytes32') {
-        return this.utils.toHex(this.state[input.name])
+    const convertedInputs = this.inputs.map(input => {
+      if (input.type === "bytes32") {
+        return this.utils.toHex(this.state[input.name]);
       }
       return this.state[input.name];
-    })
+    });
 
     if (this.props.sendArgs) {
       return this.contracts[this.props.contract].methods[
@@ -72,7 +73,10 @@ class ContractForm extends Component {
 
   render() {
     return (
-      <form className="pure-form pure-form-stacked" onSubmit={this.handleSubmit}>
+      <form
+        className="pure-form pure-form-stacked"
+        onSubmit={this.handleSubmit}
+      >
         {this.inputs.map((input, index) => {
           var inputType = this.translateType(input.type);
           var inputLabel = this.props.labels
