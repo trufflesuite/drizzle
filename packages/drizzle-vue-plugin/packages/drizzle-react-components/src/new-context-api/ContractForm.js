@@ -9,6 +9,7 @@ class ContractForm extends Component {
     this.handleSubmit = this.handleSubmit.bind(this)
 
     this.contracts = props.drizzle.contracts
+    this.utils = props.drizzle.web3.utils
 
     // Get the contract ABI
     const abi = this.contracts[this.props.contract].abi
