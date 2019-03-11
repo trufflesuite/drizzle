@@ -1,11 +1,17 @@
-import React from "react";
+import React from 'react'
 import {
   AccountData,
   ContractData,
-  ContractForm,
-} from "drizzle-react-components";
+  ContractForm
+} from 'drizzle-react-components'
 
-import logo from "./logo.png";
+import logo from './logo.png'
+
+const myrender = data => (
+  <>
+    Value=<b>{data}</b>
+  </>
+)
 
 export default ({ accounts }) => (
   <div className="App">
@@ -47,7 +53,7 @@ export default ({ accounts }) => (
           contract="TutorialToken"
           method="totalSupply"
           methodArgs={[{ from: accounts[0] }]}
-        />{" "}
+        />{' '}
         <ContractData contract="TutorialToken" method="symbol" hideIndicator />
       </p>
       <p>
@@ -62,15 +68,15 @@ export default ({ accounts }) => (
       <ContractForm
         contract="TutorialToken"
         method="transfer"
-        labels={["To Address", "Amount to Send"]}
+        labels={['To Address', 'Amount to Send']}
       />
     </div>
     <div className="section">
       <h2>ComplexStorage</h2>
       <p>
-        Finally this contract shows data types with additional considerations.
-        Note in the code the strings below are converted from bytes to UTF-8
-        strings and the device data struct is iterated as a list.
+        This contract shows data types with additional considerations. Note in
+        the code the strings below are converted from bytes to UTF-8 strings and
+        the device data struct is iterated as a list.
       </p>
       <p>
         <strong>String 1: </strong>
@@ -82,6 +88,75 @@ export default ({ accounts }) => (
       </p>
       <strong>Single Device Data: </strong>
       <ContractData contract="ComplexStorage" method="singleDD" />
+      <strong>Array of UInts: </strong>
+      <ContractData contract="ComplexStorage" method="getuintarray" />{' '}
+    </div>
+    <div className="section">
+      <h2>ComplexStorage with Custom Rendering</h2>
+      <p>
+        This is the same data as above, but enhanced with a custom render
+        function.
+      </p>
+      <p>
+        <strong>String 1: </strong>
+        <ContractData
+          contract="ComplexStorage"
+          method="string1"
+          toUtf8
+          render={data => (
+            <>
+              This is the value: <b>{data}</b>
+            </>
+          )}
+        />
+      </p>
+      <p>
+        <strong>String 2: </strong>
+        <ContractData
+          contract="ComplexStorage"
+          method="string2"
+          toUtf8
+          render={myrender}
+        />
+      </p>
+      <strong>Single Device Data: </strong>
+      <ContractData
+        contract="ComplexStorage"
+        method="singleDD"
+        render={displayData => {
+          var i = 0
+          const displayObjectProps = []
+
+          Object.keys(displayData).forEach(key => {
+            if (i !== key) {
+              displayObjectProps.push(
+                <li key={i}>
+                  Element {i} has key: <strong>{key}</strong>
+                  <br />
+                  and value: {`${displayData[key]}`}
+                </li>
+              )
+            }
+
+            i++
+          })
+          return <ol>{displayObjectProps}</ol>
+        }}
+      />
+      <strong>Array of UInts: </strong>
+      <ContractData
+        contract="ComplexStorage"
+        method="getuintarray"
+        render={displayData => (
+          <ol>
+            {displayData.map(v => (
+              <li key={v}>
+                value: <strong>{v}</strong>
+              </li>
+            ))}
+          </ol>
+        )}
+      />
     </div>
   </div>
-);
+)

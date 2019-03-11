@@ -77,11 +77,8 @@ class ContractData extends Component {
     }
 
     // If the element has children, let the children render the displayData
-    if (this.props.children) {
-      const childrenWithProps = React.Children.map(this.props.children, child =>
-        React.cloneElement(child, { displaydata: displayData })
-      )
-      return childrenWithProps
+    if (this.props.render) {
+      return this.props.render(displayData)
     }
 
     // If return value is an array
@@ -142,7 +139,8 @@ ContractData.propTypes = {
   hideIndicator: PropTypes.bool,
   toUtf8: PropTypes.bool,
   toAscii: PropTypes.bool,
-  children: PropTypes.node
+  children: PropTypes.node,
+  render: PropTypes.func
 }
 
 /*
