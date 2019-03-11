@@ -1,17 +1,26 @@
 <template>
   <div v-if="isDrizzleInitialized">
-    <drizzle-contract contractName="TutorialToken" method="totalSupply" />
-    <drizzle-contract contractName="TutorialToken" method="symbol" />
+    <drizzle-contract
+      contractName="TutorialToken"
+      method="totalSupply"
+      label="Total"
+    />
+    <drizzle-contract
+      contractName="TutorialToken"
+      method="symbol"
+      label="Symbol"
+    />
     <drizzle-contract
       contractName="TutorialToken"
       method="balanceOf"
+      label="Your Balance"
       :methodArgs="accounts"
     />
 
     <drizzle-contract-form
       contractName="TutorialToken"
       method="transfer"
-      :labels="transferLabels"
+      :placeholders="placeholders"
     />
   </div>
 
@@ -33,7 +42,7 @@ export default {
       return [accountObj.account]
     },
 
-    transferLabels() {
+    placeholders() {
       return ['To Address', 'Amount to Send']
     }
   }

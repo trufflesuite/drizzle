@@ -1,5 +1,5 @@
 <template>
-  <component v-bind:is="contractData.component" />
+  <component v-bind:is="contractData.component" :label="label" />
 </template>
 
 <script>
@@ -34,6 +34,10 @@ export default {
     method: {
       type: String,
       required: true
+    },
+    label: {
+      type: String,
+      default: ''
     },
     toUtf8: {
       type: Boolean,

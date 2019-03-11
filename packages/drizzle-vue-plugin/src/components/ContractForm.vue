@@ -43,7 +43,7 @@ export default {
       default: () => []
     },
 
-    labels: {
+    placeholders: {
       type: Array,
       default: () => []
     }
@@ -65,7 +65,7 @@ export default {
 
     displayInputs() {
       return this.abi.inputs.map((x, i) => ({
-        name: this.labels[i] ? this.labels[i] : x.name,
+        name: this.placeholders[i] ? this.placeholders[i] : x.name,
         type: translateType(x.type)
       }))
     },

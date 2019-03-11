@@ -1,6 +1,6 @@
 <template functional>
   <div>
-    <strong>{{ parent.method }}</strong
+    <strong>{{ parent.label }}</strong
     >:
     <span :class="{ stale: parent.isStale }">{{
       parent.contractData.data
