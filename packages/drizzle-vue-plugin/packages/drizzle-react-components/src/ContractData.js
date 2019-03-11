@@ -139,7 +139,6 @@ ContractData.propTypes = {
   hideIndicator: PropTypes.bool,
   toUtf8: PropTypes.bool,
   toAscii: PropTypes.bool,
-  children: PropTypes.node,
   render: PropTypes.func
 }
 
