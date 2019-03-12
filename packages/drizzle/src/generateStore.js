@@ -18,7 +18,6 @@ const composeSagas = sagas =>
  * @param {object} config.drizzleOptions - drizzle configuration object
  * @param {object} [config.reducers={}] - application level reducers to include in drizzle's redux store
  * @param {object[]} [config.appSagas=[]] - application sagas to be managed by drizzle's saga middleware
- * @param {object} [config.initialAppState={}] - application store tree initial value
  * @param {boolean} [config.disableReduxDevTools=false] - disable redux devtools hook
  * @returns {object} Redux store
  *
@@ -27,7 +26,6 @@ export function generateStore({
   drizzleOptions,
   appReducers = {},
   appSagas = [],
-  initialAppState = {},
   disableReduxDevTools = false,
   ...options
 }) {
@@ -49,9 +47,8 @@ export function generateStore({
     ? global.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
     : compose
 
-  let initialState = {
-    contracts: generateContractsInitialState(drizzleOptions),
-    ...initialAppState
+  let initialContractsState = {
+    contracts: generateContractsInitialState(drizzleOptions)
   }
 
   const sagaMiddleware = createSagaMiddleware()
@@ -60,7 +57,7 @@ export function generateStore({
 
   const store = createStore(
     combineReducers(allReducers),
-    initialState,
+    initialContractsState,
     composeEnhancers(applyMiddleware(...allMiddlewares))
   )
 
