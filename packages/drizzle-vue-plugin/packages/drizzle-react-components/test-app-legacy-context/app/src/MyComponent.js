@@ -128,7 +128,7 @@ export default ({ accounts }) => (
           const displayObjectProps = []
 
           Object.keys(displayData).forEach(key => {
-            if (i !== key) {
+            if (i != key) {
               displayObjectProps.push(
                 <li key={i}>
                   Element {i} has key: <strong>{key}</strong>
