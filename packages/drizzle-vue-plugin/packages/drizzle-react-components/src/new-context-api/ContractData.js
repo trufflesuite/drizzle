@@ -77,7 +77,7 @@ class ContractData extends Component {
       displayData = drizzle.web3.utils.hexToAscii(displayData)
     }
 
-    // If the element has children, let the children render the displayData
+    // If a render prop is given, have displayData rendered from that component
     if (this.props.render) {
       return this.props.render(displayData)
     }

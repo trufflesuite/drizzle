@@ -41,7 +41,7 @@ contract ComplexStorage {
         deviceDataArray.push(structs1[address2]);
     }
 
-    function getuintarray() public view returns (uint[] memory) {
+    function getUintarray() public view returns (uint[] memory) {
         return uintarray;
     }
 }
