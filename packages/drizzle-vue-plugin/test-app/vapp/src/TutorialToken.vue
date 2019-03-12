@@ -33,13 +33,11 @@ import { mapGetters } from 'vuex'
 export default {
   name: 'TutorialToken',
   computed: {
-    ...mapGetters('account', ['getAccount']),
+    ...mapGetters('accounts', ['activeAccount', 'activeBalance']),
     ...mapGetters('drizzle', ['isDrizzleInitialized']),
 
     accounts() {
-      const accountObj = this.getAccount
-      console.log('accountObj', accountObj)
-      return [accountObj.account]
+      return [this.activeAccount]
     },
 
     placeholders() {

@@ -1,4 +1,4 @@
-import accountM from './store/modules/account'
+import accountsM from './store/modules/accounts'
 import contractsM from './store/modules/contracts'
 import drizzleM from './store/modules/drizzle'
 
@@ -22,7 +22,7 @@ const DrizzleVuePlugin = {
     // TODO: The inevetable name conflict will happen,
     //       come up with a better drizzle specific name
     //
-    store.registerModule('account', accountM)
+    store.registerModule('accounts', accountsM)
     store.registerModule('contracts', contractsM)
     store.registerModule('drizzle', drizzleM)
 

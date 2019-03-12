@@ -1,7 +1,7 @@
 <template>
   <div v-if="isDrizzleInitialized">
-    <div>{{ account }}</div>
-    <div>Balance: {{ balance }} {{ units }}</div>
+    <div>{{ activeAccount }}</div>
+    <div>Balance: {{ convertedBalance }} {{ units }}</div>
   </div>
   <div v-else>Loading...</div>
 </template>
@@ -30,20 +30,16 @@ export default {
   },
 
   computed: {
-    ...mapGetters('account', ['getAccount']),
+    ...mapGetters('accounts', ['activeAccount', 'activeBalance']),
     ...mapGetters('drizzle', ['drizzleInstance', 'isDrizzleInitialized']),
 
-    balance() {
-      const wei = this.getAccount.balance
+    convertedBalance() {
+      const wei = this.activeBalance
       const units = capitalize(this.units)
       return precisionRound(
         this.drizzleInstance.web3.utils.fromWei(wei, units),
         this.precision
       )
-    },
-
-    account() {
-      return this.getAccount.account
     }
   }
 }

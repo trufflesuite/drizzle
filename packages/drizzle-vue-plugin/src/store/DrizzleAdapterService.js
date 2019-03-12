@@ -52,11 +52,11 @@ const contractsHandler = store => message => {
 
 const accountsHandler = store => message => {
   Log('Accounts', message)
-  const account = message.accounts[0]
-  const balance = message.accountBalances[account]
-  const payload = { account: account, balance }
+  const activeAccount = message.accounts[0]
+  const accountBalances = message.accountBalances
+  const payload = { activeAccount, accountBalances }
   Log('Balance payload', payload)
-  store.dispatch('account/SET_ACCOUNT', payload)
+  store.dispatch('accounts/SET_ACCOUNTS', payload)
 }
 
 const createDrizzlePluginFromObserver = drizzleInstance => store => {
