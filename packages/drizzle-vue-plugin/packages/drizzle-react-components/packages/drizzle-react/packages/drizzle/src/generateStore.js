@@ -31,12 +31,17 @@ export function generateStore({
   disableReduxDevTools = false,
   ...options
 }) {
-  // Note: Preserve backwards compatibility for passing options to `generageStore`.
-  // in drizzle v1.3.3 and prior of generate had a signature of `generateStore(options)`.
+  // Note: Preserve backwards compatibility for passing options to
+  // `generateStore`.  in drizzle v1.3.3 and prior of generate had a signature
+  // of `generateStore(options)`.
   //
-  // {...options} exists to capture previous signature. The following line
-  // checks for the newer drizzleOptions and falls back to the rest-constructed
-  // options variable.
+  // The updated signature looks for `drizzleOptions`, `appReducers`,
+  // `appSagas`, `initialAppStore` and `disableReduxDevTools` while
+  // {...options} captures the previous release's signature.
+  //
+  // Resolve drizzleOptions. If called by dapps written to previous API, then
+  // drizzleOptions will be `undefined` and will resolve to rest constructed
+  // options.
   //
   drizzleOptions = drizzleOptions || options
 
