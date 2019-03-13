@@ -77,6 +77,11 @@ class ContractData extends Component {
       displayData = drizzle.web3.utils.hexToAscii(displayData);
     }
 
+    // If a render prop is given, have displayData rendered from that component
+    if (this.props.render) {
+      return this.props.render(displayData);
+    }
+
     // If return value is an array
     if (Array.isArray(displayData)) {
       const displayListItems = displayData.map((datum, index) => {
@@ -132,6 +137,7 @@ ContractData.propTypes = {
   hideIndicator: PropTypes.bool,
   toUtf8: PropTypes.bool,
   toAscii: PropTypes.bool,
+  render: PropTypes.func,
 };
 
 export default ContractData;
