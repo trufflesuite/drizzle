@@ -7,14 +7,31 @@
       label="First"
       toUtf8
     />
+
+    <p>
+      Utf-8 data
     <drizzle-contract
       contractName="ComplexStorage"
       method="string2"
-      label="Last"
+      label="Last (w/o toUtf8 attribute)"
+    />
+    <drizzle-contract
+      contractName="ComplexStorage"
+      method="string2"
+      label="Last (w toUtf8)"
       toUtf8
     />
+    </p>
     <p>drizzle-contract Storage object</p>
-    <drizzle-contract contractName="ComplexStorage" method="singleDD" />
+    <p>
+      <h3>An Object</h3>
+      <drizzle-contract contractName="ComplexStorage" method="singleDD" />
+    </p>
+
+    <p>
+      <h3>An Array</h3>
+      <drizzle-contract contractName="ComplexStorage" method="get_uintarray" />
+    </p>
   </div>
 
   <div v-else>Loading...</div>
@@ -24,7 +41,7 @@
 import { mapGetters } from 'vuex'
 
 export default {
-  name: 'app',
+  name: 'ComplexStorage',
   computed: mapGetters('drizzle', ['isDrizzleInitialized'])
 }
 </script>
