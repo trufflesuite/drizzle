@@ -8,23 +8,6 @@ import ContractData from './presentational/Data'
 import ContractArrayData from './presentational/ArrayData'
 import ContractObjectData from './presentational/ObjectData'
 
-const transformContractObject = data => {
-  const max = Math.max(
-    ...Object.keys(data)
-      .map(x => parseInt(x, 10))
-      .filter(Boolean)
-  )
-
-  const values = Object.entries(data).map(([key, value]) => ({ key, value }))
-
-  return Object.entries(values).reduce(
-    // eslint-disable-next-line no-unused-vars
-    (acc, [_, { key, value }]) =>
-      +key <= max ? acc : [...acc, { key, value }],
-    []
-  )
-}
-
 export default {
   props: {
     contractName: {
@@ -75,12 +58,18 @@ export default {
       }
       let component = 'ContractData'
       let contractData = this.getContractData(arg)
-      if (typeof contractData === 'object') {
-        component = 'ContractObjectData'
-        contractData = transformContractObject(contractData)
-      } else if (Array.isArray(contractData)) {
+
+      if (Array.isArray(contractData)) {
         component = 'ContractArrayData'
+      } else if (typeof contractData === 'object') {
+        component = 'ContractObjectData'
+        console.log('data:', contractData)
+        // Todo: document in => out example to explain this transformation
+        contractData = Object.entries(contractData)
+          .filter(([key]) => /^\D/.test(key))
+          .map(([key, value]) => ({ key, value }))
       }
+
       return {
         data: contractData,
         component
