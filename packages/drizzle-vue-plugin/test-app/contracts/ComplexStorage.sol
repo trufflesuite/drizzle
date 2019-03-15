@@ -6,8 +6,8 @@ contract ComplexStorage {
     uint128 public investmentsLimit = 17055;
     uint32 public investmentsDeadlineTimeStamp = uint32(now);
 
-    bytes16 public string1 = "test1";
-    bytes32 public string2 = "test1236";
+    bytes public string1 = "Hey I am a utf-8 encoded string!";
+    bytes32 public string2 = "你好！我也是。";
     string public string3 = "lets string something";
 
     mapping (address => uint) uints1;
