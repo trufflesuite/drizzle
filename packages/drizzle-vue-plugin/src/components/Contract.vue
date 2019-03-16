@@ -63,7 +63,6 @@ export default {
         component = 'ContractArrayData'
       } else if (typeof contractData === 'object') {
         component = 'ContractObjectData'
-        console.log('data:', contractData)
         // Todo: document in => out example to explain this transformation
         contractData = Object.entries(contractData)
           .filter(([key]) => /^\D/.test(key))
