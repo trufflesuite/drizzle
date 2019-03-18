@@ -1,4 +1,4 @@
-import { call, put, takeLatest } from 'redux-saga/effects'
+import { call, put } from 'redux-saga/effects'
 import * as Action from './constants'
 
 var Web3 = require('web3')
@@ -79,9 +79,3 @@ export function * getNetworkId ({ web3 }) {
     console.error(error)
   }
 }
-
-function * web3Saga () {
-  yield takeLatest('NETWORK_ID_FETCHING', getNetworkId)
-}
-
-export default web3Saga
