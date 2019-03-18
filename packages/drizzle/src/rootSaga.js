@@ -9,6 +9,5 @@ export default [
   accountBalancesSaga,
   blocksSaga,
   contractsSaga,
-  drizzleStatusSaga,
-  web3Saga
+  drizzleStatusSaga
 ]
