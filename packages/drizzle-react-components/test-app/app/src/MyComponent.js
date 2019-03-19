@@ -90,7 +90,7 @@ export default () => (
                 <form onSubmit={handleSubmit}>
                   {inputs.map(input => (
                     <input
-                      style={{ fontSize: 50 }}
+                      style={{ fontSize: 30 }}
                       key={input.name}
                       type={translateType(input.type)}
                       name={input.name}
@@ -99,7 +99,12 @@ export default () => (
                       onChange={handleInputChange}
                     />
                   ))}
-                  <button key="submit" type="button" onClick={handleSubmit}>
+                  <button
+                    key="submit"
+                    type="button"
+                    onClick={handleSubmit}
+                    style={{ fontSize: 30 }}
+                  >
                     Submit Big
                   </button>
                 </form>
