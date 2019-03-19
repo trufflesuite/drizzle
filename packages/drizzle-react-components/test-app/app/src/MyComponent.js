@@ -1,25 +1,38 @@
-import React from "react";
-import { newContextComponents } from "drizzle-react-components";
-import { DrizzleContext } from "drizzle-react";
-import logo from "./logo.png";
+import React from 'react'
+import { newContextComponents } from 'drizzle-react-components'
+import { DrizzleContext } from 'drizzle-react'
+import logo from './logo.png'
 
-const { AccountData, ContractData, ContractForm } = newContextComponents;
+const { AccountData, ContractData, ContractForm } = newContextComponents
 
 const myRender = data => (
   <>
     Value=<b>{data}</b>
   </>
-);
+)
+
+const translateType = type => {
+  switch (true) {
+    case /^uint/.test(type):
+      return 'number'
+    case /^string/.test(type) || /^bytes/.test(type):
+      return 'text'
+    case /^bool/.test(type):
+      return 'checkbox'
+    default:
+      return 'text'
+  }
+}
 
 export default () => (
   <DrizzleContext.Consumer>
     {drizzleContext => {
-      const { drizzle, drizzleState, initialized } = drizzleContext;
+      const { drizzle, drizzleState, initialized } = drizzleContext
       if (!initialized) {
-        return "Loading...";
+        return 'Loading...'
       }
 
-      const { accounts } = drizzleState;
+      const { accounts } = drizzleState
       return (
         <div className="App">
           <div>
@@ -62,6 +75,36 @@ export default () => (
               contract="SimpleStorage"
               method="set"
             />
+
+            <h2>SimpleStorage with Custom Rendering</h2>
+            <p>
+              This is the same contract as above, but here we customize the
+              ContractForm's rendered component's style.
+            </p>
+            <ContractForm
+              drizzle={drizzle}
+              drizzleState={drizzleState}
+              contract="SimpleStorage"
+              method="set"
+              render={({ inputs, state, handleInputChange, handleSubmit }) => (
+                <form onSubmit={handleSubmit}>
+                  {inputs.map(input => (
+                    <input
+                      style={{ fontSize: 50 }}
+                      key={input.name}
+                      type={translateType(input.type)}
+                      name={input.name}
+                      value={state[input.name]}
+                      placeholder={input.name}
+                      onChange={handleInputChange}
+                    />
+                  ))}
+                  <button key="submit" type="button" onClick={handleSubmit}>
+                    Submit Big
+                  </button>
+                </form>
+              )}
+            />
           </div>
 
           <div className="section">
@@ -80,7 +123,7 @@ export default () => (
                 contract="TutorialToken"
                 method="totalSupply"
                 methodArgs={[{ from: accounts[0] }]}
-              />{" "}
+              />{' '}
               <ContractData
                 drizzle={drizzle}
                 drizzleState={drizzleState}
@@ -105,7 +148,7 @@ export default () => (
               drizzleState={drizzleState}
               contract="TutorialToken"
               method="transfer"
-              labels={["To Address", "Amount to Send"]}
+              labels={['To Address', 'Amount to Send']}
             />
           </div>
 
@@ -190,8 +233,8 @@ export default () => (
               contract="ComplexStorage"
               method="singleDD"
               render={displayData => {
-                var i = 0;
-                const displayObjectProps = [];
+                var i = 0
+                const displayObjectProps = []
 
                 Object.keys(displayData).forEach(key => {
                   if (i != key) {
@@ -201,12 +244,12 @@ export default () => (
                         <br />
                         and value: {`${displayData[key]}`}
                       </li>
-                    );
+                    )
                   }
 
-                  i++;
-                });
-                return <ol>{displayObjectProps}</ol>;
+                  i++
+                })
+                return <ol>{displayObjectProps}</ol>
               }}
             />
             <strong>Array of UInts: </strong>
@@ -227,7 +270,7 @@ export default () => (
             />
           </div>
         </div>
-      );
+      )
     }}
   </DrizzleContext.Consumer>
-);
+)
