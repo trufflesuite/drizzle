@@ -97,9 +97,7 @@ export function* instantiateContract({
     )
   } catch (err) {
     console.error(
-      `Contract ${
-        contractArtifact.contractName
-      } not found on network ID: ${networkId}`
+      `Contract ${contractArtifact.contractName} not found on network ID: ${networkId}`
     )
   }
 }
@@ -136,7 +134,7 @@ export function createContractEventChannel({
   })
 }
 
-function * callListenForContractEvent ({ contract, eventName, eventOptions }) {
+function* callListenForContractEvent({ contract, eventName, eventOptions }) {
   const contractEventChannel = yield call(createContractEventChannel, {
     contract,
     eventName,
@@ -153,7 +151,7 @@ function * callListenForContractEvent ({ contract, eventName, eventOptions }) {
  * Send and Cache
  */
 
-function createTxChannel ({
+function createTxChannel({
   txObject,
   stackId,
   sendArgs = {},
@@ -198,7 +196,7 @@ function createTxChannel ({
   })
 }
 
-function* callSendContractTx ({
+function* callSendContractTx({
   contract,
   fnName,
   fnIndex,

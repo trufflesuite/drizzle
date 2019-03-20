@@ -1,4 +1,4 @@
-import {generateStore} from '../src/generateStore'
+import { generateStore } from '../src/generateStore'
 import { getWeb3Assets } from './utils/helpers'
 
 const partialDrizzleOptions = {
@@ -38,12 +38,12 @@ describe('generateStore', () => {
 
   beforeEach(async () => {
     ;({ truffleArtifact: TestContract } = await getWeb3Assets())
-    drizzleOptions = {...partialDrizzleOptions, contracts: [TestContract]}
+    drizzleOptions = { ...partialDrizzleOptions, contracts: [TestContract] }
   })
 
   describe('has the right shape', () => {
     test('when invoked with only drizzleOptions', () => {
-      const store = generateStore({drizzleOptions})
+      const store = generateStore({ drizzleOptions })
       const state = store.getState()
       hasBasicShape(state)
     })
@@ -53,7 +53,11 @@ describe('generateStore', () => {
       const myState = jest.fn((state = initialState) => state)
       const initialAppState = { myState: initialState }
       const appReducers = { myState }
-      const store = generateStore({ drizzleOptions, appReducers, initialAppState })
+      const store = generateStore({
+        drizzleOptions,
+        appReducers,
+        initialAppState
+      })
       const state = store.getState()
       hasBasicShape(state)
       expect(state).toHaveProperty('myState')
