@@ -1,6 +1,6 @@
-import { drizzleConnect } from "drizzle-react";
-import React, { Children, Component } from "react";
-import PropTypes from "prop-types";
+import { drizzleConnect } from 'drizzle-react'
+import React, { Children, Component } from 'react'
+import PropTypes from 'prop-types'
 
 /*
  * Create component.
@@ -8,9 +8,9 @@ import PropTypes from "prop-types";
 
 class LoadingContainer extends Component {
   render() {
-    if (this.props.web3.status === "failed") {
+    if (this.props.web3.status === 'failed') {
       if (this.props.errorComp) {
-        return this.props.errorComp;
+        return this.props.errorComp
       }
 
       return (
@@ -26,11 +26,11 @@ class LoadingContainer extends Component {
             </div>
           </div>
         </main>
-      );
+      )
     }
 
     if (
-      this.props.web3.status === "initialized" &&
+      this.props.web3.status === 'initialized' &&
       Object.keys(this.props.accounts).length === 0
     ) {
       return (
@@ -46,15 +46,15 @@ class LoadingContainer extends Component {
             </div>
           </div>
         </main>
-      );
+      )
     }
 
     if (this.props.drizzleStatus.initialized) {
-      return Children.only(this.props.children);
+      return Children.only(this.props.children)
     }
 
     if (this.props.loadingComp) {
-      return this.props.loadingComp;
+      return this.props.loadingComp
     }
 
     return (
@@ -66,22 +66,22 @@ class LoadingContainer extends Component {
           </div>
         </div>
       </main>
-    );
+    )
   }
 }
 
 LoadingContainer.contextTypes = {
-  drizzle: PropTypes.object,
-};
+  drizzle: PropTypes.object
+}
 
 LoadingContainer.propTypes = {
   children: PropTypes.node,
-  accounts: PropTypes.arrayOf(PropTypes.string).isRequired,
+  accounts: PropTypes.object.isRequired,
   drizzleStatus: PropTypes.object.isRequired,
   web3: PropTypes.object.isRequired,
   loadingComp: PropTypes.node,
-  errorComp: PropTypes.node,
-};
+  errorComp: PropTypes.node
+}
 
 /*
  * Export connected component.
@@ -91,8 +91,8 @@ const mapStateToProps = state => {
   return {
     accounts: state.accounts,
     drizzleStatus: state.drizzleStatus,
-    web3: state.web3,
-  };
-};
+    web3: state.web3
+  }
+}
 
-export default drizzleConnect(LoadingContainer, mapStateToProps);
+export default drizzleConnect(LoadingContainer, mapStateToProps)
