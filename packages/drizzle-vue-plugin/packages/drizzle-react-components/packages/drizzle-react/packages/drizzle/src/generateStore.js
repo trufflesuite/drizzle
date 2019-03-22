@@ -18,6 +18,7 @@ const composeSagas = sagas =>
  * @param {object} config.drizzleOptions - drizzle configuration object
  * @param {object} config.reducers={} - application level reducers to include in drizzle's redux store
  * @param {object[]} config.appSagas=[] - application sagas to be managed by drizzle's saga middleware
+ * @param {object[]} config.appMiddlewares=[] - application middlewares to be managed by drizzle's saga middleware
  * @param {boolean} config.disableReduxDevTools=false - disable redux devtools hook
  * @returns {object} Redux store
  *
@@ -26,6 +27,7 @@ export function generateStore({
   drizzleOptions,
   appReducers = {},
   appSagas = [],
+  appMiddlewares = [],
   disableReduxDevTools = false,
   ...options
 }) {
@@ -52,7 +54,7 @@ export function generateStore({
   }
 
   const sagaMiddleware = createSagaMiddleware()
-  const allMiddlewares = [sagaMiddleware]
+  const allMiddlewares = [...appMiddlewares, sagaMiddleware]
   const allReducers = { ...drizzleReducers, ...appReducers }
 
   const store = createStore(
