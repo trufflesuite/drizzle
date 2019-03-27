@@ -3,10 +3,11 @@ import { createStore, applyMiddleware, compose, combineReducers } from 'redux'
 import createSagaMiddleware from 'redux-saga'
 import drizzleSagas from './rootSaga'
 import drizzleReducers from './reducer'
-import { generateContractsInitialState } from './contractStateUtils'
+import { generateContractsInitialState } from './generateContractsInitialState'
+import drizzleMW from './drizzle-middleware'
 
 const composeSagas = sagas =>
-  function * () {
+  function*() {
     yield all(sagas.map(fork))
   }
 
@@ -23,7 +24,7 @@ const composeSagas = sagas =>
  * @returns {object} Redux store
  *
  */
-export function generateStore ({
+export function generateStore({
   drizzleOptions,
   appReducers = {},
   appSagas = [],
@@ -54,7 +55,7 @@ export function generateStore ({
   }
 
   const sagaMiddleware = createSagaMiddleware()
-  const allMiddlewares = [...appMiddlewares, sagaMiddleware]
+  const allMiddlewares = [...appMiddlewares, sagaMiddleware, drizzleMW]
   const allReducers = { ...drizzleReducers, ...appReducers }
 
   const store = createStore(
