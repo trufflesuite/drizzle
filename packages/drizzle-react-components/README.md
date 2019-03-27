@@ -72,6 +72,8 @@ This component wraps your entire app (but within the DrizzleProvider) and will s
 
 `labels` (array) Custom labels; will follow ABI input ordering. Useful for friendlier names. For example "\_to" becoming "Recipient Address".
 
+`render` (function with four arguments) Render property, passes `inputs`, `state`, `handleInputChange` function and `handleSubmit` function as arguments and returns render output.
+
 ## Test Apps
 
 A test app targeting the React 16.3+ context API has been included at `./test-app`. And one targeting the legacy context API can be found at `test-app-legacy-context`.
