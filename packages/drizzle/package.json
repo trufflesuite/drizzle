@@ -11,7 +11,7 @@
   "scripts": {
     "build": "webpack --config webpack/release.config.js",
     "build:pure": "webpack --config webpack/pure.config.js",
-    "dev": "webpack --config webpack.config.js --watch",
+    "dev": "webpack --config webpack/release.config.js --watch",
     "format": "prettier-standard 'src/**/*.js' 'test/**/*.js'",
     "lint": "eslint 'src/**/*.js'",
     "lint:fix": "eslint 'src/**/*.js' --fix",
