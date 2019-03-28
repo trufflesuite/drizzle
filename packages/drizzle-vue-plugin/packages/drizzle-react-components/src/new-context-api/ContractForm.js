@@ -72,6 +72,15 @@ class ContractForm extends Component {
   }
 
   render() {
+    if (this.props.render) {
+      return this.props.render({
+        inputs: this.inputs,
+        state: this.state,
+        handleInputChange: this.handleInputChange,
+        handleSubmit: this.handleSubmit,
+      });
+    }
+
     return (
       <form
         className="pure-form pure-form-stacked"
@@ -113,6 +122,7 @@ ContractForm.propTypes = {
   method: PropTypes.string.isRequired,
   sendArgs: PropTypes.object,
   labels: PropTypes.arrayOf(PropTypes.string),
+  render: PropTypes.func,
 };
 
 export default ContractForm;

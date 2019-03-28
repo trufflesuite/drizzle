@@ -11,6 +11,19 @@ const myRender = data => (
   </>
 );
 
+const translateType = (type) => {
+  switch (true) {
+    case /^uint/.test(type):
+      return "number";
+    case /^string/.test(type) || /^bytes/.test(type):
+      return "text";
+    case /^bool/.test(type):
+      return "checkbox";
+    default:
+      return "text";
+  }
+}
+
 export default () => (
   <DrizzleContext.Consumer>
     {drizzleContext => {
@@ -61,6 +74,41 @@ export default () => (
               drizzleState={drizzleState}
               contract="SimpleStorage"
               method="set"
+            />
+
+            <h2>SimpleStorage with Custom Rendering</h2>
+            <p>
+              This is the same contract as above, but here we customize the ContractForm's rendered component's style.
+            </p>
+            <ContractForm
+              drizzle={drizzle}
+              drizzleState={drizzleState}
+              contract="SimpleStorage"
+              method="set"
+              render={({ inputs, state, handleInputChange, handleSubmit }) => (
+                <form onSubmit={handleSubmit}>
+                  {inputs.map(input => (
+                    <input
+                      style={{ fontSize: 30 }}
+                      key={input.name}
+                      type={translateType(input.type)}
+                      name={input.name}
+                      value={state[input.name]}
+                      placeholder={input.name}
+                      onChange={handleInputChange}
+                    />
+                  ))}
+                  <button
+                    key="submit"
+                    type="button"
+                    onClick={handleSubmit}
+                    style={{ fontSize: 30 }}
+                  >
+                    Submit Big
+                  </button>
+                </form>
+
+              )}
             />
           </div>
 
