@@ -5,7 +5,7 @@ import { initializeWeb3, getNetworkId } from '../web3/web3Saga'
 import { getAccounts } from '../accounts/accountsSaga'
 import { getAccountBalances } from '../accountBalances/accountBalancesSaga'
 
-function* initializeDrizzle(action) {
+function * initializeDrizzle (action) {
   try {
     const options = action.options
     const web3Options = options.web3
@@ -65,7 +65,7 @@ function* initializeDrizzle(action) {
   yield put({ type: 'DRIZZLE_INITIALIZED' })
 }
 
-function* drizzleStatusSaga() {
+function * drizzleStatusSaga () {
   yield takeLatest('DRIZZLE_INITIALIZING', initializeDrizzle)
 }
 

@@ -29,17 +29,11 @@ const getOrCreateWeb3Contract = (store, contractConfig, web3) => {
   const selectedAccount = state.accounts[0]
 
   const { web3Contract, abi, networks, deployedBytecode } = contractConfig
-  return (
-    web3Contract ||
-    new web3.eth.Contract(abi, networks[networkId].address, {
-      from: selectedAccount,
-      data: deployedBytecode
-    })
-  )
+  return web3Contract || new web3.eth.Contract(abi, networks[networkId].address, { from: selectedAccount, data: deployedBytecode })
 }
 
 class Drizzle {
-  constructor(givenOptions, store) {
+  constructor (givenOptions, store) {
     const options = merge(defaultOptions, givenOptions)
 
     // Variables
@@ -62,24 +56,13 @@ class Drizzle {
     })
   }
 
-  addContract(contractConfig, events = []) {
-    const web3Contract = getOrCreateWeb3Contract(
-      this.store,
-      contractConfig,
-      this.web3
-    )
-    const drizzleContract = new DrizzleContract(
-      web3Contract,
-      this.web3,
-      contractConfig.contractName,
-      this.store,
-      events
-    )
+  addContract (contractConfig, events = []) {
+    const web3Contract = getOrCreateWeb3Contract(this.store, contractConfig, this.web3)
+    const drizzleContract = new DrizzleContract(web3Contract, this.web3,
+      contractConfig.contractName, this.store, events)
 
     if (this.contracts[drizzleContract.contractName]) {
-      throw new Error(
-        `Contract already exists: ${drizzleContract.contractName}`
-      )
+      throw new Error(`Contract already exists: ${drizzleContract.contractName}`)
     }
 
     this.store.dispatch({ type: 'CONTRACT_INITIALIZING', contractConfig })
@@ -87,13 +70,10 @@ class Drizzle {
     this.contracts[drizzleContract.contractName] = drizzleContract
     this.contractList.push(drizzleContract)
 
-    this.store.dispatch({
-      type: 'CONTRACT_INITIALIZED',
-      name: contractConfig.contractName
-    })
+    this.store.dispatch({ type: 'CONTRACT_INITIALIZED', name: contractConfig.contractName })
   }
 
-  deleteContract(contractName) {
+  deleteContract (contractName) {
     this.store.dispatch({
       type: 'DELETE_CONTRACT',
       drizzle: this,
@@ -101,7 +81,7 @@ class Drizzle {
     })
   }
 
-  findContractByAddress(address) {
+  findContractByAddress (address) {
     return this.contractList.find(contract => {
       return contract.address.toLowerCase() === address.toLowerCase()
     })
@@ -112,7 +92,7 @@ class Drizzle {
    * This strangeness is for backward compatibility with < v1.2.4
    * Future versions will have generateStore's contents here
    */
-  generateStore(options) {
+  generateStore (options) {
     return generateStore(options)
   }
 }

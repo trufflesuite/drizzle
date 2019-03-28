@@ -32,7 +32,6 @@ const getWeb3 = (provider = global.provider) => new Web3(provider)
 const getWeb3Assets = async () => {
   const abi = require('./data/TestContract-abi.json')
   const byteCode = require('./data/TestContract-byteCode.json')
-  // const web3 = new Web3(global.provider)
   const web3 = getWeb3()
   const accounts = await web3.eth.getAccounts() // use global.accounts?
 
