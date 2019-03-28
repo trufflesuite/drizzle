@@ -2,9 +2,7 @@ import { getWeb3Assets } from './utils/helpers'
 import { drizzleMiddleware } from '../src/drizzle-middleware'
 
 const mockDrizzle = (defaultAccount, numContracts = 1) => ({
-  contractList: Array.from({ length: numContracts }, () => ({
-    options: { from: defaultAccount }
-  }))
+  contractList: Array.from({length: numContracts}, () => ({options: {from: defaultAccount}}))
 })
 
 describe('Drizzle Middleware', () => {
@@ -15,7 +13,7 @@ describe('Drizzle Middleware', () => {
     ;({ web3, accounts, truffleArtifact } = await getWeb3Assets())
     drizzle = mockDrizzle(accounts[0], 10)
     next = jest.fn()
-    dmw = drizzleMiddleware({ contractList: [] })
+    dmw = drizzleMiddleware({contractList: []})
   })
 
   test('it passes action to the rest of middleware Pipeline', () => {
@@ -25,8 +23,8 @@ describe('Drizzle Middleware', () => {
 
   test('accounts are changed', () => {
     const selectedAccount = accounts[2]
-    dmw()(next)({ type: 'DRIZZLE_INITIALIZING', drizzle })
-    dmw()(next)({ type: 'ACCOUNTS_FETCHED', accounts: [selectedAccount] })
+    dmw()(next)({type: 'DRIZZLE_INITIALIZING', drizzle})
+    dmw()(next)({type: 'ACCOUNTS_FETCHED', accounts: [selectedAccount]})
 
     // All contract options should have from address set to selectedAccount
     const froms = drizzle.contractList.map(x => x.options.from)
