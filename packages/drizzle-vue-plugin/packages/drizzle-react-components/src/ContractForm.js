@@ -126,7 +126,7 @@ ContractForm.propTypes = {
   method: PropTypes.string.isRequired,
   sendArgs: PropTypes.object,
   labels: PropTypes.arrayOf(PropTypes.string),
-  render: PropTypes.function
+  render: PropTypes.func
 }
 
 /*
