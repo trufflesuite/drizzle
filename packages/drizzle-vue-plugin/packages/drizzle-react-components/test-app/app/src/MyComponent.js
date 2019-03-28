@@ -1,38 +1,38 @@
-import React from 'react'
-import { newContextComponents } from 'drizzle-react-components'
-import { DrizzleContext } from 'drizzle-react'
-import logo from './logo.png'
+import React from "react";
+import { newContextComponents } from "drizzle-react-components";
+import { DrizzleContext } from "drizzle-react";
+import logo from "./logo.png";
 
-const { AccountData, ContractData, ContractForm } = newContextComponents
+const { AccountData, ContractData, ContractForm } = newContextComponents;
 
 const myRender = data => (
   <>
     Value=<b>{data}</b>
   </>
-)
+);
 
-const translateType = type => {
+const translateType = (type) => {
   switch (true) {
     case /^uint/.test(type):
-      return 'number'
+      return "number";
     case /^string/.test(type) || /^bytes/.test(type):
-      return 'text'
+      return "text";
     case /^bool/.test(type):
-      return 'checkbox'
+      return "checkbox";
     default:
-      return 'text'
+      return "text";
   }
 }
 
 export default () => (
   <DrizzleContext.Consumer>
     {drizzleContext => {
-      const { drizzle, drizzleState, initialized } = drizzleContext
+      const { drizzle, drizzleState, initialized } = drizzleContext;
       if (!initialized) {
-        return 'Loading...'
+        return "Loading...";
       }
 
-      const { accounts } = drizzleState
+      const { accounts } = drizzleState;
       return (
         <div className="App">
           <div>
@@ -78,8 +78,7 @@ export default () => (
 
             <h2>SimpleStorage with Custom Rendering</h2>
             <p>
-              This is the same contract as above, but here we customize the
-              ContractForm's rendered component's style.
+              This is the same contract as above, but here we customize the ContractForm's rendered component's style.
             </p>
             <ContractForm
               drizzle={drizzle}
@@ -108,6 +107,7 @@ export default () => (
                     Submit Big
                   </button>
                 </form>
+
               )}
             />
           </div>
@@ -128,7 +128,7 @@ export default () => (
                 contract="TutorialToken"
                 method="totalSupply"
                 methodArgs={[{ from: accounts[0] }]}
-              />{' '}
+              />{" "}
               <ContractData
                 drizzle={drizzle}
                 drizzleState={drizzleState}
@@ -153,7 +153,7 @@ export default () => (
               drizzleState={drizzleState}
               contract="TutorialToken"
               method="transfer"
-              labels={['To Address', 'Amount to Send']}
+              labels={["To Address", "Amount to Send"]}
             />
           </div>
 
@@ -238,8 +238,8 @@ export default () => (
               contract="ComplexStorage"
               method="singleDD"
               render={displayData => {
-                var i = 0
-                const displayObjectProps = []
+                var i = 0;
+                const displayObjectProps = [];
 
                 Object.keys(displayData).forEach(key => {
                   if (i != key) {
@@ -249,12 +249,12 @@ export default () => (
                         <br />
                         and value: {`${displayData[key]}`}
                       </li>
-                    )
+                    );
                   }
 
-                  i++
-                })
-                return <ol>{displayObjectProps}</ol>
+                  i++;
+                });
+                return <ol>{displayObjectProps}</ol>;
               }}
             />
             <strong>Array of UInts: </strong>
@@ -275,7 +275,7 @@ export default () => (
             />
           </div>
         </div>
-      )
+      );
     }}
   </DrizzleContext.Consumer>
-)
+);

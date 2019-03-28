@@ -37,12 +37,12 @@ class ContractForm extends Component {
   handleSubmit(event) {
     event.preventDefault();
 
-    const convertedInputs = this.inputs.map((input, index) => {
-      if (input.type === 'bytes32') {
-        return this.utils.toHex(this.state[input.name])
+    const convertedInputs = this.inputs.map(input => {
+      if (input.type === "bytes32") {
+        return this.utils.toHex(this.state[input.name]);
       }
       return this.state[input.name];
-    })
+    });
 
     if (this.props.sendArgs) {
       return this.contracts[this.props.contract].methods[
@@ -73,8 +73,20 @@ class ContractForm extends Component {
   }
 
   render() {
+    if (this.props.render) {
+      return this.props.render({
+        inputs: this.inputs,
+        state: this.state,
+        handleInputChange: this.handleInputChange,
+        handleSubmit: this.handleSubmit,
+      });
+    }
+
     return (
-      <form className="pure-form pure-form-stacked" onSubmit={this.handleSubmit}>
+      <form
+        className="pure-form pure-form-stacked"
+        onSubmit={this.handleSubmit}
+      >
         {this.inputs.map((input, index) => {
           var inputType = this.translateType(input.type);
           var inputLabel = this.props.labels
@@ -114,6 +126,7 @@ ContractForm.propTypes = {
   method: PropTypes.string.isRequired,
   sendArgs: PropTypes.object,
   labels: PropTypes.arrayOf(PropTypes.string),
+  render: PropTypes.func,
 };
 
 /*
