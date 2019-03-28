@@ -7,7 +7,7 @@ import { generateContractsInitialState } from './generateContractsInitialState'
 import drizzleMW from './drizzle-middleware'
 
 const composeSagas = sagas =>
-  function*() {
+  function * () {
     yield all(sagas.map(fork))
   }
 
@@ -24,7 +24,7 @@ const composeSagas = sagas =>
  * @returns {object} Redux store
  *
  */
-export function generateStore({
+export function generateStore ({
   drizzleOptions,
   appReducers = {},
   appSagas = [],
