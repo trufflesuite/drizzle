@@ -18,7 +18,7 @@ const defaultAccounts = [
 ]
 
 class GanacheEnvironment extends NodeEnvironment {
-  async setup() {
+  async setup () {
     await super.setup()
 
     // Startup a Ganache server.
@@ -35,7 +35,7 @@ class GanacheEnvironment extends NodeEnvironment {
     this.global.document = { readyState: 'complete' }
   }
 
-  async teardown() {
+  async teardown () {
     // close  provider engine gracefully
     this.global.provider.close(() => {})
     await super.teardown()
