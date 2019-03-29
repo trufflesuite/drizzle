@@ -1,30 +1,30 @@
-import React from "react";
+import React from 'react'
 import {
   AccountData,
   ContractData,
   ContractForm
-} from "drizzle-react-components";
+} from 'drizzle-react-components'
 
-import logo from "./logo.png";
+import logo from './logo.png'
 
 const myRender = data => (
   <>
     Value=<b>{data}</b>
   </>
-);
+)
 
 const translateType = type => {
   switch (true) {
     case /^uint/.test(type):
-      return "number";
+      return 'number'
     case /^string/.test(type) || /^bytes/.test(type):
-      return "text";
+      return 'text'
     case /^bool/.test(type):
-      return "checkbox";
+      return 'checkbox'
     default:
-      return "text";
+      return 'text'
   }
-};
+}
 
 export default ({ accounts }) => (
   <div className="App">
@@ -37,6 +37,23 @@ export default ({ accounts }) => (
     <div className="section">
       <h2>Active Account</h2>
       <AccountData accountIndex="0" units="ether" precision="3" />
+
+      <h2>Active Account with Custom Rendered Component</h2>
+      <AccountData
+        accountIndex="0"
+        units="ether"
+        precision="3"
+        render={({ address, balance, units }) => (
+          <div>
+            <div>
+              My Address: <span style={{ color: 'red' }}>{address}</span>
+            </div>
+            <div>
+              My Ether: <span style={{ color: 'red' }}>{balance}</span> {units}
+            </div>
+          </div>
+        )}
+      />
     </div>
 
     <div className="section">
@@ -101,7 +118,7 @@ export default ({ accounts }) => (
           contract="TutorialToken"
           method="totalSupply"
           methodArgs={[{ from: accounts[0] }]}
-        />{" "}
+        />{' '}
         <ContractData contract="TutorialToken" method="symbol" hideIndicator />
       </p>
       <p>
@@ -116,7 +133,7 @@ export default ({ accounts }) => (
       <ContractForm
         contract="TutorialToken"
         method="transfer"
-        labels={["To Address", "Amount to Send"]}
+        labels={['To Address', 'Amount to Send']}
       />
     </div>
     <div className="section">
@@ -137,7 +154,7 @@ export default ({ accounts }) => (
       <strong>Single Device Data: </strong>
       <ContractData contract="ComplexStorage" method="singleDD" />
       <strong>Array of UInts: </strong>
-      <ContractData contract="ComplexStorage" method="getUintarray" />{" "}
+      <ContractData contract="ComplexStorage" method="getUintarray" />{' '}
     </div>
     <div className="section">
       <h2>ComplexStorage with Custom Rendering</h2>
@@ -172,8 +189,8 @@ export default ({ accounts }) => (
         contract="ComplexStorage"
         method="singleDD"
         render={displayData => {
-          var i = 0;
-          const displayObjectProps = [];
+          var i = 0
+          const displayObjectProps = []
 
           Object.keys(displayData).forEach(key => {
             if (i != key) {
@@ -183,12 +200,12 @@ export default ({ accounts }) => (
                   <br />
                   and value: {`${displayData[key]}`}
                 </li>
-              );
+              )
             }
 
-            i++;
-          });
-          return <ol>{displayObjectProps}</ol>;
+            i++
+          })
+          return <ol>{displayObjectProps}</ol>
         }}
       />
       <strong>Array of UInts: </strong>
@@ -207,4 +224,4 @@ export default ({ accounts }) => (
       />
     </div>
   </div>
-);
+)
