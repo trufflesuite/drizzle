@@ -75,6 +75,7 @@ class ContractForm extends Component {
     if (this.props.render) {
       return this.props.render({
         inputs: this.inputs,
+        inputTypes: this.inputs.map(input => translateType(input.type)),
         state: this.state,
         handleInputChange: this.handleInputChange,
         handleSubmit: this.handleSubmit
