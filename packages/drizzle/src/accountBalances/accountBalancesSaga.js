@@ -1,6 +1,6 @@
 import { call, put, select, takeLatest } from 'redux-saga/effects'
 
-export function* getAccountBalances(action) {
+export function * getAccountBalances (action) {
   const accounts = yield select(getAccountsState)
   const web3 = action.web3
 
@@ -26,7 +26,7 @@ export function* getAccountBalances(action) {
 
 export const getAccountsState = state => state.accounts
 
-function* accountBalancesSaga() {
+function * accountBalancesSaga () {
   yield takeLatest('ACCOUNT_BALANCES_FETCHING', getAccountBalances)
 }
 
