@@ -34,4 +34,18 @@ describe('Account Balance Saga', () => {
     // Final dispatch
     expect(next.value).toEqual(put({ type: 'ACCOUNT_BALANCES_FETCHED' }))
   })
+
+  test('Fails properly', () => {
+    let next = gen.next()
+    expect(next.value).toEqual(select(getAccountsState))
+    next = gen.next(global.accounts)
+
+    const error = new Error()
+    next = gen.throw(error)
+    expect(next.value).toEqual(put({ type: 'ACCOUNT_BALANCE_FAILED', error }))
+
+    // Final dispatch
+    next = gen.next()
+    expect(next.value).toEqual(put({ type: 'ACCOUNT_BALANCES_FETCHED' }))
+  })
 })
