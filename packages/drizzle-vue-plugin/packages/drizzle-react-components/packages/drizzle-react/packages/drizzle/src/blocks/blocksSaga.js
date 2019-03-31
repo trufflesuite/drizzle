@@ -1,12 +1,12 @@
 import { END, eventChannel } from 'redux-saga'
 import { call, put, take, takeEvery, takeLatest, all } from 'redux-saga/effects'
-const BlockTracker = require('eth-block-tracker-es5')
+import BlockTracker from 'eth-block-tracker-es5'
 
 /*
  * Listen for Blocks
  */
 
-export function createBlockChannel ({ drizzle, web3, syncAlways }) {
+export function createBlockChannel({ drizzle, web3, syncAlways }) {
   return eventChannel(emit => {
     const blockEvents = web3.eth
       .subscribe('newBlockHeaders', (error, result) => {
@@ -35,7 +35,7 @@ export function createBlockChannel ({ drizzle, web3, syncAlways }) {
   })
 }
 
-function * callCreateBlockChannel ({ drizzle, web3, syncAlways }) {
+function* callCreateBlockChannel({ drizzle, web3, syncAlways }) {
   const blockChannel = yield call(createBlockChannel, {
     drizzle,
     web3,
@@ -56,7 +56,7 @@ function * callCreateBlockChannel ({ drizzle, web3, syncAlways }) {
  * Poll for Blocks
  */
 
-export function createBlockPollChannel ({
+export function createBlockPollChannel({
   drizzle,
   interval,
   web3,
@@ -68,7 +68,7 @@ export function createBlockPollChannel ({
       pollingInterval: interval
     })
 
-    blockTracker.on('latest', block => {
+    blockTracker.on('block', block => {
       emit({ type: 'BLOCK_FOUND', block, drizzle, web3, syncAlways })
     })
 
@@ -85,7 +85,7 @@ export function createBlockPollChannel ({
   })
 }
 
-function * callCreateBlockPollChannel ({ drizzle, interval, web3, syncAlways }) {
+function* callCreateBlockPollChannel({ drizzle, interval, web3, syncAlways }) {
   const blockChannel = yield call(createBlockPollChannel, {
     drizzle,
     interval,
@@ -107,7 +107,7 @@ function * callCreateBlockPollChannel ({ drizzle, interval, web3, syncAlways }) 
  * Process Blocks
  */
 
-function * processBlockHeader ({ blockHeader, drizzle, web3, syncAlways }) {
+function* processBlockHeader({ blockHeader, drizzle, web3, syncAlways }) {
   const blockNumber = blockHeader.number
 
   try {
@@ -122,7 +122,7 @@ function * processBlockHeader ({ blockHeader, drizzle, web3, syncAlways }) {
   }
 }
 
-function * processBlock ({ block, drizzle, web3, syncAlways }) {
+function* processBlock({ block, drizzle, web3, syncAlways }) {
   try {
     // Emit block for addition to store.
     // Regardless of syncing success/failure, this is still the latest block.
@@ -167,7 +167,7 @@ function * processBlock ({ block, drizzle, web3, syncAlways }) {
   }
 }
 
-function * blocksSaga () {
+function* blocksSaga() {
   // Block Subscriptions
   yield takeLatest('BLOCKS_LISTENING', callCreateBlockChannel)
   yield takeEvery('BLOCK_RECEIVED', processBlockHeader)
