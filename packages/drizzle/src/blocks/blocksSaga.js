@@ -78,7 +78,11 @@ export function createBlockPollChannel({
     })
 
     const unsubscribe = () => {
-      blockTracker.stop()
+      blockTracker.stop().catch(_ => {
+        // BlockTracker assumes there is an outstanding event subscription.
+        // However for our tests we start and stop a BlockTracker in succession
+        // that triggers an error.
+      })
     }
 
     return unsubscribe
