@@ -39,8 +39,8 @@ describe('Drizzle API', () => {
     expect(dispatchSpy).toHaveBeenCalledWith(expectedAction)
   })
 
-  describe('Can add:', () => {
-    test('Web3 Contracts', () => {
+  describe('Add:', () => {
+    test('a Web3 Contracts', () => {
       const web3Contract = {}
       const contractConfig = { web3Contract }
 
@@ -50,12 +50,28 @@ describe('Drizzle API', () => {
       expect(MockedDrizzleContract).toHaveBeenCalledTimes(1)
     })
 
-    test('TruffleArtifact Contracts', async () => {
+    test('a TruffleArtifact Contracts', async () => {
       const { truffleArtifact } = await getWeb3Assets()
       drizzle.addContract(truffleArtifact)
 
       expect(drizzle.contractList).toHaveLength(1)
       expect(MockedDrizzleContract).toHaveBeenCalledTimes(1)
+    })
+
+    test('does not add duplicate contract', () => {
+      const contractName = 'TestContract'
+      const web3Contract = {}
+      const contractConfig = { web3Contract, contractName }
+
+      MockedDrizzleContract.mockImplementation(() => ({ contractName }))
+      drizzle.addContract(contractConfig)
+
+      expect(drizzle.contractList).toHaveLength(1)
+      expect(MockedDrizzleContract).toHaveBeenCalledTimes(1)
+
+      // Try to add the same contract
+      const chucker = () => drizzle.addContract(contractConfig)
+      expect(chucker).toThrow(/^Contract already exists: TestContract/)
     })
   })
 })
