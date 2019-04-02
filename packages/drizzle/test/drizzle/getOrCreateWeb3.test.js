@@ -15,11 +15,7 @@ describe('getOrCreateWeb3Contract', () => {
     const mockedWeb3Contract = {}
     const mockedContractConfig = { web3Contract: mockedWeb3Contract }
 
-    const resolved = getOrCreateWeb3Contract(
-      mockedStore,
-      mockedContractConfig,
-      {}
-    )
+    const resolved = getOrCreateWeb3Contract(mockedStore, mockedContractConfig, {})
     expect(resolved).toBe(mockedWeb3Contract)
   })
 
@@ -29,7 +25,7 @@ describe('getOrCreateWeb3Contract', () => {
     const deployedBytecode = "I am Jack's caffeine fueled ledger code"
     const mockedTruffleArtifact = {
       abi,
-      networks: { [networkId]: { address } },
+      networks: {[networkId]: {address}},
       deployedBytecode
     }
     const contractCreatorSpy = jest.fn()
@@ -38,11 +34,7 @@ describe('getOrCreateWeb3Contract', () => {
 
     // Default selected is the 1st by convention
     const selectedAccount = accounts[0]
-    const expectedArgs = [
-      abi,
-      address,
-      { from: selectedAccount, data: deployedBytecode }
-    ]
+    const expectedArgs = [abi, address, { from: selectedAccount, data: deployedBytecode }]
     expect(contractCreatorSpy).toHaveBeenCalledWith(...expectedArgs)
   })
 })
