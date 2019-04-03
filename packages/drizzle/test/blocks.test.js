@@ -1,13 +1,15 @@
-import { createBlockChannel } from '../src/blocks/blocksSaga'
-import { mockDrizzleStore, getWeb3 } from './utils/helpers'
+import {
+  createBlockChannel,
+  createBlockPollChannel
+} from '../src/blocks/blocksSaga'
+import { getWeb3 } from './utils/helpers'
 
 describe('read from blocks', () => {
   let web3
-  let mockedStore
   let syncAlways
+  const drizzle = {}
 
   beforeAll(() => {
-    ;[mockedStore] = mockDrizzleStore()
     web3 = getWeb3()
     syncAlways = false
   })
@@ -16,26 +18,32 @@ describe('read from blocks', () => {
     let blockListener
 
     beforeEach(() => {
-      blockListener = createBlockChannel({ mockedStore, web3, syncAlways })
+      blockListener = createBlockChannel({ drizzle, web3, syncAlways })
     })
 
-    test('listens for block headers', async () => {
-      await web3.eth.sendTransaction({
+    test('listens for block headers', done => {
+      // Subscribe to event
+      blockListener.take(event => {
+        expect(event.type).toEqual('BLOCK_RECEIVED')
+        done()
+      })
+
+      // Invoke action to trigger event
+      web3.eth.sendTransaction({
         from: global.accounts[0],
         to: global.accounts[1],
         value: 200
       })
-
-      blockListener.take(event => {
-        expect(event.type).toEqual('BLOCK_RECEIVED')
-      })
     })
 
-    test('unsubscribes from block headers', () => {
+    test('unsubscribes from block headers', done => {
+      // Subscribe to event
       blockListener.take(event => {
         expect(event.type).toEqual('@@redux-saga/CHANNEL_END')
+        done()
       })
 
+      // Invoke action to trigger event
       blockListener.close()
     })
   })
@@ -44,26 +52,38 @@ describe('read from blocks', () => {
     let blockPoller
 
     beforeEach(() => {
-      blockPoller = createBlockChannel({ mockedStore, web3, syncAlways })
+      const interval = 1000
+      blockPoller = createBlockPollChannel({
+        drizzle,
+        interval,
+        web3,
+        syncAlways
+      })
     })
 
-    test('polls for block headers', async () => {
-      await web3.eth.sendTransaction({
+    test('polls for block headers', done => {
+      // Subscribe to event
+      blockPoller.take(event => {
+        expect(event.type).toEqual('BLOCK_FOUND')
+        done()
+      })
+
+      // Invoke action to trigger event
+      web3.eth.sendTransaction({
         from: global.accounts[0],
         to: global.accounts[1],
         value: 200
       })
-
-      blockPoller.take(event => {
-        expect(event.type).toEqual('BLOCK_FOUND')
-      })
     })
 
-    test('terminates from block polling', () => {
+    test('terminates from block polling', done => {
+      // Subscribe to event
       blockPoller.take(event => {
         expect(event.type).toEqual('@@redux-saga/CHANNEL_END')
+        done()
       })
 
+      // Invoke action to trigger event
       blockPoller.close()
     })
   })

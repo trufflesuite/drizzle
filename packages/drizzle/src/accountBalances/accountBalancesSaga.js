@@ -24,7 +24,7 @@ export function * getAccountBalances (action) {
   yield put({ type: 'ACCOUNT_BALANCES_FETCHED' })
 }
 
-const getAccountsState = state => state.accounts
+export const getAccountsState = state => state.accounts
 
 function * accountBalancesSaga () {
   yield takeLatest('ACCOUNT_BALANCES_FETCHING', getAccountBalances)
