@@ -1,4 +1,7 @@
-import { getAccountBalances, getAccountsState } from '../src/accountBalances/accountBalancesSaga'
+import {
+  getAccountBalances,
+  getAccountsState
+} from '../src/accountBalances/accountBalancesSaga'
 import { call, put, select } from 'redux-saga/effects'
 
 describe('Account Balance Saga', () => {
@@ -7,8 +10,8 @@ describe('Account Balance Saga', () => {
 
   beforeEach(() => {
     mockedGetBalance = jest.fn()
-    mockedWeb3 = {eth: {getBalance: mockedGetBalance}}
-    gen = getAccountBalances({web3: mockedWeb3})
+    mockedWeb3 = { eth: { getBalance: mockedGetBalance } }
+    gen = getAccountBalances({ web3: mockedWeb3 })
   })
 
   test('Retrieves account balances', () => {
@@ -22,12 +25,14 @@ describe('Account Balance Saga', () => {
     for (let account of global.accounts) {
       expect(next.value).toEqual(call(mockedGetBalance, account))
       next = gen.next(accountBalance)
-      expect(next.value).toEqual(put({type: 'ACCOUNT_BALANCE_FETCHED', account, accountBalance}))
+      expect(next.value).toEqual(
+        put({ type: 'ACCOUNT_BALANCE_FETCHED', account, accountBalance })
+      )
       next = gen.next()
     }
 
     // Final dispatch
-    expect(next.value).toEqual(put({type: 'ACCOUNT_BALANCES_FETCHED'}))
+    expect(next.value).toEqual(put({ type: 'ACCOUNT_BALANCES_FETCHED' }))
   })
 
   test('Fails properly', () => {
@@ -37,10 +42,10 @@ describe('Account Balance Saga', () => {
 
     const error = new Error()
     next = gen.throw(error)
-    expect(next.value).toEqual(put({type: 'ACCOUNT_BALANCE_FAILED', error}))
+    expect(next.value).toEqual(put({ type: 'ACCOUNT_BALANCE_FAILED', error }))
 
     // Final dispatch
     next = gen.next()
-    expect(next.value).toEqual(put({type: 'ACCOUNT_BALANCES_FETCHED'}))
+    expect(next.value).toEqual(put({ type: 'ACCOUNT_BALANCES_FETCHED' }))
   })
 })

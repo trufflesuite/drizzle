@@ -1,4 +1,7 @@
-import { createBlockChannel, createBlockPollChannel } from '../src/blocks/blocksSaga'
+import {
+  createBlockChannel,
+  createBlockPollChannel
+} from '../src/blocks/blocksSaga'
 import { getWeb3 } from './utils/helpers'
 
 describe('read from blocks', () => {
@@ -18,7 +21,7 @@ describe('read from blocks', () => {
       blockListener = createBlockChannel({ drizzle, web3, syncAlways })
     })
 
-    test('listens for block headers', (done) => {
+    test('listens for block headers', done => {
       // Subscribe to event
       blockListener.take(event => {
         expect(event.type).toEqual('BLOCK_RECEIVED')
@@ -33,7 +36,7 @@ describe('read from blocks', () => {
       })
     })
 
-    test('unsubscribes from block headers', (done) => {
+    test('unsubscribes from block headers', done => {
       // Subscribe to event
       blockListener.take(event => {
         expect(event.type).toEqual('@@redux-saga/CHANNEL_END')
@@ -50,10 +53,15 @@ describe('read from blocks', () => {
 
     beforeEach(() => {
       const interval = 1000
-      blockPoller = createBlockPollChannel({ drizzle, interval, web3, syncAlways })
+      blockPoller = createBlockPollChannel({
+        drizzle,
+        interval,
+        web3,
+        syncAlways
+      })
     })
 
-    test('polls for block headers', (done) => {
+    test('polls for block headers', done => {
       // Subscribe to event
       blockPoller.take(event => {
         expect(event.type).toEqual('BLOCK_FOUND')

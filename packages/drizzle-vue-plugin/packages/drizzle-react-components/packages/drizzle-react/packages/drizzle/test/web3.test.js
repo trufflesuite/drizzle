@@ -59,7 +59,7 @@ describe('Loads Web3', () => {
     test('get web3', async () => {
       expect(gen.next().value).toEqual(call(mockedEthereumEnable))
 
-      expect(gen.next().value).toEqual(put({type: Action.WEB3_INITIALIZED}))
+      expect(gen.next().value).toEqual(put({ type: Action.WEB3_INITIALIZED }))
 
       // is it a Web3 object?
       resolvedWeb3 = gen.next().value
@@ -76,7 +76,7 @@ describe('Loads Web3', () => {
 
     test('get web3', async () => {
       // First action dispatched
-      expect(gen.next().value).toEqual(put({type: Action.WEB3_INITIALIZED}))
+      expect(gen.next().value).toEqual(put({ type: Action.WEB3_INITIALIZED }))
     })
   })
 
@@ -97,11 +97,11 @@ describe('Loads Web3', () => {
           url: 'ws://localhost:12345'
         }
       }
-      gen = initializeWeb3({options})
+      gen = initializeWeb3({ options })
 
       // First action dispatched
       // expect(dispatchedActions[0].type).toEqual(Action.WEB3_INITIALIZED)
-      expect(gen.next().value).toEqual(put({type: Action.WEB3_INITIALIZED}))
+      expect(gen.next().value).toEqual(put({ type: Action.WEB3_INITIALIZED }))
       resolvedWeb3 = gen.next().value
 
       // is it a Web3 object?
@@ -115,7 +115,7 @@ describe('Loads Web3', () => {
           url: 'ws://localhost:12345'
         }
       }
-      gen = initializeWeb3({options})
+      gen = initializeWeb3({ options })
 
       const error = new Error('Invalid web3 fallback provided.')
       expect(gen.next().value).toEqual(put({ type: Action.WEB3_FAILED, error }))
