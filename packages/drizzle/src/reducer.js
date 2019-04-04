@@ -1,5 +1,3 @@
-import { combineReducers } from 'redux'
-
 import accountsReducer from './accounts/accountsReducer'
 import accountBalancesReducer from './accountBalances/accountBalancesReducer'
 import blocksReducer from './blocks/blocksReducer'
@@ -9,7 +7,8 @@ import transactionsReducer from './transactions/transactionsReducer'
 import transactionStackReducer from './transactions/transactionStackReducer'
 import web3Reducer from './web3/web3Reducer'
 
-const reducer = combineReducers({
+// All our reducers
+export default {
   accounts: accountsReducer,
   accountBalances: accountBalancesReducer,
   contracts: contractsReducer,
@@ -18,6 +17,4 @@ const reducer = combineReducers({
   transactions: transactionsReducer,
   transactionStack: transactionStackReducer,
   web3: web3Reducer
-})
-
-export default reducer
+}
