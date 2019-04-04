@@ -35,9 +35,14 @@ Drizzle is a collection of front-end libraries that make writing dapp frontends 
    const drizzle = new Drizzle(options)
    ```
 
-   **Note**: The above assumes you have no existing redux store and generates a new one. To use your existing redux store, see our documentation for [Using an Existing Redux Store](https://www.truffleframework.com/docs/drizzle/using-an-existing-redux-store).
+   **Note**: The above assumes you have no existing redux store and will generate a new one. If you need something more sophisticated, consult our documentation for [Using an Existing Redux Store](https://www.truffleframework.com/docs/drizzle/using-an-existing-redux-store) or [Delegating Redux Concerns to Drizzle](https://www.truffleframework.com/docs/drizzle/use-drizzles-redux-store)
 
-1. Get contract data. Calling the `cacheCall()` function on a contract will execute the desired call and return a corresponding key so the data can be retrieved from the store. When a new block is received, Drizzle will refresh the store automatically _if_ any transactions in the block touched our contract. For more information on how this works, see [How Data Stays Fresh](#how-data-stays-fresh).
+1. Get contract data. Calling the `cacheCall()` function on a contract will
+   execute the desired call and return a corresponding key so the data can be
+   retrieved from the store. When a new block is received, Drizzle will refresh
+   the store automatically _if_ any transactions in the block touched our
+   contract. For more information on how this works, see [How Data Stays
+   Fresh](#how-data-stays-fresh).
 
    **Note:** We have to check that Drizzle is initialized before fetching data. A simple if statement such as below is fine for displaying a few pieces of data, but a better approach for larger dapps is to use a [loading component](https://github.com/trufflesuite/drizzle-react#recipe-loading-component). We've already built one for you in our [`drizzle-react-components` library](https://github.com/trufflesuite/drizzle-react-components) as well.
    ```javascript

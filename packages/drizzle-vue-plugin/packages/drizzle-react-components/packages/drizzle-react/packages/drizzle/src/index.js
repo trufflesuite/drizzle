@@ -1,6 +1,9 @@
 import Drizzle from './Drizzle.js'
 import { generateStore } from './generateStore'
-import { generateContractsInitialState } from './generateContractsInitialState'
+import { generateContractsInitialState } from './contractStateUtils'
+
+// Events
+import * as EventActions from './contracts/constants'
 
 // Reducers
 import accountsReducer from './accounts/accountsReducer'
@@ -43,5 +46,6 @@ export {
   generateContractsInitialState,
   generateStore,
   drizzleReducers,
-  drizzleSagas
+  drizzleSagas,
+  EventActions
 }
