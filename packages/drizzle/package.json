@@ -46,7 +46,7 @@
     "eslint": "^5.3.0",
     "eslint-config-standard": "^11.0.0",
     "eslint-plugin-jest": "^22.1.2",
-    "ganache-core": "^2.3.3",
+    "ganache-core": "^2.5.3",
     "jest": "^23.6.0",
     "prettier-standard": "^8.0.1",
     "standard": "^11.0.1",
