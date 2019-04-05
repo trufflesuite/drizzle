@@ -1,6 +1,6 @@
 import { END, eventChannel } from 'redux-saga'
 import { call, put, take, takeEvery, takeLatest, all } from 'redux-saga/effects'
-const BlockTracker = require('eth-block-tracker-es5')
+import BlockTracker from 'eth-block-tracker-es5'
 
 /*
  * Listen for Blocks
@@ -68,7 +68,7 @@ export function createBlockPollChannel ({
       pollingInterval: interval
     })
 
-    blockTracker.on('latest', block => {
+    blockTracker.on('block', block => {
       emit({ type: 'BLOCK_FOUND', block, drizzle, web3, syncAlways })
     })
 
@@ -78,7 +78,11 @@ export function createBlockPollChannel ({
     })
 
     const unsubscribe = () => {
-      blockTracker.stop()
+      blockTracker.stop().catch(_ => {
+        // BlockTracker assumes there is an outstanding event subscription.
+        // However for our tests we start and stop a BlockTracker in succession
+        // that triggers an error.
+      })
     }
 
     return unsubscribe

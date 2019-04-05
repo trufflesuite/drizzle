@@ -1,13 +1,7 @@
 import { END, eventChannel } from 'redux-saga'
-import {
-  call,
-  put,
-  select,
-  take,
-  takeLatest,
-  takeEvery
-} from 'redux-saga/effects'
+import { call, put, select, take, takeEvery } from 'redux-saga/effects'
 import DrizzleContract from '../DrizzleContract'
+import * as EventActions from './constants'
 
 export function * addContract ({ drizzle, contractConfig, events, web3 }) {
   // Prevents double-adding contracts
@@ -124,13 +118,13 @@ export function createContractEventChannel ({
   return eventChannel(emit => {
     const eventListener = contract.events[eventName](eventOptions)
       .on('data', event => {
-        emit({ type: 'EVENT_FIRED', name, event })
+        emit({ type: EventActions.EVENT_FIRED, name, event })
       })
       .on('changed', event => {
-        emit({ type: 'EVENT_CHANGED', name, event })
+        emit({ type: EventActions.EVENT_CHANGED, name, event })
       })
       .on('error', error => {
-        emit({ type: 'EVENT_ERROR', name, error })
+        emit({ type: EventActions.EVENT_ERROR, name, error })
         emit(END)
       })
 
@@ -219,7 +213,7 @@ function * callSendContractTx ({
     var finalArgTest = false
 
     if (typeof finalArg === 'object') {
-      var finalArgTest = call(isSendOrCallOptions, finalArg)
+      var finalArgTest = yield call(isSendOrCallOptions, finalArg)
     }
 
     if (finalArgTest) {
@@ -277,7 +271,7 @@ function * callCallContractFn ({
     var finalArgTest = false
 
     if (typeof finalArg === 'object') {
-      var finalArgTest = call(isSendOrCallOptions, finalArg)
+      var finalArgTest = yield call(isSendOrCallOptions, finalArg)
     }
 
     if (finalArgTest) {
