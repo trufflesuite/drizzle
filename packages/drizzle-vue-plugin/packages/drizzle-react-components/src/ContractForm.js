@@ -2,6 +2,19 @@ import { drizzleConnect } from "drizzle-react";
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 
+const translateType = type => {
+  switch (true) {
+    case /^uint/.test(type):
+      return "number";
+    case /^string/.test(type) || /^bytes/.test(type):
+      return "text";
+    case /^bool/.test(type):
+      return "checkbox";
+    default:
+      return "text";
+  }
+};
+
 class ContractForm extends Component {
   constructor(props, context) {
     super(props);
@@ -59,23 +72,11 @@ class ContractForm extends Component {
     this.setState({ [event.target.name]: event.target.value });
   }
 
-  translateType(type) {
-    switch (true) {
-      case /^uint/.test(type):
-        return "number";
-      case /^string/.test(type) || /^bytes/.test(type):
-        return "text";
-      case /^bool/.test(type):
-        return "checkbox";
-      default:
-        return "text";
-    }
-  }
-
   render() {
     if (this.props.render) {
       return this.props.render({
         inputs: this.inputs,
+        inputTypes: this.inputs.map(input => translateType(input.type)),
         state: this.state,
         handleInputChange: this.handleInputChange,
         handleSubmit: this.handleSubmit,
@@ -88,7 +89,7 @@ class ContractForm extends Component {
         onSubmit={this.handleSubmit}
       >
         {this.inputs.map((input, index) => {
-          var inputType = this.translateType(input.type);
+          var inputType = translateType(input.type);
           var inputLabel = this.props.labels
             ? this.props.labels[index]
             : input.name;

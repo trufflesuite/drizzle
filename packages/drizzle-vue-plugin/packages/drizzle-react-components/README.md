@@ -72,9 +72,11 @@ This component wraps your entire app (but within the DrizzleProvider) and will s
 
 `labels` (array) Custom labels; will follow ABI input ordering. Useful for friendlier names. For example "\_to" becoming "Recipient Address".
 
-`render` (function with four arguments) Render property, passes `inputs`, `state`, `handleInputChange` function and `handleSubmit` function as arguments and returns render output.
+`render` (function) Render prop for rendering custom components. It receives a single object with the fields: `inputs`, `inputTypes`, `state`, `handleInputChange`,  `handleSubmit`,  as arguments and returns render output.
 
 ## Test Apps
+
+Refer to the test apps to learn more about how to use DRC.
 
 A test app targeting the React 16.3+ context API has been included at `./test-app`. And one targeting the legacy context API can be found at `test-app-legacy-context`.
 
