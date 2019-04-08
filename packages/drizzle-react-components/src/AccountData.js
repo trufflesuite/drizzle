@@ -40,6 +40,14 @@ class AccountData extends Component {
       balance = this.precisionRound(balance, this.props.precision);
     }
 
+    if (this.props.render) {
+      return this.props.render({
+        address,
+        balance,
+        units,
+      });
+    }
+
     return (
       <div>
         <h4>{address}</h4>
@@ -61,6 +69,7 @@ AccountData.propTypes = {
   accountIndex: PropTypes.number.isRequired,
   units: PropTypes.string,
   precision: PropTypes.number,
+  render: PropTypes.func,
 };
 
 /*
