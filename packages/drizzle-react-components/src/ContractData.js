@@ -76,6 +76,11 @@ class ContractData extends Component {
       displayData = this.context.drizzle.web3.utils.hexToAscii(displayData);
     }
 
+    // If a render prop is given, have displayData rendered from that component
+    if (this.props.render) {
+      return this.props.render(displayData);
+    }
+
     // If return value is an array
     if (Array.isArray(displayData)) {
       const displayListItems = displayData.map((datum, index) => {
@@ -127,13 +132,14 @@ ContractData.contextTypes = {
 };
 
 ContractData.propTypes = {
-  contracts: PropTypes.array.isRequired,
+  contracts: PropTypes.object.isRequired,
   contract: PropTypes.string.isRequired,
   method: PropTypes.string.isRequired,
   methodArgs: PropTypes.array,
   hideIndicator: PropTypes.bool,
   toUtf8: PropTypes.bool,
   toAscii: PropTypes.bool,
+  render: PropTypes.func,
 };
 
 /*

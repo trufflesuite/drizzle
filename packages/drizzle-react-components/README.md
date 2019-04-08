@@ -1,4 +1,5 @@
 # drizzle-react-components
+
 A set of useful components for common UI elements.
 
 ## Components
@@ -59,6 +60,8 @@ This component wraps your entire app (but within the DrizzleProvider) and will s
 
 `toAscii` (boolean) Converts the return value to an Ascii string before display.
 
+`render` (function with one argument) Render property, takes the value in the argument and returns render output.
+
 ### ContractForm
 
 `contract` (string, required) Name of the contract whose method will be the basis the form.
@@ -67,9 +70,13 @@ This component wraps your entire app (but within the DrizzleProvider) and will s
 
 `sendArgs` (object) An object specifying options for the transaction to be sent; namely: `from`, `gasPrice`, `gas` and `value`. Further explanataion of these parameters can be found [here in the web3 documentation](https://web3js.readthedocs.io/en/1.0/web3-eth-contract.html#id19).
 
-`labels` (array) Custom labels; will follow ABI input ordering. Useful for friendlier names. For example "_to" becoming "Recipient Address".
+`labels` (array) Custom labels; will follow ABI input ordering. Useful for friendlier names. For example "\_to" becoming "Recipient Address".
+
+`render` (function) Render prop for rendering custom components. It receives a single object with the fields: `inputs`, `inputTypes`, `state`, `handleInputChange`,  `handleSubmit`,  as arguments and returns render output.
 
 ## Test Apps
+
+Refer to the test apps to learn more about how to use DRC.
 
 A test app targeting the React 16.3+ context API has been included at `./test-app`. And one targeting the legacy context API can be found at `test-app-legacy-context`.
 
@@ -78,11 +85,10 @@ A test app targeting the React 16.3+ context API has been included at `./test-ap
 1. `cd ./test-app`
 1. Install dependencies: `npm install`
 1. Start your development blockchain: `truffle develop`
-1. (In Truffle develop console) Compile contracts: `compile` 
+1. (In Truffle develop console) Compile contracts: `compile`
 1. (In Truffle develop console) Migrate contracts: `migrate`
 1. In another terminal window: `cd ./app`
 1. Install dependencies: `npm install`
 1. Start dev server: `npm start`
 
 NOTE: Make sure to `migrate --reset` your contracts and reset your Metamask account when switching between test apps, otherwise errors may occur.
-
