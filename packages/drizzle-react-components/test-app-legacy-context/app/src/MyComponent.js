@@ -1,17 +1,17 @@
-import React from "react";
+import React from 'react'
 import {
   AccountData,
   ContractData,
   ContractForm
-} from "drizzle-react-components";
+} from 'drizzle-react-components'
 
-import logo from "./logo.png";
+import logo from './logo.png'
 
 const myRender = data => (
   <>
     Value=<b>{data}</b>
   </>
-);
+)
 
 export default ({ accounts }) => (
   <div className="App">
@@ -32,8 +32,12 @@ export default ({ accounts }) => (
         precision="3"
         render={({ address, balance, units }) => (
           <div>
-            <div>My Address: <span style={{ color: "red" }}>{address}</span></div>
-            <div>My Ether: <span style={{ color: "red" }}>{balance}</span> {units}</div>
+            <div>
+              My Address: <span style={{ color: 'red' }}>{address}</span>
+            </div>
+            <div>
+              My Ether: <span style={{ color: 'red' }}>{balance}</span> {units}
+            </div>
           </div>
         )}
       />
@@ -50,6 +54,11 @@ export default ({ accounts }) => (
         <ContractData contract="SimpleStorage" method="storedData" />
       </p>
       <ContractForm contract="SimpleStorage" method="set" />
+      <p>
+        <strong>Stored Boolean Value: </strong>
+        <ContractData contract="SimpleStorage" method="storedBool" />
+      </p>
+      <ContractForm contract="SimpleStorage" method="setBool" />
     </div>
 
     <div className="section">
@@ -61,7 +70,13 @@ export default ({ accounts }) => (
       <ContractForm
         contract="SimpleStorage"
         method="set"
-        render={({ inputs, inputTypes, state, handleInputChange, handleSubmit }) => (
+        render={({
+          inputs,
+          inputTypes,
+          state,
+          handleInputChange,
+          handleSubmit
+        }) => (
           <form onSubmit={handleSubmit}>
             {inputs.map((input, index) => (
               <input
@@ -101,7 +116,7 @@ export default ({ accounts }) => (
           contract="TutorialToken"
           method="totalSupply"
           methodArgs={[{ from: accounts[0] }]}
-        />{" "}
+        />{' '}
         <ContractData contract="TutorialToken" method="symbol" hideIndicator />
       </p>
       <p>
@@ -116,7 +131,7 @@ export default ({ accounts }) => (
       <ContractForm
         contract="TutorialToken"
         method="transfer"
-        labels={["To Address", "Amount to Send"]}
+        labels={['To Address', 'Amount to Send']}
       />
     </div>
     <div className="section">
@@ -137,7 +152,7 @@ export default ({ accounts }) => (
       <strong>Single Device Data: </strong>
       <ContractData contract="ComplexStorage" method="singleDD" />
       <strong>Array of UInts: </strong>
-      <ContractData contract="ComplexStorage" method="getUintarray" />{" "}
+      <ContractData contract="ComplexStorage" method="getUintarray" />{' '}
     </div>
     <div className="section">
       <h2>ComplexStorage with Custom Rendering</h2>
@@ -172,8 +187,8 @@ export default ({ accounts }) => (
         contract="ComplexStorage"
         method="singleDD"
         render={displayData => {
-          var i = 0;
-          const displayObjectProps = [];
+          var i = 0
+          const displayObjectProps = []
 
           Object.keys(displayData).forEach(key => {
             if (i != key) {
@@ -183,12 +198,12 @@ export default ({ accounts }) => (
                   <br />
                   and value: {`${displayData[key]}`}
                 </li>
-              );
+              )
             }
 
-            i++;
-          });
-          return <ol>{displayObjectProps}</ol>;
+            i++
+          })
+          return <ol>{displayObjectProps}</ol>
         }}
       />
       <strong>Array of UInts: </strong>
@@ -207,4 +222,4 @@ export default ({ accounts }) => (
       />
     </div>
   </div>
-);
+)
