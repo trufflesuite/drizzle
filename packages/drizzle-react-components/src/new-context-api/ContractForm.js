@@ -68,7 +68,11 @@ class ContractForm extends Component {
   }
 
   handleInputChange(event) {
-    this.setState({ [event.target.name]: event.target.value });
+    const value =
+      event.target.type === "checkbox"
+        ? event.target.checked
+        : event.target.value;
+    this.setState({ [event.target.name]: value });
   }
 
   render() {
