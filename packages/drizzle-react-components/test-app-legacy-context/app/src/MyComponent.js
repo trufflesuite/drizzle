@@ -50,6 +50,11 @@ export default ({ accounts }) => (
         <ContractData contract="SimpleStorage" method="storedData" />
       </p>
       <ContractForm contract="SimpleStorage" method="set" />
+      <p>
+        <strong>Stored Boolean Value: </strong>
+        <ContractData contract="SimpleStorage" method="storedBool" />
+      </p>
+      <ContractForm contract="SimpleStorage" method="setBool" />
     </div>
 
     <div className="section">

@@ -77,6 +77,21 @@ export default () => (
               contract="SimpleStorage"
               method="set"
             />
+            <p>
+              <strong>Stored Boolean Value: </strong>
+              <ContractData
+                drizzle={drizzle}
+                drizzleState={drizzleState}
+                contract="SimpleStorage"
+                method="storedBool"
+              />
+            </p>
+            <ContractForm
+              drizzle={drizzle}
+              drizzleState={drizzleState}
+              contract="SimpleStorage"
+              method="setBool"
+            />
 
             <h2>SimpleStorage with Custom Rendering</h2>
             <p>
