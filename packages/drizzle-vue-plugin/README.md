@@ -1,5 +1,7 @@
 # Vue Plugin
 
+**Note**: This is still a work in progres
+
 ```
 $ npm install drizzle-vue-plugin
 ```
