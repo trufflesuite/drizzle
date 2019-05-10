@@ -19,3 +19,9 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw*
+
+# secrets
+secrets.env
+
+# contract artifacts
+test-app/vapp/src/contracts/
