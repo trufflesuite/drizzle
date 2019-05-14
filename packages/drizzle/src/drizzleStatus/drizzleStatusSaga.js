@@ -1,6 +1,4 @@
 import { call, put, select, takeLatest } from 'redux-saga/effects'
-import defaultOptions from '../defaultOptions'
-import merge from '../mergeOptions'
 
 // Initialization Functions
 import { initializeWeb3, getNetworkId } from '../web3/web3Saga'
@@ -9,7 +7,7 @@ import { getAccountBalances } from '../accountBalances/accountBalancesSaga'
 
 function * initializeDrizzle (action) {
   try {
-    const options = merge(defaultOptions, action.options)
+    const options = action.options
     const web3Options = options.web3
     const drizzle = action.drizzle
 

@@ -1,4 +1,6 @@
 import { generateStore } from './generateStore'
+import defaultOptions from './defaultOptions'
+import merge from './mergeOptions'
 
 // Load as promise so that async Drizzle initialization can still resolve
 var isEnvReadyPromise = new Promise((resolve, reject) => {
@@ -21,7 +23,10 @@ var isEnvReadyPromise = new Promise((resolve, reject) => {
 })
 
 class Drizzle {
-  constructor (options, store) {
+  constructor (givenOptions, store) {
+
+    const options = merge(defaultOptions, givenOptions)
+
     // Variables
     this.contracts = {}
     this.contractList = []

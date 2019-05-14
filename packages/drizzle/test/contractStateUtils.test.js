@@ -86,5 +86,9 @@ describe('Contract State Utilities', () => {
         expectedStates
       )
     })
+
+    test('it generates valid initial state with empty contracts', () => {
+      expect(generateContractsInitialState({})).toEqual({})
+    })
   })
 })
