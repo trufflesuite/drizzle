@@ -2,6 +2,7 @@ import MockedDrizzleContract from '../../src/DrizzleContract'
 
 import { getWeb3Assets } from '../utils/helpers'
 import Drizzle from '../../src/Drizzle'
+import defaultDrizzleOptions from '../../src/defaultOptions'
 
 jest.mock('../../src/DrizzleContract')
 
@@ -38,7 +39,7 @@ describe('Drizzle API', () => {
     const expectedAction = {
       type: 'DRIZZLE_INITIALIZING',
       drizzle,
-      options: drizzleOptions
+      options: defaultDrizzleOptions
     }
     expect(dispatchSpy).toHaveBeenCalledWith(expectedAction)
   })

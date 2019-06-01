@@ -3,6 +3,7 @@ import { drizzleMiddleware } from '../../src/drizzle-middleware'
 import Drizzle from '../../src/Drizzle'
 import { getWeb3Assets } from '../utils/helpers'
 import configureStore from 'redux-mock-store'
+import defaultDrizzleOptions from '../../src/defaultOptions'
 
 jest.mock('../../src/DrizzleContract')
 
@@ -73,6 +74,7 @@ describe('Drizzle Middleware', () => {
     const networkId = global.defaultNetworkId
     const accounts = global.accounts
     const drizzleOptions = {}
+    const expectedDrizzleOptions = defaultDrizzleOptions
     const state = { web3: { networkId }, accounts }
 
     let middlewares, mockedStore
@@ -99,7 +101,7 @@ describe('Drizzle Middleware', () => {
       expect(actions[0]).toEqual({
         type: 'DRIZZLE_INITIALIZING',
         drizzle,
-        options: drizzleOptions
+        options: expectedDrizzleOptions
       })
     })
 
@@ -130,7 +132,7 @@ describe('Drizzle Middleware', () => {
         expect(actions[0]).toEqual({
           type: 'DRIZZLE_INITIALIZING',
           drizzle,
-          options: drizzleOptions
+          options: expectedDrizzleOptions
         })
         expect(actions[1]).toEqual({
           type: 'CONTRACT_INITIALIZING',
