@@ -5,7 +5,11 @@ export const drizzleMiddleware = drizzleInstance => store => next => action => {
     drizzleInstance = action.drizzle
   }
 
-  if (type === 'ACCOUNTS_FETCHED' && drizzleInstance && drizzleInstance.contractList.length) {
+  if (
+    type === 'ACCOUNTS_FETCHED' &&
+    drizzleInstance &&
+    drizzleInstance.contractList.length
+  ) {
     const newAccount = action.accounts[0]
     const oldAccount = drizzleInstance.contractList[0].options.from
     if (oldAccount !== newAccount) {
