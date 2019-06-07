@@ -21,6 +21,6 @@
   },
   "homepage": "https://github.com/truffle-box/drizzle-box#readme",
   "dependencies": {
-    "openzeppelin-solidity": "^2.1.1"
+    "openzeppelin-solidity": "^2.3.0"
   }
 }
