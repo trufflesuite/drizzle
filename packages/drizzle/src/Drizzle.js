@@ -24,18 +24,19 @@ var isEnvReadyPromise = new Promise((resolve, reject) => {
 })
 
 export const getOrCreateWeb3Contract = (store, contractConfig, web3) => {
+  if (contractConfig.web3Contract) {
+    return contractConfig.web3Contract
+  }
+
   const state = store.getState()
-  const networkId = state.web3.networkId
+  const networkId = state.web3 && state.web3.networkId
   const selectedAccount = state.accounts[0]
 
-  const { web3Contract, abi, networks, deployedBytecode } = contractConfig
-  return (
-    web3Contract ||
-    new web3.eth.Contract(abi, networks[networkId].address, {
-      from: selectedAccount,
-      data: deployedBytecode
-    })
-  )
+  const { abi, networks, deployedBytecode } = contractConfig
+  return new web3.eth.Contract(abi, networks[networkId].address, {
+    from: selectedAccount,
+    data: deployedBytecode
+  })
 }
 
 class Drizzle {
@@ -94,6 +95,9 @@ class Drizzle {
   }
 
   deleteContract(contractName) {
+    // Deleting a contract means removing it from this instance's
+    // `contractList`, `contracts`, and `loadingContract`
+
     if (!this.contracts[contractName]) {
       throw new Error(`Contract does not exist: ${contractName}`)
     }

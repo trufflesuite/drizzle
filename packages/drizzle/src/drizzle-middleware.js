@@ -12,6 +12,8 @@ export const drizzleMiddleware = drizzleInstance => store => next => action => {
   ) {
     const newAccount = action.accounts[0]
     const oldAccount = drizzleInstance.contractList[0].options.from
+
+    // Update `from` fields with newAccount
     if (oldAccount !== newAccount) {
       drizzleInstance.contractList.forEach(contract => {
         contract.options.from = newAccount

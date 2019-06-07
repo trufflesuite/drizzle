@@ -51,7 +51,7 @@ describe('Drizzle API', () => {
 
       drizzle.addContract(contractConfig)
 
-      // 1 in cstor, 2 in addContract
+      // 1 in constructor, 2 in addContract
       expect(dispatchSpy).toHaveBeenCalledTimes(3)
 
       let expectedAction = { type: 'CONTRACT_INITIALIZING', contractConfig }
@@ -69,7 +69,7 @@ describe('Drizzle API', () => {
       const { truffleArtifact } = await getWeb3Assets()
       drizzle.addContract(truffleArtifact)
 
-      // 1 in cstor, 2 in addContract
+      // 1 in constructor, 2 in addContract
       expect(dispatchSpy).toHaveBeenCalledTimes(3)
 
       let expectedAction = {
