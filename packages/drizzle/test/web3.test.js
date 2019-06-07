@@ -107,7 +107,7 @@ describe('Resolving Web3', () => {
         { options: {} }
       ).done
 
-      // saga result is undefined when user opts out
+      // saga result should be undefined if an exception occurs
       expect(web3Result).toBe(undefined)
 
       // and the last action should be WEB3_USER_DENIED
@@ -132,7 +132,7 @@ describe('Resolving Web3', () => {
         { options: {} }
       ).done
 
-      // saga result is undefined when user opts out
+      // saga result is undefined when exception is thrown
       expect(result).toBe(undefined)
 
       // and the last action should be WEB3_ERROR
