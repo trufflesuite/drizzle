@@ -1,5 +1,5 @@
 <template>
-  <div v-if="isDrizzleInitialized">
+  <div>
     <p>
       <drizzle-contract
         contractName="ComplexStorage"
@@ -32,8 +32,6 @@
       <drizzle-contract contractName="ComplexStorage" method="get_uintarray" />
     </div>
   </div>
-
-  <div v-else>Loading...</div>
 </template>
 
 <script>
