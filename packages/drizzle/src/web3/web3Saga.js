@@ -26,7 +26,6 @@ export function* initializeWeb3({ options }) {
         const selectedAccount = yield call([ethereum, 'enable'])
 
         yield put({ type: Action.WEB3_INITIALIZED })
-        console.log('selectedAccount', selectedAccount)
 
         if (!selectedAccount) {
           yield put({ type: Action.WEB3_USER_DENIED })
@@ -34,7 +33,7 @@ export function* initializeWeb3({ options }) {
         }
         return web3
       } catch (error) {
-        console.log(error)
+        console.error(error)
         yield put({ type: Action.WEB3_ERROR })
         return
       }
