@@ -1,6 +1,7 @@
 import { generateStore } from './generateStore'
 import defaultOptions from './defaultOptions'
 import merge from './mergeOptions'
+import DrizzleContract from './DrizzleContract'
 
 // Load as promise so that async Drizzle initialization can still resolve
 var isEnvReadyPromise = new Promise((resolve, reject) => {
@@ -22,9 +23,26 @@ var isEnvReadyPromise = new Promise((resolve, reject) => {
   }
 })
 
+export const getOrCreateWeb3Contract = (store, contractConfig, web3) => {
+  if (contractConfig.web3Contract) {
+    return contractConfig.web3Contract
+  }
+
+  const state = store.getState()
+  const networkId = state.web3 && state.web3.networkId
+  const selectedAccount = state.accounts[0]
+
+  const { abi, networks, deployedBytecode } = contractConfig
+  return (
+    new web3.eth.Contract(abi, networks[networkId].address, {
+      from: selectedAccount,
+      data: deployedBytecode
+    })
+  )
+}
+
 class Drizzle {
   constructor (givenOptions, store) {
-
     const options = merge(defaultOptions, givenOptions)
 
     // Variables
@@ -48,27 +66,60 @@ class Drizzle {
   }
 
   addContract (contractConfig, events = []) {
-    this.store.dispatch({
-      type: 'ADD_CONTRACT',
-      drizzle: this,
+    const web3Contract = getOrCreateWeb3Contract(
+      this.store,
       contractConfig,
-      events,
-      web3: this.web3
+      this.web3
+    )
+    const drizzleContract = new DrizzleContract(
+      web3Contract,
+      this.web3,
+      contractConfig.contractName,
+      this.store,
+      events
+    )
+
+    if (this.contracts[drizzleContract.contractName]) {
+      throw new Error(
+        `Contract already exists: ${drizzleContract.contractName}`
+      )
+    }
+
+    this.store.dispatch({ type: 'CONTRACT_INITIALIZING', contractConfig })
+
+    this.contracts[drizzleContract.contractName] = drizzleContract
+    this.contractList.push(drizzleContract)
+
+    this.store.dispatch({
+      type: 'CONTRACT_INITIALIZED',
+      name: contractConfig.contractName
     })
   }
 
-  _addContract (drizzleContract) {
-    if (this.contracts[drizzleContract.contractName]) {
-      throw `Contract already exists: ${drizzleContract.contractName}`
-    }
-    this.contracts[drizzleContract.contractName] = drizzleContract
-    this.contractList.push(drizzleContract)
-  }
-
   deleteContract (contractName) {
+    // Deleting a contract means removing it from this instance's
+    // `contractList`, `contracts`, and `loadingContract`
+
+    if (!this.contracts[contractName]) {
+      throw new Error(`Contract does not exist: ${contractName}`)
+    }
+
+    this.contractList = this.contractList.filter(
+      contract => contract.contractName !== contractName
+    )
+
+    const { [contractName]: omittedContract, ...restContracts } = this.contracts
+    this.contracts = restContracts
+
+    const {
+      [contractName]: omittedLoading,
+      ...restLoadingContract
+    } = this.loadingContract
+
+    this.loadingContract = restLoadingContract
+
     this.store.dispatch({
       type: 'DELETE_CONTRACT',
-      drizzle: this,
       contractName
     })
   }

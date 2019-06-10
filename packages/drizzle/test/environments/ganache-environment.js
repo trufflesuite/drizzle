@@ -30,6 +30,9 @@ class GanacheEnvironment extends NodeEnvironment {
 
     this.global.accounts = defaultAccounts
     this.global.defaultNetworkId = defaultNetworkId
+
+    // Simulate document loaded for testing drizzle
+    this.global.document = { readyState: 'complete' }
   }
 
   async teardown () {

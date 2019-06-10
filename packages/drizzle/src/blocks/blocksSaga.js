@@ -89,7 +89,12 @@ export function createBlockPollChannel ({
   })
 }
 
-function * callCreateBlockPollChannel ({ drizzle, interval, web3, syncAlways }) {
+function * callCreateBlockPollChannel ({
+  drizzle,
+  interval,
+  web3,
+  syncAlways
+}) {
   const blockChannel = yield call(createBlockPollChannel, {
     drizzle,
     interval,

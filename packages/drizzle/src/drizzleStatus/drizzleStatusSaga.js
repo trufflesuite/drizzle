@@ -31,7 +31,7 @@ function * initializeDrizzle (action) {
         events = options.events[contractName]
       }
 
-      yield put({ type: 'ADD_CONTRACT', drizzle, contractConfig, events, web3 })
+      yield call([drizzle, drizzle.addContract], contractConfig, events)
     }
 
     const syncAlways = options.syncAlways
