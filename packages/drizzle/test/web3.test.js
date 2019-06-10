@@ -45,12 +45,9 @@ describe('Resolving Web3', () => {
   })
 
   describe('with ethereum, EIP-1102 compliance', () => {
-    let ethereum
-    let mockedEthereumEnable
-
     test('invokes `ethereum.enable`', async () => {
-      mockedEthereumEnable = jest.fn()
-      ethereum = { enable: mockedEthereumEnable }
+      const mockedEthereumEnable = jest.fn()
+      const ethereum = { enable: mockedEthereumEnable }
       global.window = { ethereum }
 
       gen = initializeWeb3({ options: {} })
@@ -71,8 +68,8 @@ describe('Resolving Web3', () => {
     })
 
     test('loads when user opts in', async () => {
-      mockedEthereumEnable = jest.fn(() => '0x123')
-      ethereum = { enable: mockedEthereumEnable }
+      const mockedEthereumEnable = jest.fn(() => '0x123')
+      const ethereum = { enable: mockedEthereumEnable }
       global.window = { ethereum }
       const dispatched = []
 
@@ -90,11 +87,11 @@ describe('Resolving Web3', () => {
     })
 
     test('does not load when user opts out', async () => {
-      mockedEthereumEnable = jest.fn(() => {
+      const mockedEthereumEnable = jest.fn(() => {
         return undefined // opt out
       })
 
-      ethereum = { enable: mockedEthereumEnable }
+      const ethereum = { enable: mockedEthereumEnable }
       global.window = { ethereum }
       const dispatched = []
 
@@ -116,10 +113,10 @@ describe('Resolving Web3', () => {
 
     test('does not load when provider throws an error', async () => {
       // simulate opting out
-      mockedEthereumEnable = jest.fn(() => {
+      const mockedEthereumEnable = jest.fn(() => {
         throw new Error('oops')
       })
-      ethereum = { enable: mockedEthereumEnable }
+      const ethereum = { enable: mockedEthereumEnable }
       global.window = { ethereum }
       const dispatched = []
 
