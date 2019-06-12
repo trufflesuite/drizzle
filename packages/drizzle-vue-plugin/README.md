@@ -97,5 +97,5 @@ drizzle-vue-plugin adapts [Drizzle](https://github.com/trufflesuite/drizzle) for
    * `drizzle-contract-form` render an input for a specific contract method
 
 1. For more information take a look at the [Test Vue
-   Dapp](./test-app/vapp/README.md)
+   Dapp](./test-app/README.md)
 
