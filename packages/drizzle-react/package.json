@@ -24,7 +24,7 @@
   "dependencies": {
     "debounce": "^1.2.0",
     "prop-types": "^15.6.2",
-    "react": "^16.4.2",
+    "react": "^16.8.6",
     "shallowequal": "^1.1.0"
   },
   "devDependencies": {
