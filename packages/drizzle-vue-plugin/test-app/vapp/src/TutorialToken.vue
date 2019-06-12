@@ -1,5 +1,5 @@
 <template>
-  <div v-if="isDrizzleInitialized">
+  <div>
     <drizzle-contract
       contractName="TutorialToken"
       method="totalSupply"
@@ -23,8 +23,6 @@
       :placeholders="placeholders"
     />
   </div>
-
-  <div v-else>Loading...</div>
 </template>
 
 <script>

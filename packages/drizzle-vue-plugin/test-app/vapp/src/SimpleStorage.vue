@@ -1,20 +1,16 @@
 <template>
-  <div v-if="isDrizzleInitialized">
-    <div>
-      <drizzle-contract
-        contractName="SimpleStorage"
-        method="storedData"
-        label="Value"
-      />
-      <drizzle-contract-form
-        contractName="SimpleStorage"
-        method="set"
-        :placeholders="['Value']"
-      />
-    </div>
+  <div>
+    <drizzle-contract
+      contractName="SimpleStorage"
+      method="storedData"
+      label="Value"
+    />
+    <drizzle-contract-form
+      contractName="SimpleStorage"
+      method="set"
+      :placeholders="['Value']"
+    />
   </div>
-
-  <div v-else>Loading...</div>
 </template>
 
 <script>
