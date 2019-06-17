@@ -44,6 +44,13 @@ describe('Drizzle API', () => {
     expect(dispatchSpy).toHaveBeenCalledWith(expectedAction)
   })
 
+  describe('Default options', () => {
+    test('networkWhitelist does not trigger mismatch', () => {
+      const unexpectedAction = { type: 'DRIZZLE_NETWORK_MISMATCH' }
+      expect(dispatchSpy).not.toHaveBeenCalledWith(unexpectedAction)
+    })
+  })
+
   describe('Add:', () => {
     test('a Web3 Contracts', () => {
       const web3Contract = {}
@@ -135,86 +142,6 @@ describe('Drizzle API', () => {
 
       // 1 call in ctor to initialize drizzle
       expect(dispatchSpy).toHaveBeenCalledTimes(1)
-    })
-  })
-})
-
-describe('Drizzle options:', () => {
-  const networkId = global.defaultNetworkId
-  const accounts = global.accounts
-  const contractName = 'TestContract'
-
-  let dispatchSpy, mockedStore, state
-
-  const drizzleOptions = {}
-  let drizzle
-  let contractCreatorSpy
-  let mockedWeb3
-
-  beforeEach(() => {
-    MockedDrizzleContract.mockClear()
-
-    // Mock Store
-    state = { web3: { networkId }, accounts }
-    dispatchSpy = jest.fn()
-    mockedStore = { dispatch: dispatchSpy, getState: () => state }
-
-    // Create Drizzle and simulate web3 resolution
-    contractCreatorSpy = jest.fn()
-    mockedWeb3 = { eth: { Contract: contractCreatorSpy } }
-  })
-
-  describe('Allowed Networks:', () => {
-    // NOTE: if this is added to defaults, can include in API tests
-    // test('Empty list initializes drizzle', () => {
-    //   drizzleOptions['networkWhitelist'] = []
-
-    //   drizzle = new Drizzle(drizzleOptions, mockedStore)
-    //   drizzle.web3 = mockedWeb3
-
-    //   MockedDrizzleContract.mockImplementation(() => ({ contractName }))
-    // })
-
-    test('Authorized network initializes drizzle', () => {
-      drizzleOptions['networkWhitelist'] = [1, 4, networkId]
-
-      drizzle = new Drizzle(drizzleOptions, mockedStore)
-      drizzle.web3 = mockedWeb3
-
-      MockedDrizzleContract.mockImplementation(() => ({ contractName }))
-
-      const expectedAction = {
-        type: 'DRIZZLE_INITIALIZED'
-      }
-      expect(dispatchSpy).toHaveBeenCalledWith(expectedAction)
-
-      const unexpectedAction = {
-        type: 'DRIZZLE_NETWORK_MISMATCH',
-        networkWhitelist: drizzleOptions['networkWhitelist'],
-        networkId
-      }
-      expect(dispatchSpy).not.toHaveBeenCalledWith(unexpectedAction)
-    })
-
-    test('Unauthorized network prevents initialization', () => {
-      drizzleOptions['networkWhitelist'] = [1, 4]
-
-      drizzle = new Drizzle(drizzleOptions, mockedStore)
-      drizzle.web3 = mockedWeb3
-
-      MockedDrizzleContract.mockImplementation(() => ({ contractName }))
-
-      const expectedAction = {
-        type: 'DRIZZLE_NETWORK_MISMATCH',
-        networkWhitelist: drizzleOptions['networkWhitelist'],
-        networkId
-      }
-      expect(dispatchSpy).toHaveBeenCalledWith(expectedAction)
-
-      const unexpectedAction = {
-        type: 'DRIZZLE_INITIALIZED'
-      }
-      expect(dispatchSpy).not.toHaveBeenCalledWith(unexpectedAction)
     })
   })
 })
