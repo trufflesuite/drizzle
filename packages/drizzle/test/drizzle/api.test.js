@@ -149,6 +149,7 @@ describe('Drizzle options:', () => {
   const drizzleOptions = {}
   let drizzle
   let contractCreatorSpy
+  let mockedWeb3
 
   beforeEach(() => {
     MockedDrizzleContract.mockClear()
@@ -160,7 +161,7 @@ describe('Drizzle options:', () => {
 
     // Create Drizzle and simulate web3 resolution
     contractCreatorSpy = jest.fn()
-    let mockedWeb3 = { eth: { Contract: contractCreatorSpy } }
+    mockedWeb3 = { eth: { Contract: contractCreatorSpy } }
   })
 
   describe('Allowed Networks:', () => {
