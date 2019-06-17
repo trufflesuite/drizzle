@@ -1,9 +1,10 @@
 const path = require('path');
 
-process.env.BABEL_ENV = 'production';
+process.env.BABEL_ENV = 'development';
 
 module.exports = {
   entry: './src/index.js',
+  devtool: 'eval-source-map',
   output: {
     filename: 'drizzle-react.js',
     library: 'drizzle-react',
