@@ -11,7 +11,7 @@ import createUseCacheCall from './create-use-cache-call'
 import createUseCacheEvents from './create-use-cache-events'
 import createUseCacheSend from './create-use-cache-send'
 import debounce from 'debounce'
-import shallowequal from 'shallowequal'
+import deepEqual from 'deep-equal'
 
 const Context = createContext()
 export const useDrizzle = () => useContext(Context)
@@ -35,10 +35,10 @@ export const useDrizzleState = (mapState, args) => {
     mapStateRef.current(drizzle.store.getState())
   )
   const stateRef = useRef(state)
-  if (!shallowequal(argsRef.current, args)) {
+  if (!deepEqual(argsRef.current, args)) {
     argsRef.current = args
     const newState = mapStateRef.current(drizzle.store.getState())
-    if (!shallowequal(stateRef.current, newState)) {
+    if (!deepEqual(stateRef.current, newState)) {
       stateRef.current = newState
       setState(newState)
     }
@@ -48,7 +48,7 @@ export const useDrizzleState = (mapState, args) => {
       // Debounce udpates, because sometimes the store will fire too much when there are a lot of `cacheCall`s and the cache is empty.
       const debouncedHandler = debounce(() => {
         const newState = mapStateRef.current(drizzle.store.getState())
-        if (!shallowequal(stateRef.current, newState)) {
+        if (!deepEqual(stateRef.current, newState)) {
           stateRef.current = newState
           setState(newState)
         }

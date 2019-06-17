@@ -23,9 +23,9 @@
   "license": "ISC",
   "dependencies": {
     "debounce": "^1.2.0",
+    "deep-equal": "^1.0.1",
     "prop-types": "^15.6.2",
-    "react": "^16.8.6",
-    "shallowequal": "^1.1.0"
+    "react": "^16.4.2"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",
