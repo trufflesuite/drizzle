@@ -436,7 +436,7 @@ import TransactionStatuses from './components/transaction-statuses'
 
 export default () => {
   const { useCacheSend } = drizzleReactHooks.useDrizzle()
-  const { send, transactions } = useCacheSend('MyToken', 'transfer')
+  const { send, TXObjects } = useCacheSend('MyToken', 'transfer')
   return (
     <>
       <TransferForm
@@ -446,7 +446,7 @@ export default () => {
         }
       />
       <TransactionStatuses
-        transactionStatuses={transactions.map(t => t.status)}
+        transactionStatuses={TXObjects.map(t => t.status)}
       />
     </>
   )
