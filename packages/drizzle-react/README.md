@@ -249,7 +249,7 @@ export default Loading
 
 ## React Hooks Support (Experimental)
 
-> Hooks are an upcoming feature that lets you use state and other React features without writing a class. They’re currently in React v16.7.0-alpha. - From [React Docs](https://reactjs.org/docs/hooks-intro.html).
+> Hooks are a recently added feature that lets you use state and other React features without writing a class. This feature was released in React v16.8.0. - From [React Docs](https://reactjs.org/docs/hooks-intro.html).
 
 Hooks greatly simplify integration with `drizzle`, but are still a work in progress, so use at your own risk. All of the necessary APIs are on the `drizzleReactHooks` export.
 
