@@ -36,11 +36,11 @@ describe('Drizzle options:', () => {
       drizzleOptions['networkWhitelist'] = [NETWORK_MAINNET, NETWORK_RINKEBY]
     })
 
-    test('Unauthorized network prevents initialization', () => {
+    test('Unauthorized network prevents initialization', async () => {
       drizzle = new Drizzle(drizzleOptions, mockedStore)
       drizzle.web3 = mockedWeb3
 
-      MockedDrizzleContract.mockImplementation(() => ({ contractName }))
+      await MockedDrizzleContract.mockImplementation(() => ({ contractName }))
 
       const expectedAction = { type: 'DRIZZLE_NETWORK_MISMATCH' }
       expect(dispatchSpy).toHaveBeenCalledWith(expectedAction)
@@ -49,13 +49,13 @@ describe('Drizzle options:', () => {
       expect(dispatchSpy).not.toHaveBeenCalledWith(unexpectedAction)
     })
 
-    test('Authorized network initializes drizzle', () => {
+    test('Authorized network initializes drizzle', async () => {
       drizzleOptions['networkWhitelist'].push(NETWORK_GANACHE)
 
       drizzle = new Drizzle(drizzleOptions, mockedStore)
       drizzle.web3 = mockedWeb3
 
-      MockedDrizzleContract.mockImplementation(() => ({ contractName }))
+      await MockedDrizzleContract.mockImplementation(() => ({ contractName }))
 
       const expectedAction = { type: 'DRIZZLE_INITIALIZED' }
       expect(dispatchSpy).toHaveBeenCalledWith(expectedAction)
