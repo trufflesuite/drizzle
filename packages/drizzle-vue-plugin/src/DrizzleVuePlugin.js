@@ -6,8 +6,23 @@ import Accounts from './components/Accounts'
 import Contract from './components/Contract'
 import ContractForm from './components/ContractForm'
 
-import { Drizzle } from 'drizzle'
+import { Drizzle, EventActions, generateStore } from 'drizzle'
 import drizzleAdapterService from './store/DrizzleAdapterService'
+
+const eventsMW = _ => next => action => {
+  if (action.type === EventActions.EVENT_FIRED) {
+    const contract = action.name
+    const contractEvent = action.event.event
+    const message = action.event.returnValues._message
+    const display = `${contract}(${contractEvent}): ${message}`
+
+    console.group('EVENT')
+    console.log(display)
+    console.groupEnd()
+  }
+
+  return next(action)
+}
 
 const DrizzleVuePlugin = {
   install(Vue, { store, drizzleOptions }) {
@@ -26,7 +41,14 @@ const DrizzleVuePlugin = {
     store.registerModule('contracts', contractsM)
     store.registerModule('drizzle', drizzleM)
 
-    const drizzleInstance = new Drizzle(drizzleOptions)
+    debugger
+    const drizzleStore = generateStore({
+      drizzleOptions,
+      appMiddlewares: [eventsMW]
+    })
+
+    const drizzleInstance = new Drizzle(drizzleOptions, drizzleStore)
+
     drizzleAdapterService(drizzleInstance)(store)
 
     // There's a known race condition issue with vue-devtools that doesn't
