@@ -40,7 +40,7 @@ const contractEventHandler = ({ contractName, eventName, data }) => {
 }
 
 ToastEvents.$on('contractAction', payload => {
-  this.contractEventHandler(payload)
+  contractEventHandler(payload)
 })
 
 // vue.$subscribeToContractEvents(contractEventHandler)
