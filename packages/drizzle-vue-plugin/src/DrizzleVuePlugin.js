@@ -9,7 +9,9 @@ import ContractForm from './components/ContractForm'
 import { Drizzle, EventActions, generateStore } from 'drizzle'
 import drizzleAdapterService from './store/DrizzleAdapterService'
 
-const contractEventListeners = []
+import { ToastEvents } from './components/events/ToastEvents.js'
+
+// const contractEventListeners = []
 
 // eslint-disable-next-line
 const eventsMW = _ => next => action => {
@@ -20,7 +22,10 @@ const eventsMW = _ => next => action => {
       data: action.event.returnValues
     }
 
-    contractEventListeners.forEach(listenerCB => listenerCB(event))
+    // Trigger event and send payload
+    ToastEvents.$emit('contractAction', event)
+
+    // contractEventListeners.forEach(listenerCB => listenerCB(event))
   }
 
   return next(action)
@@ -66,8 +71,8 @@ const DrizzleVuePlugin = {
     Vue.component('drizzle-contract-form', ContractForm)
 
     // Contract Event Subscription
-    Vue.prototype.$subscribeToContractEvents = listener =>
-      contractEventListeners.push(listener)
+    // Vue.prototype.$subscribeToContractEvents = listener =>
+    //   contractEventListeners.push(listener)
   }
 }
 

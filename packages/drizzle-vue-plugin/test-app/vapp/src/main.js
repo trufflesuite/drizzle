@@ -9,6 +9,8 @@ import Toasted from 'vue-toasted'
 import drizzleVuePlugin from '../../../src/DrizzleVuePlugin'
 import drizzleOptions from './drizzleOptions'
 
+import { ToastEvents } from '../../../src/components/events/ToastEvents.js'
+
 Vue.use(Vuex)
 const store = new Vuex.Store({ state: {} })
 
@@ -37,4 +39,8 @@ const contractEventHandler = ({ contractName, eventName, data }) => {
   vue.$toasted.show(display, subOptions)
 }
 
-vue.$subscribeToContractEvents(contractEventHandler)
+ToastEvents.$on('contractAction', payload => {
+  this.contractEventHandler(payload)
+})
+
+// vue.$subscribeToContractEvents(contractEventHandler)
