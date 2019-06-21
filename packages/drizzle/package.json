@@ -2,6 +2,7 @@
   "name": "drizzle",
   "version": "1.3.3",
   "description": "A reactive data-store for web3 and smart contracts.",
+  "types": "./index.d.ts",
   "main": "./dist/drizzle.js",
   "react-native": "./src/index.js",
   "repository": {
