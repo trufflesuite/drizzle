@@ -21,6 +21,7 @@
       <h2>Complex Storage</h2>
       <ComplexStorage />
     </div>
+    <Toast />
   </div>
 
   <div v-else>Loading...</div>
@@ -30,6 +31,7 @@
 import TutorialToken from './TutorialToken'
 import SimpleStorage from './SimpleStorage'
 import ComplexStorage from './ComplexStorage'
+import Toast from './Toast'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -37,7 +39,8 @@ export default {
   components: {
     ComplexStorage,
     TutorialToken,
-    SimpleStorage
+    SimpleStorage,
+    Toast
   },
 
   computed: mapGetters('drizzle', ['isDrizzleInitialized'])

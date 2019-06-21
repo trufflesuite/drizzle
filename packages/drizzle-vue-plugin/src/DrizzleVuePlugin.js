@@ -5,13 +5,10 @@ import drizzleM from './store/modules/drizzle'
 import Accounts from './components/Accounts'
 import Contract from './components/Contract'
 import ContractForm from './components/ContractForm'
+import { DrizzleEvents } from './components/DrizzleEvents'
 
 import { Drizzle, EventActions, generateStore } from 'drizzle'
 import drizzleAdapterService from './store/DrizzleAdapterService'
-
-import { ToastEvents } from './components/events/ToastEvents.js'
-
-// const contractEventListeners = []
 
 // eslint-disable-next-line
 const eventsMW = _ => next => action => {
@@ -23,9 +20,7 @@ const eventsMW = _ => next => action => {
     }
 
     // Trigger event and send payload
-    ToastEvents.$emit('contractAction', event)
-
-    // contractEventListeners.forEach(listenerCB => listenerCB(event))
+    DrizzleEvents.$emit('drizzle/contractAction', event)
   }
 
   return next(action)
@@ -69,10 +64,6 @@ const DrizzleVuePlugin = {
     Vue.component('drizzle-account', Accounts)
     Vue.component('drizzle-contract', Contract)
     Vue.component('drizzle-contract-form', ContractForm)
-
-    // Contract Event Subscription
-    // Vue.prototype.$subscribeToContractEvents = listener =>
-    //   contractEventListeners.push(listener)
   }
 }
 
