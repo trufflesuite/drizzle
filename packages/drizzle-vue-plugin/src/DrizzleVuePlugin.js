@@ -20,7 +20,7 @@ const eventsMW = _ => next => action => {
     }
 
     // Trigger event and send payload
-    DrizzleEvents.$emit('drizzle/contractAction', event)
+    DrizzleEvents.$emit('drizzle/contractEvent', event)
   }
 
   return next(action)
@@ -67,4 +67,5 @@ const DrizzleVuePlugin = {
   }
 }
 
+export { DrizzleEvents }
 export default DrizzleVuePlugin

@@ -26,7 +26,7 @@ export default {
       this.$toasted.show(display, subOptions)
     }
 
-    DrizzleEvents.$on('drizzle/contractAction', payload => {
+    DrizzleEvents.$on('drizzle/contractEvent', payload => {
       contractEventHandler(payload)
     })
   }
