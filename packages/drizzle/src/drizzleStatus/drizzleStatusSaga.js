@@ -5,7 +5,7 @@ import { initializeWeb3, getNetworkId } from '../web3/web3Saga'
 import { getAccounts } from '../accounts/accountsSaga'
 import { getAccountBalances } from '../accountBalances/accountBalancesSaga'
 
-import * as Action from './constants'
+import { NETWORK_MISMATCH } from '../web3/constants'
 
 function* initializeDrizzle(action) {
   try {
@@ -29,9 +29,10 @@ function* initializeDrizzle(action) {
 
       const networkWhitelist = options.networkWhitelist
       // const networkWhitelist = [4]
+      // TODO: specify ganache id: 5777
       if (networkWhitelist.length && !networkWhitelist.includes(networkId)) {
         console.log(networkId)
-        yield put({ type: Action.DRIZZLE_NETWORK_MISMATCH }) // add in params?
+        yield put({ type: NETWORK_MISMATCH }) // add in params?
       }
 
       // Instantiate contracts passed through via options.

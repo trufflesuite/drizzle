@@ -46,7 +46,7 @@ describe('Drizzle API', () => {
 
   describe('Default options', () => {
     test('networkWhitelist does not trigger mismatch', () => {
-      const unexpectedAction = { type: 'DRIZZLE_NETWORK_MISMATCH' }
+      const unexpectedAction = { type: 'NETWORK_MISMATCH' }
       expect(dispatchSpy).not.toHaveBeenCalledWith(unexpectedAction)
     })
   })

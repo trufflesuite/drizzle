@@ -1,5 +1,3 @@
-import * as Action from './constants'
-
 const initialState = {
   initialized: false
 }
@@ -13,15 +11,6 @@ const drizzleStatusReducer = (state = initialState, action) => {
     return {
       ...state,
       initialized: true
-    }
-  }
-  if (action.type === Action.DRIZZLE_NETWORK_MISMATCH) {
-    return {
-      ...state,
-      network: {
-        ...state.network,
-        mismatch: true
-      }
     }
   }
   return state
