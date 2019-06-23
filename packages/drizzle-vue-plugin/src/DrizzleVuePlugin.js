@@ -5,9 +5,26 @@ import drizzleM from './store/modules/drizzle'
 import Accounts from './components/Accounts'
 import Contract from './components/Contract'
 import ContractForm from './components/ContractForm'
+import { DrizzleEvents } from './components/DrizzleEvents'
 
-import { Drizzle } from 'drizzle'
+import { Drizzle, EventActions, generateStore } from 'drizzle'
 import drizzleAdapterService from './store/DrizzleAdapterService'
+
+// eslint-disable-next-line
+const eventsMW = _ => next => action => {
+  if (action.type === EventActions.EVENT_FIRED) {
+    const event = {
+      contractName: action.name,
+      eventName: action.event.event,
+      data: action.event.returnValues
+    }
+
+    // Trigger event and send payload
+    DrizzleEvents.$emit('drizzle/contractEvent', event)
+  }
+
+  return next(action)
+}
 
 const DrizzleVuePlugin = {
   install(Vue, { store, drizzleOptions }) {
@@ -26,7 +43,13 @@ const DrizzleVuePlugin = {
     store.registerModule('contracts', contractsM)
     store.registerModule('drizzle', drizzleM)
 
-    const drizzleInstance = new Drizzle(drizzleOptions)
+    const drizzleStore = generateStore({
+      drizzleOptions,
+      appMiddlewares: [eventsMW]
+    })
+
+    const drizzleInstance = new Drizzle(drizzleOptions, drizzleStore)
+
     drizzleAdapterService(drizzleInstance)(store)
 
     // There's a known race condition issue with vue-devtools that doesn't
@@ -44,4 +67,5 @@ const DrizzleVuePlugin = {
   }
 }
 
+export { DrizzleEvents }
 export default DrizzleVuePlugin
