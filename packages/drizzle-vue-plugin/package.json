@@ -1,7 +1,7 @@
 {
   "name": "@drizzle/vue-plugin",
   "description": "A drizzle adaptor for Vue",
-  "version": "0.1.0-alpha.1",
+  "version": "0.1.0-alpha.0",
   "author": {
     "name": "Amal Sudama",
     "email": "amal@trufflesuite.com",
