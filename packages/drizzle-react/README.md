@@ -300,8 +300,8 @@ import { drizzleReactHooks } from 'drizzle-react'
 
 export default () => {
   const {
-    cacheCall,
     drizzle,
+    useCacheCall
     useCacheEvents,
     useCacheSend
   } = drizzleReactHooks.useDrizzle()
