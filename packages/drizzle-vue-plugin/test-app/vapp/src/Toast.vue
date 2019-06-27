@@ -4,7 +4,6 @@
 
 <script>
 import Toasted from 'vue-toasted'
-import { DrizzleEvents } from '../../../src/components/DrizzleEvents'
 import Vue from 'vue'
 Vue.use(Toasted)
 
@@ -26,7 +25,7 @@ export default {
       this.$toasted.show(display, subOptions)
     }
 
-    DrizzleEvents.$on('drizzle/contractEvent', payload => {
+    this.$drizzleEvents.$on('drizzle/contractEvent', payload => {
       contractEventHandler(payload)
     })
   }
