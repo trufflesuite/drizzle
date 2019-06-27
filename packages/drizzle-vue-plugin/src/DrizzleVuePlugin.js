@@ -64,8 +64,10 @@ const DrizzleVuePlugin = {
     Vue.component('drizzle-account', Accounts)
     Vue.component('drizzle-contract', Contract)
     Vue.component('drizzle-contract-form', ContractForm)
+
+    // Add event bus to vue instance
+    Vue.prototype.$drizzleEvents = DrizzleEvents
   }
 }
 
-export { DrizzleEvents }
 export default DrizzleVuePlugin
