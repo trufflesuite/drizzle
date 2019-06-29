@@ -15,20 +15,15 @@ describe('Accounts.vue', () => {
     store = new Vuex.Store({})
     store.registerModule('accounts', accountsM)
     store.registerModule('drizzle', drizzleM)
-    store.state.drizzle.initialized = true
-    store.state.accounts.activeAccount =
-      '0x048ffCA67A523a4B51EA7a251168FD86e623f243'
+    store.state.drizzle.initialized = false
   })
 
-  it('Displays active account if Drizzle is initialized', () => {
+  it(`Displays 'Loading...' if Drizzle is not initialized`, () => {
     const wrapper = shallowMount(Accounts, {
       localVue,
-      store,
-      computed: {
-        convertedBalance: () => '100'
-      }
+      store
     })
     const div = wrapper.find('div')
-    expect(div.text()).toContain(store.getters['accounts/activeAccount'])
+    expect(div.text()).toContain('Loading...')
   })
 })
