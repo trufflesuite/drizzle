@@ -18,7 +18,7 @@ describe('Accounts.vue', () => {
     store.state.drizzle.initialized = false
   })
 
-  it(`Displays 'Loading...' if Drizzle is not initialized`, () => {
+  it(`displays 'Loading...' if Drizzle is not initialized`, () => {
     const wrapper = shallowMount(Accounts, {
       localVue,
       store

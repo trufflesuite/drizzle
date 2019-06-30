@@ -20,7 +20,7 @@ describe('Accounts.vue', () => {
       '0x048ffCA67A523a4B51EA7a251168FD86e623f243'
   })
 
-  it('Displays active account if Drizzle is initialized', () => {
+  it('displays active account if Drizzle is initialized', () => {
     const wrapper = shallowMount(Accounts, {
       localVue,
       store,
