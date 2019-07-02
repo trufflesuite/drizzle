@@ -7,7 +7,7 @@ import { getAccountBalances } from '../accountBalances/accountBalancesSaga'
 
 import { NETWORK_MISMATCH } from '../web3/constants'
 
-function* initializeDrizzle(action) {
+export function* initializeDrizzle(action) {
   try {
     const options = action.options
     const web3Options = options.web3
