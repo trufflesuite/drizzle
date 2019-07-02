@@ -2,7 +2,8 @@ import MockedDrizzleContract from '../../src/DrizzleContract'
 
 import Drizzle from '../../src/Drizzle'
 import defaultDrizzleOptions from '../../src/defaultOptions'
-import { NETWORK_MAINNET, NETWORK_RINKEBY, NETWORK_GANACHE } from './constants'
+import { NETWORK_MAINNET, NETWORK_RINKEBY,
+         NETWORK_GANACHE } from './constants'
 
 jest.mock('../../src/DrizzleContract')
 
@@ -33,7 +34,10 @@ describe('Drizzle options:', () => {
 
   describe('Allowed Networks:', () => {
     beforeEach(() => {
-      drizzleOptions['networkWhitelist'] = [NETWORK_MAINNET, NETWORK_RINKEBY]
+      drizzleOptions['networkWhitelist'] = [
+        NETWORK_MAINNET,
+        NETWORK_RINKEBY
+      ]
     })
 
     test('Unauthorized network prevents initialization', async () => {

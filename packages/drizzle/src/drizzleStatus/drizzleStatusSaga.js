@@ -24,9 +24,14 @@ function* initializeDrizzle(action) {
       const networkId = yield call(getNetworkId, { web3 })
       const networkWhitelist = options.networkWhitelist
 
-      // TODO: specify ganache id: 5777
-      if (networkWhitelist.length && !networkWhitelist.includes(networkId)) {
-        yield put({ type: NETWORK_MISMATCH })
+      // Check whether network is allowed
+      const networkWhitelist = options.networkWhitelist
+      if (
+        networkWhitelist.length &&
+        networkId !== 5777 &&
+        !networkWhitelist.includes(networkId)
+      ) {
+        yield put({ type: NETWORK_MISMATCH, networkId })
       } else {
         // Get initial accounts list and balances.
         yield call(getAccounts, { web3 })
