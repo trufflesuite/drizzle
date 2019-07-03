@@ -21,7 +21,7 @@ describe('Contract.vue', () => {
     })
   })
 
-  it('mounts ContractArrayData if the getter returns array data', () => {
+  it('mounts ContractArrayData when appropriate', () => {
     const wrapper = shallowMount(Contract, {
       localVue,
       store,
@@ -41,7 +41,7 @@ describe('Contract.vue', () => {
     expect(wrapper.contains(ContractArrayData)).toBe(true)
   })
 
-  it('mounts ContractObjectData if the getter returns object data', () => {
+  it('mounts ContractObjectData when appropriate', () => {
     const wrapper = shallowMount(Contract, {
       localVue,
       store,
