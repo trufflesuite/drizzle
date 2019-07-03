@@ -6,8 +6,7 @@ import { getWeb3Assets } from '../utils/helpers'
 import Drizzle from '../../src/Drizzle'
 import defaultDrizzleOptions from '../../src/defaultOptions'
 import { initializeDrizzle } from '../../src/drizzleStatus/drizzleStatusSaga'
-import { NETWORK_MISMATCH } from '../../src/web3/constants'
-import { NETWORK_ROPSTEN } from './constants'
+import { NETWORK_IDS, NETWORK_MISMATCH } from '../../src/web3/constants'
 
 jest.mock('../../src/DrizzleContract')
 
@@ -54,7 +53,7 @@ describe('Drizzle API', () => {
   describe('Default drizzle options', () => {
     // networkWhiteList
     test('Empty network whitelist does not trigger a mismatch', () => {
-      networkId = NETWORK_ROPSTEN
+      networkId = NETWORK_IDS.ropsten
 
       // Iterate to 3rd effect in initializeDrizzle generator
       let gen = initializeDrizzle({ drizzle, options: drizzleOptions })
