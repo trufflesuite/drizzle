@@ -1,8 +1,13 @@
+import { put } from 'redux-saga/effects'
+
 import MockedDrizzleContract from '../../src/DrizzleContract'
 
 import { getWeb3Assets } from '../utils/helpers'
 import Drizzle from '../../src/Drizzle'
 import defaultDrizzleOptions from '../../src/defaultOptions'
+import { initializeDrizzle } from '../../src/drizzleStatus/drizzleStatusSaga'
+import { NETWORK_MISMATCH } from '../../src/web3/constants'
+import { NETWORK_ROPSTEN } from './constants'
 
 jest.mock('../../src/DrizzleContract')
 
@@ -44,10 +49,24 @@ describe('Drizzle API', () => {
     expect(dispatchSpy).toHaveBeenCalledWith(expectedAction)
   })
 
-  describe('Default options', () => {
-    test('networkWhitelist does not trigger mismatch', () => {
-      const unexpectedAction = { type: 'NETWORK_MISMATCH' }
-      expect(dispatchSpy).not.toHaveBeenCalledWith(unexpectedAction)
+  // Default values in drizzleOptions
+  describe('Default drizzle options', () => {
+    // networkWhiteList
+    test('Empty network whitelist does not trigger a mismatch', () => {
+      const unWhiteListedNetworkId = NETWORK_ROPSTEN
+
+      // Iterate to 3rd effect in initializeDrizzle generator
+      let gen = initializeDrizzle({ drizzle, options: drizzleOptions })
+      let next = gen.next() // initializeWeb3
+      next = gen.next() // getNetworkId
+      // Replace saga networkId with our own
+      next = gen.next(unWhiteListedNetworkId) // networkWhitelist check
+
+      const unExpectedAction = put({
+        type: NETWORK_MISMATCH,
+        unWhiteListedNetworkId
+      })
+      expect(next.value).not.toEqual(unExpectedAction)
     })
   })
 
