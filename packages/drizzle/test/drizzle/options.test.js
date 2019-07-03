@@ -4,7 +4,8 @@ import Drizzle from '../../src/Drizzle'
 import defaultDrizzleOptions from '../../src/defaultOptions'
 import { initializeDrizzle } from '../../src/drizzleStatus/drizzleStatusSaga'
 import { NETWORK_MISMATCH } from '../../src/web3/constants'
-import { NETWORK_MAINNET, NETWORK_RINKEBY, NETWORK_ROPSTEN } from './constants'
+import { NETWORK_MAINNET, NETWORK_RINKEBY,
+         NETWORK_ROPSTEN } from './constants'
 
 describe('Drizzle options:', () => {
   let networkId = global.defaultNetworkId
@@ -28,14 +29,17 @@ describe('Drizzle options:', () => {
     networkId = NETWORK_ROPSTEN
 
     beforeEach(() => {
-      drizzleOptions['networkWhitelist'] = [NETWORK_MAINNET, NETWORK_RINKEBY]
+      drizzleOptions['networkWhitelist'] = [
+        NETWORK_MAINNET,
+        NETWORK_RINKEBY
+      ]
     })
 
     test('Unauthorized network prevents initialization', () => {
       drizzle = new Drizzle(drizzleOptions, mockedStore)
 
       // Iterate to 3rd effect in initializeDrizzle generator
-      let gen = initializeDrizzle({ drizzle, options: drizzleOptions })
+      let gen = initializeDrizzle({drizzle, options: drizzleOptions})
       let next = gen.next() // initializeWeb3
       next = gen.next() // getNetworkId
       // Replace saga networkId with our own
@@ -51,7 +55,7 @@ describe('Drizzle options:', () => {
       drizzle = new Drizzle(drizzleOptions, mockedStore)
 
       // Iterate to 3rd effect in initializeDrizzle generator
-      let gen = initializeDrizzle({ drizzle, options: drizzleOptions })
+      let gen = initializeDrizzle({drizzle, options: drizzleOptions})
       let next = gen.next() // initializeWeb3
       next = gen.next() // getNetworkId
       // Replace saga networkId with our own

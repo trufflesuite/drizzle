@@ -12,11 +12,10 @@ import { NETWORK_ROPSTEN } from './constants'
 jest.mock('../../src/DrizzleContract')
 
 describe('Drizzle API', () => {
-  const networkId = global.defaultNetworkId
   const accounts = global.accounts
   const contractName = 'TestContract'
 
-  let dispatchSpy, mockedStore, state
+  let dispatchSpy, mockedStore, state, networkId
 
   const drizzleOptions = {}
   let drizzle
@@ -24,6 +23,8 @@ describe('Drizzle API', () => {
 
   beforeEach(() => {
     MockedDrizzleContract.mockClear()
+
+    networkId = global.defaultNetworkId
 
     // Mock Store
     state = { web3: { networkId }, accounts }
@@ -53,19 +54,16 @@ describe('Drizzle API', () => {
   describe('Default drizzle options', () => {
     // networkWhiteList
     test('Empty network whitelist does not trigger a mismatch', () => {
-      const unWhiteListedNetworkId = NETWORK_ROPSTEN
+      networkId = NETWORK_ROPSTEN
 
       // Iterate to 3rd effect in initializeDrizzle generator
       let gen = initializeDrizzle({ drizzle, options: drizzleOptions })
       let next = gen.next() // initializeWeb3
       next = gen.next() // getNetworkId
       // Replace saga networkId with our own
-      next = gen.next(unWhiteListedNetworkId) // networkWhitelist check
+      next = gen.next(networkId) // networkWhitelist check
 
-      const unExpectedAction = put({
-        type: NETWORK_MISMATCH,
-        unWhiteListedNetworkId
-      })
+      const unExpectedAction = put({ type: NETWORK_MISMATCH, networkId })
       expect(next.value).not.toEqual(unExpectedAction)
     })
   })
