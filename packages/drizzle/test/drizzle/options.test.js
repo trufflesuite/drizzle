@@ -3,6 +3,7 @@ import { call, put, select } from 'redux-saga/effects'
 import Drizzle from '../../src/Drizzle'
 import defaultDrizzleOptions from '../../src/defaultOptions'
 import { initializeDrizzle } from '../../src/drizzleStatus/drizzleStatusSaga'
+import { NETWORK_MISMATCH } from '../../src/web3/constants'
 import { NETWORK_MAINNET, NETWORK_RINKEBY, NETWORK_ROPSTEN } from './constants'
 
 describe('Drizzle options:', () => {
@@ -40,10 +41,7 @@ describe('Drizzle options:', () => {
       // Replace saga networkId with our own
       next = gen.next(networkId) // networkWhitelist check
 
-      const expectedAction = put({
-        type: 'NETWORK_MISMATCH',
-        networkId: networkId
-      }) // Use constant
+      const expectedAction = put({ type: NETWORK_MISMATCH, networkId }) // Use constant
       expect(next.value).toEqual(expectedAction)
     })
 
@@ -59,10 +57,7 @@ describe('Drizzle options:', () => {
       // Replace saga networkId with our own
       next = gen.next(networkId) // networkWhitelist check
 
-      const unExpectedAction = put({
-        type: 'NETWORK_MISMATCH',
-        networkId: networkId
-      }) // Use constant
+      const unExpectedAction = put({ type: NETWORK_MISMATCH, networkId }) // Use constant
       expect(next.value).not.toEqual(unExpectedAction)
     })
   })
