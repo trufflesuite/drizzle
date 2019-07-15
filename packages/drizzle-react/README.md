@@ -292,7 +292,7 @@ You can also pass it an optional second parameter of any type that will be memoi
 
 ### Using Drizzle
 
-The second of the two main hooks exported is a function that returns your `drizzle` instance, a `cacheCall` function, and two other hooks, `useCacheEvents` and `useCacheSend`.
+The second of the two main hooks exported is a function that returns your `drizzle` instance, a `useCacheCall` function, and two other hooks, `useCacheEvents` and `useCacheSend`.
 
 ```js
 import React from 'react'
