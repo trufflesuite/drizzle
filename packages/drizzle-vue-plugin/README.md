@@ -33,7 +33,7 @@ drizzle-vue-plugin adapts [Drizzle](https://github.com/trufflesuite/drizzle) for
      },
 
      // The contracts to monitor
-     contracts: [SimpleStorage,ComplexStorage, TutorialToken],
+     contracts: [SimpleStorage, ComplexStorage, TutorialToken],
      events: {
        // monitor SimpleStorage.StorageSet events
        SimpleStorage: ['StorageSet']
@@ -78,24 +78,106 @@ drizzle-vue-plugin adapts [Drizzle](https://github.com/trufflesuite/drizzle) for
 
 1. The Vuex store will have access to 3 sub-branches of State that can be
    accessed with Vuex's mapGetters helper.
-   * `account` - getAccount() - returns the current active web3 accounts.
 
-   * `contracts` - getContractData({contract, method, toUtf8, toAscii}) -
-       retrieve the smart contract state specified by `contract.method` and
-       convert toUtf, or toAscii if specified.
+   - `account` - getAccount() - returns the current active web3 accounts.
 
-   * `drizzle` - has 2 useful methods.
-      1. isDrizzleInitialized() - true when drizzle is ready.
-      1. drizzleInstance() - access the drizzleInstance, which may be necessary
-         for interracting with drizzle directly, or even to access the web3
-         provider.
+   - `contracts` - getContractData({contract, method, toUtf8, toAscii}) -
+     retrieve the smart contract state specified by `contract.method` and
+     convert toUtf, or toAscii if specified.
+
+   - `drizzle` - has 2 useful methods.
+     1. isDrizzleInitialized() - true when drizzle is ready.
+     1. drizzleInstance() - access the drizzleInstance, which may be necessary
+        for interracting with drizzle directly, or even to access the web3
+        provider.
 
 1. You can now access 3 base components that you can use to build more
    sophisticated interfaces.
-   * `drizzle-account` - render the current account and associated balance.
-   * `drizzle-contract` - render a specific contract method.
-   * `drizzle-contract-form` render an input for a specific contract method
+
+   - `drizzle-account` - render the current account and associated balance.
+   - `drizzle-contract` - render a specific contract method.
+   - `drizzle-contract-form` render an input for a specific contract method
 
 1. For more information take a look at the [Test Vue
    Dapp](./test-app/README.md)
 
+## Events
+
+The plugin adds an event bus to the root Vue instance of your application, which allows you to handle events emitted by your smart contracts. Use them in the `mounted()` hook of any component:
+
+```js
+this.$drizzleEvents.$on('drizzle/contractEvent', payload => {
+  // const { contractName, eventName, data } = payload
+  // Do something with payload data
+})
+```
+
+## Component Props
+
+```js
+// <drizzle-account />
+
+props: {
+  units: {
+    type: String,
+    default: 'Wei'
+  },
+  precision: {
+    type: Number,
+    default: 2
+  }
+}
+
+
+// <drizzle-contract />
+
+props: {
+  contractName: {
+    type: String,
+    required: true
+  },
+  method: {
+    type: String,
+    required: true
+  },
+  label: {
+    type: String,
+    default: ''
+  },
+  toUtf8: {
+    type: Boolean,
+    default: false
+  },
+  toAscii: {
+    type: Boolean,
+    default: false
+  },
+  methodArgs: {
+    type: Array,
+    default: () => []
+  }
+}
+
+
+// <drizzle-contract-form />
+
+props: {
+  contractName: {
+    type: String,
+    required: true
+  },
+  method: {
+    type: String,
+    required: true
+  },
+  methodArgs: {
+    type: Array,
+    default: () => []
+  },
+
+  placeholders: {
+    type: Array,
+    default: () => []
+  }
+}
+```
