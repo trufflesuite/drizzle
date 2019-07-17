@@ -1,28 +1,18 @@
 {
   "name": "@drizzle/vue-plugin",
-  "description": "A drizzle adaptor for Vue",
   "version": "0.1.0-alpha.0",
+  "description": "A drizzle adaptor for Vue",
   "author": {
     "name": "Amal Sudama",
     "email": "amal@trufflesuite.com",
     "url": "https://github.com/trufflesuite/drizzle-vue-plugin#readme"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/trufflesuite/drizzle-vue-plugin.git"
-  },
-  "homepage": "https://github.com/trufflesuite/drizzle-vue-plugin#readme",
-  "bugs": "https://github.com/trufflesuite/drizzle-vue-plugin/issues",
-  "keywords": [
-    "drizzle",
-    "ethereum",
-    "vue"
-  ],
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint",
     "build:bundle": "vue-cli-service build --target lib --name DrizzleVue ./src/DrizzleVuePlugin.js",
-    "lint": "vue-cli-service lint"
+    "test:unit": "vue-cli-service test:unit"
   },
   "main": "./dist/DrizzleVue.common.js",
   "files": [
@@ -44,12 +34,27 @@
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.8.0",
     "@vue/cli-plugin-eslint": "^3.8.0",
+    "@vue/cli-plugin-unit-jest": "^3.8.0",
     "@vue/cli-service": "^3.8.4",
     "@vue/eslint-config-prettier": "^4.0.1",
+    "@vue/test-utils": "1.0.0-beta.29",
+    "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "^10.0.2",
+    "babel-jest": "^23.6.0",
     "eslint": "^5.16.0",
     "eslint-plugin-jest": "^22.6.4",
     "eslint-plugin-vue": "^5.0.0",
     "vue-template-compiler": "^2.6.10"
+  },
+  "bugs": "https://github.com/trufflesuite/drizzle-vue-plugin/issues",
+  "homepage": "https://github.com/trufflesuite/drizzle-vue-plugin#readme",
+  "keywords": [
+    "drizzle",
+    "ethereum",
+    "vue"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/trufflesuite/drizzle-vue-plugin.git"
   }
 }
