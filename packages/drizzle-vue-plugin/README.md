@@ -159,7 +159,7 @@ props: {
 }
 
 
-// <drizzle-contract-form>
+// <drizzle-contract-form />
 
 props: {
   contractName: {
