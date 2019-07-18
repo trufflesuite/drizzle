@@ -21,12 +21,21 @@ export function * initializeWeb3 ({ options }) {
       const { ethereum } = window
       web3 = new Web3(ethereum)
       try {
-        yield call(ethereum.enable)
+        // ethereum.enable() will return the selected account
+        // unless user opts out and then it will return undefined
+        const selectedAccount = yield call([ethereum, 'enable'])
+
         yield put({ type: Action.WEB3_INITIALIZED })
+
+        if (!selectedAccount) {
+          yield put({ type: Action.WEB3_USER_DENIED })
+          return
+        }
         return web3
       } catch (error) {
-        // User denied account access...
-        console.log(error)
+        console.error(error)
+        yield put({ type: Action.WEB3_ERROR })
+        return
       }
     } else if (typeof window.web3 !== 'undefined') {
       // Checking if Web3 has been injected by the browser (Mist/MetaMask)
