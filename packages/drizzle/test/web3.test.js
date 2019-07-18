@@ -87,12 +87,8 @@ describe('Resolving Web3', () => {
     })
 
     test('does not load when user opts out', async () => {
-      const mockedEthereumEnable = jest.fn(() => {
-        return undefined // opt out
-      })
-
-      const ethereum = { enable: mockedEthereumEnable }
-      global.window = { ethereum }
+      // opt out
+      global.window = { ethereum: { enable: jest.fn(() => undefined) } }
       const dispatched = []
 
       const web3Result = await runSaga(

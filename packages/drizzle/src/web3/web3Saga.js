@@ -7,7 +7,7 @@ var Web3 = require('web3')
  * Initialization
  */
 
-export function* initializeWeb3({ options }) {
+export function * initializeWeb3 ({ options }) {
   try {
     var web3 = {}
 
@@ -74,7 +74,7 @@ export function* initializeWeb3({ options }) {
  * Network ID
  */
 
-export function* getNetworkId({ web3 }) {
+export function * getNetworkId ({ web3 }) {
   try {
     const networkId = yield call(web3.eth.net.getId)
 
