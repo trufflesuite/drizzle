@@ -1,0 +1,26 @@
+{
+  "name": "drizzle-box",
+  "version": "1.0.0",
+  "description": "",
+  "main": "truffle-config.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "truffle test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/truffle-box/drizzle-box.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/truffle-box/drizzle-box/issues"
+  },
+  "homepage": "https://github.com/truffle-box/drizzle-box#readme",
+  "dependencies": {
+    "openzeppelin-solidity": "^2.3.0"
+  }
+}
