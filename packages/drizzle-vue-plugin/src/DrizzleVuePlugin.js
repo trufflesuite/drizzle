@@ -7,7 +7,7 @@ import Contract from './components/Contract'
 import ContractForm from './components/ContractForm'
 import { DrizzleEvents } from './components/DrizzleEvents'
 
-import { Drizzle, EventActions, generateStore } from 'drizzle'
+import { Drizzle, EventActions, generateStore } from '@drizzle/store'
 import drizzleAdapterService from './store/DrizzleAdapterService'
 
 // eslint-disable-next-line
