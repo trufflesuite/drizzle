@@ -14,6 +14,9 @@
     "build:bundle": "vue-cli-service build --target lib --name DrizzleVue ./src/DrizzleVuePlugin.js",
     "test:unit": "vue-cli-service test:unit"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "main": "./dist/DrizzleVue.common.js",
   "files": [
     "dist/*",

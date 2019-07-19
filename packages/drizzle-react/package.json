@@ -21,6 +21,9 @@
     "url": "http://truffleframework.com/"
   },
   "license": "ISC",
+  "publishConfig": {
+    "access": "public"
+  },
   "dependencies": {
     "debounce": "^1.2.0",
     "deep-equal": "^1.0.1",
