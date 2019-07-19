@@ -1,6 +1,10 @@
 {
   "name": "root",
   "private": true,
+  "scripts": {
+    "prepare": "lerna run prepare"
+
+  },
   "devDependencies": {
     "lerna": "^3.15.0"
   }
