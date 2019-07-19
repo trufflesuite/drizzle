@@ -215,14 +215,20 @@ An object consisting of the type and url of a fallback web3 provider. This is us
 `url` (string): The full fallback web3 provider url. **Default**: `'ws://127.0.0.1:8545'`
 
 ### `networkWhitelist` (array)
-An array of valid network ids for your project. Your smart contracts might only be deployed on particularly networks, or you might want to restrict access on networks that are under development.
+An array of valid network ids for your project. Your smart contracts might only be deployed on particular networks, or you might want to restrict access on networks that are under development.
 
 Allows all networks by default. Ganache bypasses this check and is never restricted.
 
 ```
-// Only Mainnet and Rinkeby (and Ganache)
+// Allows the listed networks, plus Ganache
 const options = {
-  networkWhitelist: [1, 4]
+  networkWhitelist: [
+    1, // Mainnet
+    3, // Ropsten
+    4, // Rinkeby
+    5, // Goerli
+    42 // Kovan
+  ]
 }
 ```
 

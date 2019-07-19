@@ -7,7 +7,7 @@ import { getAccountBalances } from '../accountBalances/accountBalancesSaga'
 
 import { NETWORK_IDS, NETWORK_MISMATCH } from '../web3/constants'
 
-export function* initializeDrizzle(action) {
+export function * initializeDrizzle (action) {
   try {
     const options = action.options
     const web3Options = options.web3
@@ -25,11 +25,9 @@ export function* initializeDrizzle(action) {
 
       // Check whether network is allowed
       const networkWhitelist = options.networkWhitelist
-      if (
-        networkWhitelist.length &&
-        networkId !== NETWORK_IDS.ganache &&
-        !networkWhitelist.includes(networkId)
-      ) {
+      if (networkWhitelist.length &&
+          networkId !== NETWORK_IDS.ganache &&
+          !networkWhitelist.includes(networkId)) {
         yield put({ type: NETWORK_MISMATCH, networkId })
       } else {
         // Get initial accounts list and balances.
@@ -57,13 +55,7 @@ export function* initializeDrizzle(action) {
         if (web3.currentProvider.isMetaMask && !window.ethereum) {
           // Using old MetaMask, attempt block polling.
           const interval = options.polls.blocks
-          yield put({
-            type: 'BLOCKS_POLLING',
-            drizzle,
-            interval,
-            web3,
-            syncAlways
-          })
+          yield put({ type: 'BLOCKS_POLLING', drizzle, interval, web3, syncAlways })
         } else {
           // Not using old MetaMask, attempt subscription block listening.
           yield put({ type: 'BLOCKS_LISTENING', drizzle, web3, syncAlways })
@@ -90,7 +82,7 @@ export function* initializeDrizzle(action) {
   yield put({ type: 'DRIZZLE_INITIALIZED' })
 }
 
-function* drizzleStatusSaga() {
+function * drizzleStatusSaga () {
   yield takeLatest('DRIZZLE_INITIALIZING', initializeDrizzle)
 }
 
