@@ -6,8 +6,8 @@ module.exports = {
   entry: './src/index.js',
   devtool: 'eval-source-map',
   output: {
-    filename: 'drizzle-react.js',
-    library: 'drizzle-react',
+    filename: 'drizzle-react-plugin.js',
+    library: 'drizzle-react-plugin',
     libraryTarget: 'umd',
     path: path.resolve(__dirname, 'dist')
   },
@@ -23,7 +23,7 @@ module.exports = {
     }]
   },
   externals: [
-    'drizzle',
+    '@drizzle/store',
     'prop-types',
     'react',
     'redux'
