@@ -8,7 +8,7 @@ module.exports = {
   entry: './src/index.js',
   output: {
     filename: 'drizzle-react-plugin.js',
-    library: 'drizzle-react-plugin',
+    library: '@drizzle/react-plugin',
     libraryTarget: 'umd',
     path: path.resolve(__dirname, 'dist')
   },

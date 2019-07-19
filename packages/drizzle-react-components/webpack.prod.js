@@ -1,37 +1,42 @@
-const path = require('path');
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+const path = require("path");
+const UglifyJSPlugin = require("uglifyjs-webpack-plugin");
 
-process.env.BABEL_ENV = 'production';
+process.env.BABEL_ENV = "production";
 
 module.exports = {
-  entry: './src/index.js',
+  entry: "./src/index.js",
   output: {
-    filename: 'drizzle-react-components.js',
-    library: 'drizzle-react-components',
-    libraryTarget: 'umd',
-    path: path.resolve(__dirname, 'dist')
+    filename: "drizzle-react-components.js",
+    library: "@drizzle/react-components",
+    libraryTarget: "umd",
+    path: path.resolve(__dirname, "dist"),
   },
   module: {
-    loaders: [{
-      test: /\.(js)$/,
-      include: path.resolve(__dirname, 'src'),
-      loader: 'babel-loader',
-      options: {
-        presets: ['react'],
-        plugins: [require('babel-plugin-transform-class-properties'), require('babel-plugin-transform-object-rest-spread')]
-      }
-    }]
+    loaders: [
+      {
+        test: /\.(js)$/,
+        include: path.resolve(__dirname, "src"),
+        loader: "babel-loader",
+        options: {
+          presets: ["react"],
+          plugins: [
+            require("babel-plugin-transform-class-properties"),
+            require("babel-plugin-transform-object-rest-spread"),
+          ],
+        },
+      },
+    ],
   },
   plugins: [
     new UglifyJSPlugin({
-      sourceMap: true
-    })
+      sourceMap: true,
+    }),
   ],
   externals: [
-    '@drizzle/store',
-    '@drizzle/react-plugin',
-    'prop-types',
-    'react',
-    'redux'
-  ]
+    "@drizzle/store",
+    "@drizzle/react-plugin",
+    "prop-types",
+    "react",
+    "redux",
+  ],
 };

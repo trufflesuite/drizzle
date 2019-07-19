@@ -7,7 +7,7 @@ module.exports = {
   entry: './src/index.js',
   output: {
     filename: 'drizzle-state.js',
-    library: 'drizzle-state',
+    library: '@drizzle/state',
     libraryTarget: 'umd',
     globalObject: "typeof self !== 'undefined' ? self : this",
     path: path.resolve(__dirname, '../dist')
