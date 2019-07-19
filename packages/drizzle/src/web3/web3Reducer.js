@@ -46,6 +46,12 @@ const web3Reducer = (state = initialState, action) => {
       networkId: action.networkId
     }
   }
+  if (action.type === Action.NETWORK_MISMATCH) {
+    return {
+      ...state,
+      networkMismatch: true
+    }
+  }
 
   return state
 }
