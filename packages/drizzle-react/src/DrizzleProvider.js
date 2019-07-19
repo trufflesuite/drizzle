@@ -1,6 +1,6 @@
 import { Component, Children } from 'react'
 import PropTypes from 'prop-types'
-import { Drizzle, generateStore } from 'drizzle'
+import { Drizzle, generateStore } from '@drizzle/store'
 
 class DrizzleProvider extends Component {
   static propTypes = {
