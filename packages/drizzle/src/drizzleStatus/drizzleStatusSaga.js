@@ -22,7 +22,6 @@ export function* initializeDrizzle(action) {
     //
     if (web3) {
       const networkId = yield call(getNetworkId, { web3 })
-      const networkWhitelist = options.networkWhitelist
 
       // Check whether network is allowed
       const networkWhitelist = options.networkWhitelist
