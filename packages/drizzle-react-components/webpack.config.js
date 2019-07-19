@@ -22,8 +22,8 @@ module.exports = {
     }]
   },
   externals: [
-    'drizzle',
-    'drizzle-react',
+    '@drizzle/store',
+    '@drizzle/react-plugin',
     'prop-types',
     'react',
     'redux'
