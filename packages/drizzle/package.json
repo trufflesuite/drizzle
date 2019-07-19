@@ -10,7 +10,7 @@
     "url": "https://github.com/trufflesuite/drizzle"
   },
   "scripts": {
-    "build": "webpack --config webpack/release.config.js",
+    "prepare": "webpack --config webpack/release.config.js",
     "build:pure": "webpack --config webpack/pure.config.js",
     "dev": "webpack --config webpack/release.config.js --watch",
     "format": "prettier-standard 'src/**/*.js' 'test/**/*.js'",

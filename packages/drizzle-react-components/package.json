@@ -4,8 +4,8 @@
   "description": "Put some Drizzle on your React components.",
   "main": "dist/drizzle-react-components.js",
   "scripts": {
-    "build": "webpack --config webpack.config.js",
-    "publish": "webpack --config webpack.prod.js",
+    "build:dev": "webpack --config webpack.config.js",
+    "prepare": "webpack --config webpack.prod.js",
     "lint": "eslint src"
   },
   "keywords": [

@@ -8,8 +8,8 @@
     "url": "https://github.com/trufflesuite/drizzle-react"
   },
   "scripts": {
-    "build": "webpack --config webpack.config.js",
-    "publish": "webpack --config webpack.prod.js"
+    "build:dev": "webpack --config webpack.config.js",
+    "prepare": "webpack --config webpack.prod.js"
   },
   "keywords": [
     "ethereum",
