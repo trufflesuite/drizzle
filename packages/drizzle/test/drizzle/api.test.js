@@ -58,7 +58,8 @@ describe('Drizzle API', () => {
       // Iterate to 3rd effect in initializeDrizzle generator
       let gen = initializeDrizzle({ drizzle, options: drizzleOptions })
       let next = gen.next() // initializeWeb3
-      next = gen.next() // getNetworkId
+      const fakeWeb3 = { eth: {} }
+      next = gen.next(fakeWeb3) // getNetworkId
       // Replace saga networkId with our own
       next = gen.next(networkId) // networkWhitelist check
 
