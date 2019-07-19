@@ -1,0 +1,55 @@
+{
+  "name": "@drizzle/vue-plugin",
+  "description": "A drizzle adaptor for Vue",
+  "version": "0.1.0-alpha.0",
+  "author": {
+    "name": "Amal Sudama",
+    "email": "amal@trufflesuite.com",
+    "url": "https://github.com/trufflesuite/drizzle-vue-plugin#readme"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/trufflesuite/drizzle-vue-plugin.git"
+  },
+  "homepage": "https://github.com/trufflesuite/drizzle-vue-plugin#readme",
+  "bugs": "https://github.com/trufflesuite/drizzle-vue-plugin/issues",
+  "keywords": [
+    "drizzle",
+    "ethereum",
+    "vue"
+  ],
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "build:bundle": "vue-cli-service build --target lib --name DrizzleVue ./src/DrizzleVuePlugin.js",
+    "lint": "vue-cli-service lint"
+  },
+  "main": "./dist/DrizzleVue.common.js",
+  "files": [
+    "dist/*",
+    "src/*",
+    "*.json",
+    "*.js",
+    "*.md"
+  ],
+  "dependencies": {
+    "drizzle": "^1.4.0",
+    "lodash": "^4.17.11",
+    "prettier": "^1.18.2",
+    "rxjs": "^6.5.2",
+    "rxjs-compat": "^6.5.2",
+    "vue": "^2.6.10",
+    "vuex": "^3.1.1"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^3.8.0",
+    "@vue/cli-plugin-eslint": "^3.8.0",
+    "@vue/cli-service": "^3.8.4",
+    "@vue/eslint-config-prettier": "^4.0.1",
+    "babel-eslint": "^10.0.2",
+    "eslint": "^5.16.0",
+    "eslint-plugin-jest": "^22.6.4",
+    "eslint-plugin-vue": "^5.0.0",
+    "vue-template-compiler": "^2.6.10"
+  }
+}
