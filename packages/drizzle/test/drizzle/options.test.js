@@ -32,11 +32,7 @@ describe('Drizzle options:', () => {
       networkId = NETWORK_IDS.ropsten
       drizzle = new Drizzle(drizzleOptions, mockedStore)
 
-      let next = iterateInitializeDrizzleSagaToNetworkMismatch(
-        drizzle,
-        drizzleOptions,
-        networkId
-      )
+      let next = iterateInitializeDrizzleSagaToNetworkMismatch(drizzle, drizzleOptions, networkId)
 
       const expectedAction = put({ type: NETWORK_MISMATCH, networkId })
       expect(next.value).toEqual(expectedAction)
@@ -48,11 +44,7 @@ describe('Drizzle options:', () => {
 
       drizzle = new Drizzle(drizzleOptions, mockedStore)
 
-      let next = iterateInitializeDrizzleSagaToNetworkMismatch(
-        drizzle,
-        drizzleOptions,
-        networkId
-      )
+      let next = iterateInitializeDrizzleSagaToNetworkMismatch(drizzle, drizzleOptions, networkId)
 
       const unExpectedAction = put({ type: NETWORK_MISMATCH, networkId })
       expect(next.value).not.toEqual(unExpectedAction)
@@ -63,11 +55,7 @@ describe('Drizzle options:', () => {
 
       drizzle = new Drizzle(drizzleOptions, mockedStore)
 
-      let next = iterateInitializeDrizzleSagaToNetworkMismatch(
-        drizzle,
-        drizzleOptions,
-        networkId
-      )
+      let next = iterateInitializeDrizzleSagaToNetworkMismatch(drizzle, drizzleOptions, networkId)
 
       const unExpectedAction = put({ type: NETWORK_MISMATCH, networkId })
       expect(next.value).not.toEqual(unExpectedAction)
@@ -75,15 +63,11 @@ describe('Drizzle options:', () => {
   })
 })
 
-function iterateInitializeDrizzleSagaToNetworkMismatch(
-  drizzle,
-  options,
-  networkId
-) {
+function iterateInitializeDrizzleSagaToNetworkMismatch(drizzle, options, networkId) {
   // Iterate to 3rd effect in initializeDrizzle generator
-  let gen = initializeDrizzle({ drizzle, options })
+  let gen = initializeDrizzle({drizzle, options})
   let next = gen.next() // initializeWeb3
-  const fakeWeb3 = { eth: {} }
+  const fakeWeb3 = {eth: {}};
   next = gen.next(fakeWeb3) // getNetworkId
 
   // Replace saga networkId with our own

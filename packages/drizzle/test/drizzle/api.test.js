@@ -51,14 +51,15 @@ describe('Drizzle API', () => {
 
   // Default values in drizzleOptions
   describe('Default drizzle options', () => {
+
     // networkWhiteList
     test('Empty network whitelist does not trigger a mismatch', () => {
       networkId = NETWORK_IDS.ropsten
 
       // Iterate to 3rd effect in initializeDrizzle generator
-      let gen = initializeDrizzle({ drizzle, options: drizzleOptions })
+      let gen = initializeDrizzle({drizzle, options: drizzleOptions})
       let next = gen.next() // initializeWeb3
-      const fakeWeb3 = { eth: {} }
+      const fakeWeb3 = {eth: {}};
       next = gen.next(fakeWeb3) // getNetworkId
       // Replace saga networkId with our own
       next = gen.next(networkId) // networkWhitelist check

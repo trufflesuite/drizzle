@@ -157,7 +157,8 @@ Drizzle has a number of configuration options so it only keeps track of exactly 
       type
       url
     }
-  }
+  },
+  networkWhitelist
 }
 ```
 
@@ -212,6 +213,18 @@ An object consisting of the type and url of a fallback web3 provider. This is us
 `type` (string): The type of the fallback web3 provider. Currently the only possibility is `'ws'` (web socket). **Default**: `'ws'`
 
 `url` (string): The full fallback web3 provider url. **Default**: `'ws://127.0.0.1:8545'`
+
+### `networkWhitelist` (array)
+An array of valid network ids for your project. Your smart contracts might only be deployed on particularly networks, or you might want to restrict access on networks that are under development.
+
+Allows all networks by default. Ganache bypasses this check and is never restricted.
+
+```
+// Only Mainnet and Rinkeby (and Ganache)
+const options = {
+  networkWhitelist: [1, 4]
+}
+```
 
 ## Drizzle State
 
