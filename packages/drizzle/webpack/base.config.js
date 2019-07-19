@@ -6,8 +6,8 @@ module.exports = {
   devtool: 'inline-source-map',
   entry: './src/index.js',
   output: {
-    filename: 'drizzle.js',
-    library: 'drizzle',
+    filename: 'drizzle-state.js',
+    library: 'drizzle-state',
     libraryTarget: 'umd',
     globalObject: "typeof self !== 'undefined' ? self : this",
     path: path.resolve(__dirname, '../dist')
