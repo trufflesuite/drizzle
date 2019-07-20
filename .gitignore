@@ -5,3 +5,8 @@ lerna-debug.log
 yarn-error.log
 node_modules
 package-lock.json
+
+# verdaccio assets
+scripts/htpasswd
+scripts/storage
+scripts/verdaccio.log

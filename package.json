@@ -2,7 +2,8 @@
   "name": "root",
   "private": true,
   "scripts": {
-    "prepare": "lerna run prepare"
+    "prepare": "lerna run prepare",
+    "reg:bounce": "./scripts/bounce-registry.sh"
 
   },
   "devDependencies": {
