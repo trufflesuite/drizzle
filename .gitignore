@@ -5,6 +5,9 @@ lerna-debug.log
 yarn-error.log
 node_modules
 package-lock.json
+yarn.lock
+
+**/dist
 
 # verdaccio assets
 scripts/htpasswd
