@@ -1,6 +1,9 @@
 {
   "name": "root",
   "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
     "prepare": "lerna run prepare",
     "reg:bounce": "./scripts/bounce-registry.sh"
