@@ -1,17 +1,17 @@
-# drizzle-react-components
+# @drizzle/react-components
 
 A set of useful components for common UI elements.
 
 ## Components
 
-We provide components that support the React 16.3+ context API and also the legacy context API. The legacy context components will be deprecated in 2.0 with breaking changes to the `drizzle-react-components` API. We recommend usage of the new context components where possible.
+We provide components that support the React 16.3+ context API and also the legacy context API. The legacy context components will be deprecated in 2.0 with breaking changes to the `@drizzle/react-components` API. We recommend usage of the new context components where possible.
 
 For 1.x.x this is how you import the different components:
 
 ### React 16.3+ Context Components
 
 ```
-import { newContextComponents } from "drizzle-react-components";
+import { newContextComponents } from "@drizzle/react-components";
 const { AccountData, ContractData, ContractForm } = newContextComponents;
 ```
 
@@ -25,7 +25,7 @@ import {
   ContractData,
   ContractForm,
   LoadingContainer
-} from "drizzle-react-components";
+} from "@drizzle/react-components";
 ```
 
 Refer to the included [test apps](#test-apps) for usage examples.
