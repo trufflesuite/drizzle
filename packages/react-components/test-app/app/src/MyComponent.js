@@ -1,6 +1,6 @@
 import React from "react";
-import { newContextComponents } from "drizzle-react-components";
-import { DrizzleContext } from "drizzle-react";
+import { newContextComponents } from "@drizzle/react-components";
+import { DrizzleContext } from "@drizzle/react-plugin";
 import logo from "./logo.png";
 
 const { AccountData, ContractData, ContractForm } = newContextComponents;
