@@ -17,13 +17,6 @@ module.exports = {
         test: /\.(js)$/,
         include: path.resolve(__dirname, "src"),
         loader: "babel-loader",
-        options: {
-          presets: ["react"],
-          plugins: [
-            require("babel-plugin-transform-class-properties"),
-            require("babel-plugin-transform-object-rest-spread"),
-          ],
-        },
       },
     ],
   },
