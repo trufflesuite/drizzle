@@ -17,16 +17,28 @@
    ```
 1. Setup Verdaccio. The `reg:bounce` script will make sure Verdaccio server is
    started and a user is registered and logged into it. *N.B.* This overrides
-   your `npm config registry`. If you've never set the registry, you can recover
-   with running `npm config set registry https://registry.npmjs.org/`.
+   your `npm config registry`. No worries, you can recover
+   by executing `npm config set registry https://registry.npmjs.org/`.
    ```sh
-   $ npm run reg:bounce
+   $ yarn run reg:bounce
    ```
-   You can now test the build against your local registry which should be
-   running on `http://localhost:9099`
+   A Verdaccio server is now running running on `http://localhost:9099`
+   You can now publish locally, and of course, test the builds.
 
+1. Publish to local Verdaccio
+   ```sh
+   $ yarn run reg:bounce
+   $ lerna publish from-package
+   ```
    Some tests you can run:
     - run the examples in:
       - packages/react-components/test-app
       - packages/vue-plugin/test-app
-    - adapt the drizzle box to test aginst the local server
+    - Use [this adapted drizzle](https://github.com/cds-amal/drizzle-box/tree/chore/mono-repo)
+      box to test packages deployed to local Verdaccio server
+      ```sh
+      $ git clone git@github.com:cds-amal/drizzle-box.git dbox-mono-test
+      $ cd dbox-mono-test
+      $ git checkout mono-repo
+      ```
+
