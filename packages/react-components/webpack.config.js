@@ -1,5 +1,4 @@
 const path = require("path");
-
 process.env.BABEL_ENV = "production";
 
 module.exports = {
@@ -27,3 +26,4 @@ module.exports = {
     "redux",
   ],
 };
+
