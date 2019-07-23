@@ -3,7 +3,7 @@ import {
   AccountData,
   ContractData,
   ContractForm
-} from "drizzle-react-components";
+} from "@drizzle/react-components";
 
 import logo from "./logo.png";
 
