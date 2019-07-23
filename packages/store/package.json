@@ -3,7 +3,7 @@
   "version": "1.5.0",
   "description": "A reactive data-store for web3 and smart contracts.",
   "types": "./index.d.ts",
-  "main": "./dist/drizzle-state.js",
+  "main": "./dist/drizzle-store.js",
   "react-native": "./src/index.js",
   "repository": {
     "type": "git",
