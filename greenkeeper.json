@@ -1,0 +1,19 @@
+{
+  "groups": {
+    "default": {
+      "packages": [
+        "package.json",
+        "packages/drizzle-react-components/package.json",
+        "packages/drizzle-react-components/test-app-legacy-context/app/package.json",
+        "packages/drizzle-react-components/test-app-legacy-context/package.json",
+        "packages/drizzle-react-components/test-app/app/package.json",
+        "packages/drizzle-react-components/test-app/package.json",
+        "packages/drizzle-react/package.json",
+        "packages/drizzle-vue-plugin/package.json",
+        "packages/drizzle-vue-plugin/test-app/package.json",
+        "packages/drizzle-vue-plugin/test-app/vapp/package.json",
+        "packages/drizzle/package.json"
+      ]
+    }
+  }
+}
