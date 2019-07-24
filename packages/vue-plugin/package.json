@@ -26,6 +26,7 @@
     "*.md"
   ],
   "dependencies": {
+    "@babel/core": "^7.0.0-0",
     "@drizzle/store": "^1.5.0",
     "lodash": "^4.17.11",
     "prettier": "^1.18.2",
