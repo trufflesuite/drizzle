@@ -6,7 +6,8 @@
   ],
   "scripts": {
     "prepare": "lerna run prepare",
-    "reg:bounce": "./scripts/bounce-registry.sh"
+    "verdaccio:bounce": "./scripts/registry-bounce.sh",
+    "verdaccio:kill": "./scripts/registry-kill.sh"
 
   },
   "devDependencies": {

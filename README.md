@@ -20,14 +20,15 @@
    your `npm config registry`. No worries, you can recover
    by executing `npm config set registry https://registry.npmjs.org/`.
    ```sh
-   $ yarn run reg:bounce
+   $ yarn run verdaccio:bounce
    ```
    A Verdaccio server is now running running on `http://localhost:9099`
    You can now publish locally, and of course, test the builds.
+   *Note*: The Verdaccio server can be killed by: `yarn run verdaccio:kill`
 
 1. Publish to local Verdaccio
    ```sh
-   $ yarn run reg:bounce
+   $ yarn run verdaccio:bounce
    $ lerna publish from-package
    ```
    Some tests you can run:
