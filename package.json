@@ -5,10 +5,10 @@
     "packages/*"
   ],
   "scripts": {
-    "prepare": "lerna run prepare",
-    "verdaccio:bounce": "./scripts/registry-bounce.sh",
-    "verdaccio:kill": "./scripts/registry-kill.sh"
-
+    "prepare": "lerna run prepare --stream --concurrency 1",
+    "ver:start": "./scripts/registry-start.sh",
+    "ver:stop": "./scripts/registry-stop.sh",
+    "ver:reset": "./scripts/registry-reset-defaults.sh"
   },
   "devDependencies": {
     "lerna": "^3.15.0"
