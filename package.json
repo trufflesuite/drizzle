@@ -11,6 +11,7 @@
     "ver:reset": "./scripts/registry-reset-defaults.sh"
   },
   "devDependencies": {
-    "lerna": "^3.15.0"
+    "lerna": "^3.15.0",
+    "prs-merged-since": "^1.1.0"
   }
 }
