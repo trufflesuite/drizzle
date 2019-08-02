@@ -1,11 +1,17 @@
 .DS_Store
 .vscode
 
-lerna-debug.log
-yarn-error.log
+# Node
 node_modules
+
+# Lerna
+packages/**/node_modules
+lerna-debug.log
+
+# Package managers
+yarn-error.log
 package-lock.json
-yarn.lock
+packages/**/yarn.lock
 
 **/dist
 
@@ -13,3 +19,6 @@ yarn.lock
 scripts/htpasswd
 scripts/storage
 scripts/verdaccio.log
+
+# local testing
+test-apps

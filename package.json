@@ -5,12 +5,25 @@
     "packages/*"
   ],
   "scripts": {
-    "prepare": "lerna run prepare",
-    "verdaccio:bounce": "./scripts/registry-bounce.sh",
-    "verdaccio:kill": "./scripts/registry-kill.sh"
-
+    "prepare": "lerna run prepare --stream --concurrency 1",
+    "ver:start": "./scripts/registry-start.sh",
+    "ver:stop": "./scripts/registry-stop.sh",
+    "ver:reset": "./scripts/registry-reset-defaults.sh",
+    "release": "HUSKY_BYPASS=true lerna publish"
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "[[ -n $HUSKY_BYPASS ]] || commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "commitlint": {
+      "extends": ["@commitlint/config-conventional"]
   },
   "devDependencies": {
-    "lerna": "^3.15.0"
+    "@commitlint/cli": "^8.1.0",
+    "@commitlint/config-conventional": "^8.1.0",
+    "husky": "^3.0.2",
+    "lerna": "^3.15.0",
+    "prs-merged-since": "^1.1.0"
   }
 }
