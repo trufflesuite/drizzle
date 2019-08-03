@@ -25,13 +25,14 @@
   "dependencies": {
     "@babel/runtime": "^7.5.5",
     "prop-types": "^15.7.2",
-    "react": "^15.4.2"
+    "react": "^16.8.6"
   },
   "devDependencies": {
     "@babel/core": "^7.5.5",
     "@babel/plugin-proposal-class-properties": "^7.5.5",
     "@babel/plugin-proposal-object-rest-spread": "^7.5.5",
     "@babel/plugin-transform-runtime": "^7.5.5",
+    "@babel/preset-react": "^7.0.0",
     "@drizzle/react-plugin": "^1.5.0",
     "@drizzle/store": "^1.5.0",
     "babel-loader": "^8.0.6",
