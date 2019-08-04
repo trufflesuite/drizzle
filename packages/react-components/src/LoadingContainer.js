@@ -29,6 +29,23 @@ class LoadingContainer extends Component {
       );
     }
 
+    if (this.props.web3.networkMismatch) {
+      if (this.props.networkMismatchComp) {
+        return this.props.networkMismatchComp;
+      }
+
+      return (
+        <main className="container network-warning">
+          <div className="pure-g">
+            <div className="pure-u-1-1">
+              <h1>⚠️</h1>
+              <p>This dapp does not support this network.</p>
+            </div>
+          </div>
+        </main>
+      );
+    }
+
     if (
       this.props.web3.status === "initialized" &&
       Object.keys(this.props.accounts).length === 0
@@ -81,6 +98,7 @@ LoadingContainer.propTypes = {
   web3: PropTypes.object.isRequired,
   loadingComp: PropTypes.node,
   errorComp: PropTypes.node,
+  networkMismatchComp: PropTypes.node,
 };
 
 /*
