@@ -34,7 +34,7 @@ ps -A | grep -i "[V]erdaccio" | awk '{ print $1 }' | xargs kill -9
 nohup verdaccio --config ./scripts/verdaccio-config.yml &>/dev/null 2>&1 &
 for i in {1..5}; do
   sleep 1
-  if [[ "lsof -i :9099 | | grep -q ':9099.*LISTEN'" ]] ; then
+  if [[ "lsof -i :9099 || grep -q ':9099.*LISTEN'" ]] ; then
     break
   else
     echo "waiting for Verdaccio to start: ${i} secs..."
