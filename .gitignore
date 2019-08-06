@@ -21,4 +21,4 @@ scripts/storage
 scripts/verdaccio.log
 
 # local testing
-test-apps
+ui-tests/truffle/build

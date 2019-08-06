@@ -12,13 +12,13 @@
     "serve": "vue-cli-service serve",
     "build:dev": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "prepare": "vue-cli-service build --target lib --name DrizzleVue ./src/DrizzleVuePlugin.js",
+    "prepare": "vue-cli-service build --target lib --name drizzle-vue-plugin ./src/DrizzleVuePlugin.js",
     "test:unit": "vue-cli-service test:unit"
   },
   "publishConfig": {
     "access": "public"
   },
-  "main": "./dist/DrizzleVue.common.js",
+  "main": "./dist/drizzle-vue-plugin.common.js",
   "files": [
     "dist/*",
     "src/*",
@@ -27,27 +27,29 @@
     "*.md"
   ],
   "dependencies": {
-    "@drizzle/store": "^1.5.0",
     "lodash": "^4.17.11",
     "rxjs": "^6.5.2",
     "rxjs-compat": "^6.5.2"
   },
   "devDependencies": {
+    "@drizzle/store": "^1.5.0",
     "@vue/cli-plugin-babel": "^3.8.0",
     "@vue/cli-plugin-eslint": "^3.8.0",
     "@vue/cli-plugin-unit-jest": "^3.8.0",
     "@vue/cli-service": "^3.8.4",
-    "@vue/eslint-config-prettier": "^5.0.0",
+    "@vue/eslint-config-prettier": "^4.0.1",
     "@vue/test-utils": "1.0.0-beta.29",
     "babel-core": "7.0.0-bridge.0",
-    "eslint": "^5.0.0",
-    "eslint-plugin-prettier": "3.1.0",
-    "eslint-plugin-vue": "^5.2.3",
+    "babel-eslint": "^10.0.2",
+    "babel-jest": "^23.6.0",
+    "eslint": "^5.16.0",
+    "eslint-config-standard": "^13.0.1",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-jest": "^22.6.4",
+    "eslint-plugin-vue": "^5.0.0",
     "prettier": "^1.18.2",
-    "prettier-linter-helpers": "^1.0.0",
-    "vue": "^2.6.10",
-    "vue-eslint-parser": "^5.0.0",
     "vue-template-compiler": "^2.6.10",
+    "vue": "^2.6.10",
     "vuex": "^3.1.1"
   },
   "bugs": "https://github.com/trufflesuite/drizzle-vue-plugin/issues",

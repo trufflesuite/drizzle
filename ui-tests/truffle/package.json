@@ -1,8 +1,9 @@
 {
-  "name": "drizzle-box",
+  "name": "test-truffle-contracts",
   "version": "1.0.0",
   "description": "",
   "main": "truffle-config.js",
+  "private": true,
   "directories": {
     "test": "test"
   },

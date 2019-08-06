@@ -29,7 +29,7 @@
     <h3>Display an Array</h3>
     <div class="flex-container">
       <div class="code">{{ sample.get_uintarray.html }}</div>
-      <drizzle-contract contractName="ComplexStorage" method="get_uintarray" />
+      <drizzle-contract contractName="ComplexStorage" method="getUintarray" />
     </div>
   </div>
 </template>
