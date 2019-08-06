@@ -64,8 +64,8 @@ AccountData.contextTypes = {
 };
 
 AccountData.propTypes = {
-  accounts: PropTypes.arrayOf(PropTypes.string),
-  accountBalances: PropTypes.arrayOf(PropTypes.string),
+  accounts: PropTypes.objectOf(PropTypes.string),
+  accountBalances: PropTypes.objectOf(PropTypes.string),
   accountIndex: PropTypes.number.isRequired,
   units: PropTypes.string,
   precision: PropTypes.number,
