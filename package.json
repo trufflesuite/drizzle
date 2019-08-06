@@ -11,16 +11,10 @@
     "ver:reset": "./scripts/registry-reset-defaults.sh",
     "release": "HUSKY_BYPASS=true lerna publish"
   },
-  "lint-staged": {
-    "*.js": [
-      "eslint --fix",
-      "git add"
-    ]
-  },
   "husky": {
     "hooks": {
       "commit-msg": "[[ -n $HUSKY_BYPASS ]] || commitlint -V -E HUSKY_GIT_PARAMS",
-      "pre-commit": "lint-staged"
+      "pre-commit": "lint-staged --config ./lint-staged-config.js"
     }
   },
   "commitlint": {
