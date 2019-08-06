@@ -28,13 +28,11 @@
   ],
   "dependencies": {
     "@drizzle/store": "^1.5.0",
-    "babel-eslint": "^10.0.2",
     "lodash": "^4.17.11",
     "rxjs": "^6.5.2",
     "rxjs-compat": "^6.5.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.0.0-0",
     "@vue/cli-plugin-babel": "^3.8.0",
     "@vue/cli-plugin-eslint": "^3.8.0",
     "@vue/cli-plugin-unit-jest": "^3.8.0",
