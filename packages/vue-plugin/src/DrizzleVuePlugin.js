@@ -11,7 +11,7 @@ import { Drizzle, EventActions, generateStore } from '@drizzle/store'
 import drizzleAdapterService from './store/DrizzleAdapterService'
 
 // eslint-disable-next-line
-const eventsMW = _ => next => action => {
+const eventsMW = x => next => action => {
   if (action.type === EventActions.EVENT_FIRED) {
     const event = {
       contractName: action.name,
