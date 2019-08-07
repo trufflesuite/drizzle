@@ -27,12 +27,16 @@
     "*.md"
   ],
   "dependencies": {
+    "@drizzle/store": "^1.5.0",
     "lodash": "^4.17.11",
     "rxjs": "^6.5.2",
     "rxjs-compat": "^6.5.2"
   },
+  "peerDependencies": {
+    "vue": "^2.6.10",
+    "vuex": "^3.1.1"
+  },
   "devDependencies": {
-    "@drizzle/store": "^1.5.0",
     "@vue/cli-plugin-babel": "^3.8.0",
     "@vue/cli-plugin-eslint": "^3.8.0",
     "@vue/cli-plugin-unit-jest": "^3.8.0",
@@ -48,9 +52,7 @@
     "eslint-plugin-jest": "^22.6.4",
     "eslint-plugin-vue": "^5.0.0",
     "prettier": "^1.18.2",
-    "vue-template-compiler": "^2.6.10",
-    "vue": "^2.6.10",
-    "vuex": "^3.1.1"
+    "vue-template-compiler": "^2.6.10"
   },
   "bugs": "https://github.com/trufflesuite/drizzle-vue-plugin/issues",
   "homepage": "https://github.com/trufflesuite/drizzle-vue-plugin#readme",
