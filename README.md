@@ -63,6 +63,7 @@ In order to develop `drizzle-suite`, you'll need:
 - [Node.js](https://nodejs.org)
 - [Yarn](https://yarnpkg.com)
 - [Lerna](https://lerna.js.org/)
+- [Ganache-cli](https://github.com/trufflesuite/ganache-cli)
 
 ### Getting Started
 
@@ -71,9 +72,8 @@ First clone this repository and install NPM dependencies:
     $ git clone git@github.com:trufflesuite/drizzle-suite.git
     $ cd drizzle-suite
     $ yarn
-    $ lerna bootstrap
 
-If all is good,then `cd` to the folder to the package you want to work on, and
+If all is good, navigate (`cd`) to the package of interest and
 follow the README document there.
 
 ### Forks, Branches, and Pull Requests
@@ -121,6 +121,38 @@ Use a branch for your modifications, tracking it on your fork:
     $ git push -u ChocolateLover feature/sweet-feature
 
 Then, make changes and commit as usual.
+
+
+#### Testing and debugging a ganache-suite
+
+Start and wait for Ganache to initialize.
+
+    $ yarn ganache
+
+You'll know when the console shows:
+
+    test-truffle-contracts: Listening on 127.0.0.1:9545
+
+Deploy the contracts to Ganache
+
+    $ yarn ganache:deploy
+
+Deployment is done when the following is logged to the console:
+
+    test-truffle-contracts: Summary
+    test-truffle-contracts: =======
+    test-truffle-contracts: > Total deployments:   4
+    test-truffle-contracts: > Final cost:          ... ETH
+
+Start the front end test apps
+
+    yarn serve:ui
+
+You'll have 3 apps to interact with.
+
+  - [Generic React app](http://localhost:3000) on port 3000
+  - [React app using the context API](http://localhost:3001) on port 3001
+  - [Vue app](http://localhost:3002) on port 3002
 
 
 #### Testing and debugging your code
