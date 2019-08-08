@@ -8,7 +8,9 @@
     "test": "test"
   },
   "scripts": {
-    "test": "truffle test"
+    "test": "truffle test",
+    "ganache": "ganache-cli -p 9545",
+    "ganache:deploy": "truffle migrate --reset"
   },
   "repository": {
     "type": "git",

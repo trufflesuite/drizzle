@@ -9,8 +9,6 @@
   },
   "repository": "https://github.com/trufflesuite/drizzle-suite/tree/master/packages/vue-plugin",
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build:dev": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "prepare": "vue-cli-service build --target lib --name drizzle-vue-plugin ./src/DrizzleVuePlugin.js",
     "test:unit": "vue-cli-service test:unit"

@@ -10,7 +10,11 @@
     "ver:start": "./scripts/registry-start.sh",
     "ver:stop": "./scripts/registry-stop.sh",
     "ver:reset": "./scripts/registry-reset-defaults.sh",
-    "release": "HUSKY_BYPASS=true lerna publish"
+    "release": "HUSKY_BYPASS=true lerna publish",
+
+    "ganache": "lerna run ganache --stream",
+    "ganache:deploy": "lerna run ganache:deploy --stream",
+    "serve:ui": "lerna run serve:ui --stream --concurrency 3"
   },
   "husky": {
     "hooks": {
