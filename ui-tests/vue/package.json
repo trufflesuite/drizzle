@@ -1,6 +1,6 @@
 {
-  "name": "vue-test-app",
-  "version": "0.1.0",
+  "name": "test-app-vue",
+  "version": "0.0.1",
   "private": true,
   "scripts": {
     "serve:ui": "PORT=3002 vue-cli-service serve",

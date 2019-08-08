@@ -1,6 +1,6 @@
 {
-  "name": "app-react-legacy",
-  "version": "0.1.0",
+  "name": "test-app-react-context",
+  "version": "0.0.1",
   "private": true,
   "dependencies": {
     "@drizzle/store": "^1.5.0",

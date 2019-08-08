@@ -1,6 +1,6 @@
 {
-  "name": "test-truffle-contracts",
-  "version": "1.0.0",
+  "name": "sample-truffle-contracts",
+  "version": "0.0.1",
   "description": "",
   "main": "truffle-config.js",
   "private": true,
