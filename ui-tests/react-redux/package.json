@@ -1,5 +1,5 @@
 {
-  "name": "test-app-react-legacy",
+  "name": "test-app-react-redux",
   "version": "0.0.1",
   "private": true,
   "dependencies": {
