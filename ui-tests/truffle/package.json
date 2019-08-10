@@ -9,7 +9,7 @@
   },
   "scripts": {
     "test": "truffle test",
-    "ganache": "ganache-cli -p 9545",
+    "ganache": "ganache-cli -p 9545 -m 'butter mention wealth vicious fancy plastic treat title filter excess witness bus'",
     "ganache:deploy": "truffle migrate --reset"
   },
   "repository": {
