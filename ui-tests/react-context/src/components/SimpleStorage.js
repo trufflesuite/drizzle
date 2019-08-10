@@ -2,7 +2,6 @@ import React from "react";
 import { newContextComponents } from "@drizzle/react-components";
 const { ContractData, ContractForm } = newContextComponents;
 
-// eslint-disable-next-line react/display-name
 export default ({ drizzle, drizzleState }) => (
   <>
     <h2>SimpleStorage</h2>

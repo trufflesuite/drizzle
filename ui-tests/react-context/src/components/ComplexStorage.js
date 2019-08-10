@@ -2,7 +2,6 @@ import React from "react";
 import { newContextComponents } from "@drizzle/react-components";
 const { ContractData } = newContextComponents;
 
-// eslint-disable-next-line react/display-name
 export const ComplexStorage = ({ drizzle, drizzleState }) => (
   <>
     <h2>ComplexStorage</h2>
