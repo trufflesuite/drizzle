@@ -6,7 +6,8 @@
   "scripts": {
     "build:dev": "webpack --config webpack.config.js",
     "prepare": "webpack --config webpack.prod.js",
-    "lint": "eslint src"
+    "lint": "eslint src",
+    "webpack-report": "webpack-bundle-analyzer --log-level debug --port 4202 dist/stats.json"
   },
   "keywords": [
     "ethereum",

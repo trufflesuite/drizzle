@@ -1,4 +1,5 @@
 const path = require('path')
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 
 process.env.BABEL_ENV = 'production'
 
@@ -18,5 +19,12 @@ module.exports = {
       include: path.resolve(__dirname, '../src'),
       loader: 'babel-loader'
     }]
-  }
+  },
+  plugins: [
+    new BundleAnalyzerPlugin({
+      analyzerMode: 'disabled',
+      generateStatsFile: true,
+      statsOptions: { source: false }
+    })
+  ]
 }
