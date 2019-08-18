@@ -14,7 +14,9 @@
 
     "ganache": "lerna run ganache --stream",
     "ganache:deploy": "lerna run ganache:deploy --stream",
-    "serve:ui": "lerna run serve:ui --stream --concurrency 3"
+    "serve:ui": "lerna run serve:ui --stream --concurrency 3",
+
+    "webpack-reports": "lerna run webpack-report --parallel --stream"
   },
   "husky": {
     "hooks": {
@@ -28,6 +30,12 @@
     ]
   },
   "devDependencies": {
+    "@babel/core": "^7.5.5",
+    "@babel/plugin-proposal-class-properties": "^7.5.5",
+    "@babel/plugin-proposal-object-rest-spread": "^7.5.5",
+    "@babel/plugin-transform-arrow-functions": "^7.2.0",
+    "@babel/plugin-transform-runtime": "^7.5.5",
+    "@babel/runtime": "^7.5.5",
     "@commitlint/cli": "^8.1.0",
     "@commitlint/config-conventional": "^8.1.0",
     "babel-eslint": "^10.0.2",
@@ -37,12 +45,6 @@
     "lerna": "^3.15.0",
     "lint-staged": "^9.2.1",
     "prs-merged-since": "^1.1.0",
-    "@babel/core": "^7.5.5",
-    "@babel/plugin-proposal-class-properties": "^7.5.5",
-    "@babel/plugin-proposal-object-rest-spread": "^7.5.5",
-    "@babel/plugin-transform-arrow-functions": "^7.2.0",
-    "@babel/plugin-transform-runtime": "^7.5.5",
-    "@babel/runtime": "^7.5.5"
-
+    "webpack-bundle-analyzer": "^3.4.1"
   }
 }

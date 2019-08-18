@@ -13,7 +13,8 @@
     "format": "prettier-standard 'src/**/*.js' 'test/**/*.js'",
     "lint": "eslint 'src/**/*.js'",
     "lint:fix": "eslint 'src/**/*.js' --fix",
-    "test": "jest --notify --silent"
+    "test": "jest --notify --silent",
+    "webpack-report": "webpack-bundle-analyzer --log-level debug --port 4200 dist/stats.json"
   },
   "keywords": [
     "ethereum",
