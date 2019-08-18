@@ -17,19 +17,19 @@ export default ({ accounts }) => (
   <div className="App">
     <div>
       <img src={logo} alt="drizzle-logo" />
-      <h1>Drizzle Examples</h1>
+      <h1>Drizzle Examples: Legacy UI</h1>
       <p>Examples of how to get started with Drizzle in various situations.</p>
     </div>
 
     <div className="section">
       <h2>Active Account</h2>
-      <AccountData accountIndex="0" units="ether" precision="3" />
+      <AccountData accountIndex={0} units="ether" precision={3} />
 
       <h2>Active Account with Custom Rendered Component</h2>
       <AccountData
-        accountIndex="0"
+        accountIndex={0}
         units="ether"
-        precision="3"
+        precision={3}
         render={({ address, balance, units }) => (
           <div>
             <div>My Address: <span style={{ color: "red" }}>{address}</span></div>
@@ -181,7 +181,7 @@ export default ({ accounts }) => (
           const displayObjectProps = [];
 
           Object.keys(displayData).forEach(key => {
-            if (i != key) {
+            if (i !== key) {
               displayObjectProps.push(
                 <li key={i}>
                   Element {i} has key: <strong>{key}</strong>

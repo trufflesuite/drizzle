@@ -1,13 +1,16 @@
 {
-  "name": "drizzle-box",
-  "version": "1.0.0",
+  "name": "sample-truffle-contracts",
+  "version": "0.0.1",
   "description": "",
   "main": "truffle-config.js",
+  "private": true,
   "directories": {
     "test": "test"
   },
   "scripts": {
-    "test": "truffle test"
+    "test": "truffle test",
+    "ganache": "ganache-cli -p 9545 -m 'butter mention wealth vicious fancy plastic treat title filter excess witness bus'",
+    "ganache:deploy": "truffle migrate --reset"
   },
   "repository": {
     "type": "git",

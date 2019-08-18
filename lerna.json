@@ -1,6 +1,7 @@
 {
   "packages": [
-    "packages/*"
+    "packages/*",
+    "ui-tests/*"
   ],
   "version": "independent",
   "npmClient": "yarn",
