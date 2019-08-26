@@ -145,13 +145,13 @@ describe('Resolving Web3', () => {
     })
 
     test('get web3', async () => {
-      const options = {
+      web3Options = {
         fallback: {
           type: 'ws',
           url: 'ws://localhost:12345'
         }
       }
-      gen = initializeWeb3(options)
+      gen = initializeWeb3(web3Options)
 
       // First action dispatched
       expect(gen.next().value).toEqual(put({ type: Action.WEB3_INITIALIZED }))
@@ -162,13 +162,13 @@ describe('Resolving Web3', () => {
     })
 
     test('fails when fallback type is unknown', async () => {
-      const options = {
+      web3Options = {
         fallback: {
           type: 'thewrongtype',
           url: 'ws://localhost:12345'
         }
       }
-      gen = initializeWeb3(options)
+      gen = initializeWeb3(web3Options)
 
       const error = new Error('Invalid web3 fallback provided.')
       expect(gen.next().value).toEqual(put({ type: Action.WEB3_FAILED, error }))
@@ -178,8 +178,7 @@ describe('Resolving Web3', () => {
   describe('Exhausts options', () => {
     beforeAll(async () => {
       global.window = {}
-      web3Options = {}
-      gen = initializeWeb3(web3Options)
+      gen = initializeWeb3({})
     })
 
     test('with failure', async () => {
