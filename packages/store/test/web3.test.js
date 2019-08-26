@@ -17,11 +17,11 @@ describe('Resolving Web3', () => {
   describe('with customProvider', () => {
     beforeAll(async () => {
       global.window = {}
-      web3Options = { web3: { customProvider: global.provider } }
+      web3Options = { customProvider: global.provider }
     })
 
     test('get web3', async () => {
-      gen = initializeWeb3({ options: web3Options })
+      gen = initializeWeb3(web3Options)
 
       // First action dispatched
       expect(gen.next().value).toEqual(put({ type: Action.WEB3_INITIALIZED }))
@@ -50,7 +50,7 @@ describe('Resolving Web3', () => {
       const ethereum = { enable: mockedEthereumEnable }
       global.window = { ethereum }
 
-      gen = initializeWeb3({ options: {} })
+      gen = initializeWeb3({})
       let next = gen.next()
       // get permission according to EIP 1102
       //
@@ -76,7 +76,7 @@ describe('Resolving Web3', () => {
       const result = await runSaga({
         dispatch: (action) => dispatched.push(action),
         getState: () => ({ state: 'test' })
-      }, initializeWeb3, { options: {} }).done
+      }, initializeWeb3, {}).done
 
       // result should be a proper web3 provider
       expect(result).toBeInstanceOf(require('web3'))
@@ -93,7 +93,7 @@ describe('Resolving Web3', () => {
           getState: () => ({ state: 'test' })
         },
         initializeWeb3,
-        { options: {} }
+        {}
       ).done
 
       // saga result should be undefined if an exception occurs
@@ -113,7 +113,7 @@ describe('Resolving Web3', () => {
       const result = await runSaga({
         dispatch: (action) => dispatched.push(action),
         getState: () => ({ state: 'test' })
-      }, initializeWeb3, { options: {} }).done
+      }, initializeWeb3, {}).done
 
       // saga result is undefined when exception is thrown
       expect(result).toBe(undefined)
@@ -127,7 +127,7 @@ describe('Resolving Web3', () => {
     beforeAll(async () => {
       global.window = {}
       global.window.web3 = { currentProvider: global.provider }
-      gen = initializeWeb3({ options: {} })
+      gen = initializeWeb3({})
     })
 
     test('get web3', async () => {
@@ -137,13 +137,11 @@ describe('Resolving Web3', () => {
   })
 
   describe('with websocket fallback web3', () => {
-    let mockedWebSocketProvider, gen
+    let gen
 
     beforeAll(async () => {
       global.window = {}
-
-      mockedWebSocketProvider = jest.fn()
-      global.provider.providers = { WebSocketProvider: mockedWebSocketProvider }
+      global.provider.providers = { WebSocketProvider: jest.fn() }
     })
 
     test('get web3', async () => {
@@ -153,7 +151,7 @@ describe('Resolving Web3', () => {
           url: 'ws://localhost:12345'
         }
       }
-      gen = initializeWeb3({ options })
+      gen = initializeWeb3(options)
 
       // First action dispatched
       expect(gen.next().value).toEqual(put({ type: Action.WEB3_INITIALIZED }))
@@ -170,7 +168,7 @@ describe('Resolving Web3', () => {
           url: 'ws://localhost:12345'
         }
       }
-      gen = initializeWeb3({ options })
+      gen = initializeWeb3(options)
 
       const error = new Error('Invalid web3 fallback provided.')
       expect(gen.next().value).toEqual(put({ type: Action.WEB3_FAILED, error }))
@@ -181,7 +179,7 @@ describe('Resolving Web3', () => {
     beforeAll(async () => {
       global.window = {}
       web3Options = {}
-      gen = initializeWeb3({ options: web3Options })
+      gen = initializeWeb3(web3Options)
     })
 
     test('with failure', async () => {
