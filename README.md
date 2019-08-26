@@ -2,6 +2,8 @@
 
 ----
 
+**Note:** _This monorepo is aligned with our `@drizzle` scoped package release of 1.5.0. If you are looking for our old drizzle repo, it has been moved [here](https://github.com/trufflesuite/drizzle-legacy)._
+
 Overview
 --------
 
