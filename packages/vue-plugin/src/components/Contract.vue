@@ -77,12 +77,7 @@ export default {
   },
 
   created() {
-    const utf8 = this.toUtf8 ? 'toUtf8' : ''
     const { contractName, method, methodArgs } = this
-    const args = methodArgs.length === 0 ? '' : `methodArgs="[${methodArgs}]"`
-    console.log(
-      `Component: <ContractData contractName="${contractName}" method="${method}" ${args} ${utf8} />`
-    )
 
     this.$store.dispatch('drizzle/REGISTER_CONTRACT', {
       contractName,
