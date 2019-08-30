@@ -29,6 +29,16 @@
         "code",
         "doc"
       ]
+    },
+    {
+      "login": "honestbonsai",
+      "name": "Heyse Li",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/36248745?v=4",
+      "profile": "https://www.heyseli.com",
+      "contributions": [
+        "code",
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7
