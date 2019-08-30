@@ -1,5 +1,5 @@
 <img src="https://truffleframework.com/img/drizzle-logo-dark.svg" width="200">
-[![All Contributors](https://img.shields.io/badge/all_contributors-24-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-25-orange.svg?style=flat-square)](#contributors-)
 
 ----
 
@@ -230,6 +230,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/joshma91"><img src="https://avatars2.githubusercontent.com/u/9612111?v=4" width="100px;" alt="Josh Ma"/><br /><sub><b>Josh Ma</b></sub></a><br /><a href="https://github.com/trufflesuite/drizzle-suite/commits?author=joshma91" title="Code">💻</a></td>
     <td align="center"><a href="https://bia.is"><img src="https://avatars2.githubusercontent.com/u/40213?v=4" width="100px;" alt="Maxime Biais"/><br /><sub><b>Maxime Biais</b></sub></a><br /><a href="https://github.com/trufflesuite/drizzle-suite/commits?author=maxme" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/mnaamani"><img src="https://avatars1.githubusercontent.com/u/1621012?v=4" width="100px;" alt="Mokhtar Naamani"/><br /><sub><b>Mokhtar Naamani</b></sub></a><br /><a href="https://github.com/trufflesuite/drizzle-suite/commits?author=mnaamani" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/mrice32"><img src="https://avatars3.githubusercontent.com/u/11791551?v=4" width="100px;" alt="Matt Rice"/><br /><sub><b>Matt Rice</b></sub></a><br /><a href="https://github.com/trufflesuite/drizzle-suite/commits?author=mrice32" title="Code">💻</a></td>
   </tr>
 </table>
 
