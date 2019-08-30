@@ -95,6 +95,15 @@
         "code",
         "doc"
       ]
+    },
+    {
+      "login": "St3C",
+      "name": "Stefano Convertino",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/5721856?v=4",
+      "profile": "https://st3c.github.io/devportfolio/",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7
