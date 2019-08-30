@@ -1,5 +1,5 @@
 <img src="https://truffleframework.com/img/drizzle-logo-dark.svg" width="200">
-[![All Contributors](https://img.shields.io/badge/all_contributors-21-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-22-orange.svg?style=flat-square)](#contributors-)
 
 ----
 
@@ -225,6 +225,9 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/igorline"><img src="https://avatars2.githubusercontent.com/u/1465430?v=4" width="100px;" alt="Igor Line"/><br /><sub><b>Igor Line</b></sub></a><br /><a href="https://github.com/trufflesuite/drizzle-suite/commits?author=igorline" title="Code">💻</a></td>
     <td align="center"><a href="https://eattheblocks.com"><img src="https://avatars2.githubusercontent.com/u/9279488?v=4" width="100px;" alt="Julien Klepatch"/><br /><sub><b>Julien Klepatch</b></sub></a><br /><a href="https://github.com/trufflesuite/drizzle-suite/commits?author=jklepatch" title="Code">💻</a></td>
     <td align="center"><a href="https://twitter.com/johnmpotter"><img src="https://avatars2.githubusercontent.com/u/5359194?v=4" width="100px;" alt="John Potter"/><br /><sub><b>John Potter</b></sub></a><br /><a href="https://github.com/trufflesuite/drizzle-suite/commits?author=johnmpotter" title="Code">💻</a></td>
+  </tr>
+  <tr>
+    <td align="center"><a href="https://github.com/joshma91"><img src="https://avatars2.githubusercontent.com/u/9612111?v=4" width="100px;" alt="Josh Ma"/><br /><sub><b>Josh Ma</b></sub></a><br /><a href="https://github.com/trufflesuite/drizzle-suite/commits?author=joshma91" title="Code">💻</a></td>
   </tr>
 </table>
 
