@@ -1,5 +1,5 @@
 <img src="https://truffleframework.com/img/drizzle-logo-dark.svg" width="200">
-[![All Contributors](https://img.shields.io/badge/all_contributors-8-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-9-orange.svg?style=flat-square)](#contributors-)
 
 ----
 
@@ -210,6 +210,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   </tr>
   <tr>
     <td align="center"><a href="https://github.com/ProphetDaniel"><img src="https://avatars2.githubusercontent.com/u/5958020?v=4" width="100px;" alt="Prophet Daniel"/><br /><sub><b>Prophet Daniel</b></sub></a><br /><a href="https://github.com/trufflesuite/drizzle-suite/commits?author=ProphetDaniel" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/SeanJCasey"><img src="https://avatars3.githubusercontent.com/u/4407542?v=4" width="100px;" alt="SeanJCasey"/><br /><sub><b>SeanJCasey</b></sub></a><br /><a href="https://github.com/trufflesuite/drizzle-suite/commits?author=SeanJCasey" title="Code">💻</a> <a href="https://github.com/trufflesuite/drizzle-suite/commits?author=SeanJCasey" title="Documentation">📖</a></td>
   </tr>
 </table>
 

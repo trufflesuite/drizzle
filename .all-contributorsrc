@@ -85,6 +85,16 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "SeanJCasey",
+      "name": "SeanJCasey",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/4407542?v=4",
+      "profile": "https://github.com/SeanJCasey",
+      "contributions": [
+        "code",
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7
