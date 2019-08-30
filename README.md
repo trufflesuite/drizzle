@@ -1,5 +1,5 @@
 <img src="https://truffleframework.com/img/drizzle-logo-dark.svg" width="200">
-[![All Contributors](https://img.shields.io/badge/all_contributors-15-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-16-orange.svg?style=flat-square)](#contributors-)
 
 ----
 
@@ -219,6 +219,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   </tr>
   <tr>
     <td align="center"><a href="https://github.com/dannycarrera"><img src="https://avatars3.githubusercontent.com/u/16018201?v=4" width="100px;" alt="dannycarrera"/><br /><sub><b>dannycarrera</b></sub></a><br /><a href="https://github.com/trufflesuite/drizzle-suite/commits?author=dannycarrera" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/dillonmcroberts"><img src="https://avatars2.githubusercontent.com/u/7416637?v=4" width="100px;" alt="Dillon McRoberts"/><br /><sub><b>Dillon McRoberts</b></sub></a><br /><a href="https://github.com/trufflesuite/drizzle-suite/commits?author=dillonmcroberts" title="Code">💻</a></td>
   </tr>
 </table>
 
