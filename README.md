@@ -1,5 +1,5 @@
 <img src="https://truffleframework.com/img/drizzle-logo-dark.svg" width="200">
-[![All Contributors](https://img.shields.io/badge/all_contributors-22-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-23-orange.svg?style=flat-square)](#contributors-)
 
 ----
 
@@ -228,6 +228,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   </tr>
   <tr>
     <td align="center"><a href="https://github.com/joshma91"><img src="https://avatars2.githubusercontent.com/u/9612111?v=4" width="100px;" alt="Josh Ma"/><br /><sub><b>Josh Ma</b></sub></a><br /><a href="https://github.com/trufflesuite/drizzle-suite/commits?author=joshma91" title="Code">💻</a></td>
+    <td align="center"><a href="https://bia.is"><img src="https://avatars2.githubusercontent.com/u/40213?v=4" width="100px;" alt="Maxime Biais"/><br /><sub><b>Maxime Biais</b></sub></a><br /><a href="https://github.com/trufflesuite/drizzle-suite/commits?author=maxme" title="Code">💻</a></td>
   </tr>
 </table>
 
