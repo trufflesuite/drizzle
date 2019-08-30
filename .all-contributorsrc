@@ -122,6 +122,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "asselstine",
+      "name": "Brendan Asselstine",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/4247628?v=4",
+      "profile": "https://delta.camp",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7
