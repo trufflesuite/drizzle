@@ -1,0 +1,25 @@
+{
+  "projectName": "drizzle-suite",
+  "projectOwner": "trufflesuite",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": true,
+  "commitConvention": "angular",
+  "contributors": [
+    {
+      "login": "DiscRiskandBisque",
+      "name": "Josh Quintal",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/3990373?v=4",
+      "profile": "https://github.com/DiscRiskandBisque",
+      "contributions": [
+        "code",
+        "doc"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7
+}
