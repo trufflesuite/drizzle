@@ -12,9 +12,8 @@ export function * initializeWeb3 (options) {
     let web3 = {}
 
     if (options.customProvider) {
-      web3 = new Web3(options.customProvider)
       yield put({ type: Action.WEB3_INITIALIZED })
-      return web3
+      return options.customProvider
     }
 
     if (window.ethereum) {
