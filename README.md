@@ -1,5 +1,5 @@
 <img src="https://truffleframework.com/img/drizzle-logo-dark.svg" width="200">
-[![All Contributors](https://img.shields.io/badge/all_contributors-7-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-8-orange.svg?style=flat-square)](#contributors-)
 
 ----
 
@@ -207,6 +207,9 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/EbiEbiEvidence"><img src="https://avatars1.githubusercontent.com/u/24590869?v=4" width="100px;" alt="Kosui Iwasa"/><br /><sub><b>Kosui Iwasa</b></sub></a><br /><a href="https://github.com/trufflesuite/drizzle-suite/commits?author=EbiEbiEvidence" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/JasoonS"><img src="https://avatars1.githubusercontent.com/u/6032276?v=4" width="100px;" alt="Jason Smythe"/><br /><sub><b>Jason Smythe</b></sub></a><br /><a href="https://github.com/trufflesuite/drizzle-suite/commits?author=JasoonS" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/MrRefactoring"><img src="https://avatars0.githubusercontent.com/u/10329528?v=4" width="100px;" alt="Vladislav Tupikin"/><br /><sub><b>Vladislav Tupikin</b></sub></a><br /><a href="https://github.com/trufflesuite/drizzle-suite/commits?author=MrRefactoring" title="Code">💻</a></td>
+  </tr>
+  <tr>
+    <td align="center"><a href="https://github.com/ProphetDaniel"><img src="https://avatars2.githubusercontent.com/u/5958020?v=4" width="100px;" alt="Prophet Daniel"/><br /><sub><b>Prophet Daniel</b></sub></a><br /><a href="https://github.com/trufflesuite/drizzle-suite/commits?author=ProphetDaniel" title="Code">💻</a></td>
   </tr>
 </table>
 
