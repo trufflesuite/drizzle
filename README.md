@@ -1,5 +1,5 @@
 <img src="https://truffleframework.com/img/drizzle-logo-dark.svg" width="200">
-[![All Contributors](https://img.shields.io/badge/all_contributors-14-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-15-orange.svg?style=flat-square)](#contributors-)
 
 ----
 
@@ -216,6 +216,9 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/amitaymolko"><img src="https://avatars3.githubusercontent.com/u/1846494?v=4" width="100px;" alt="amitaymolko"/><br /><sub><b>amitaymolko</b></sub></a><br /><a href="https://github.com/trufflesuite/drizzle-suite/commits?author=amitaymolko" title="Code">💻</a></td>
     <td align="center"><a href="https://delta.camp"><img src="https://avatars1.githubusercontent.com/u/4247628?v=4" width="100px;" alt="Brendan Asselstine"/><br /><sub><b>Brendan Asselstine</b></sub></a><br /><a href="https://github.com/trufflesuite/drizzle-suite/commits?author=asselstine" title="Code">💻</a></td>
     <td align="center"><a href="https://iamsamy.com"><img src="https://avatars0.githubusercontent.com/u/25502424?v=4" width="100px;" alt="Denis Angell"/><br /><sub><b>Denis Angell</b></sub></a><br /><a href="https://github.com/trufflesuite/drizzle-suite/commits?author=dangell7" title="Code">💻</a></td>
+  </tr>
+  <tr>
+    <td align="center"><a href="https://github.com/dannycarrera"><img src="https://avatars3.githubusercontent.com/u/16018201?v=4" width="100px;" alt="dannycarrera"/><br /><sub><b>dannycarrera</b></sub></a><br /><a href="https://github.com/trufflesuite/drizzle-suite/commits?author=dannycarrera" title="Code">💻</a></td>
   </tr>
 </table>
 
