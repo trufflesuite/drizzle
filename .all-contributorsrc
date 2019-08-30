@@ -330,6 +330,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "vicnala",
+      "name": "Víctor Navarro",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/936955?v=4",
+      "profile": "http://vicnala.xyz",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7
