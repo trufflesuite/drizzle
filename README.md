@@ -1,5 +1,5 @@
 <img src="https://truffleframework.com/img/drizzle-logo-dark.svg" width="200">
-[![All Contributors](https://img.shields.io/badge/all_contributors-18-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-19-orange.svg?style=flat-square)](#contributors-)
 
 ----
 
@@ -222,6 +222,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/dillonmcroberts"><img src="https://avatars2.githubusercontent.com/u/7416637?v=4" width="100px;" alt="Dillon McRoberts"/><br /><sub><b>Dillon McRoberts</b></sub></a><br /><a href="https://github.com/trufflesuite/drizzle-suite/commits?author=dillonmcroberts" title="Code">💻</a></td>
     <td align="center"><a href="https://epiqueras.github.io"><img src="https://avatars2.githubusercontent.com/u/19157096?v=4" width="100px;" alt="Enrique Piqueras"/><br /><sub><b>Enrique Piqueras</b></sub></a><br /><a href="https://github.com/trufflesuite/drizzle-suite/commits?author=epiqueras" title="Code">💻</a> <a href="https://github.com/trufflesuite/drizzle-suite/commits?author=epiqueras" title="Documentation">📖</a></td>
     <td align="center"><a href="https://guillaumeduveau.com"><img src="https://avatars2.githubusercontent.com/u/4377644?v=4" width="100px;" alt="Guillaume Duveau"/><br /><sub><b>Guillaume Duveau</b></sub></a><br /><a href="https://github.com/trufflesuite/drizzle-suite/commits?author=guix77" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/igorline"><img src="https://avatars2.githubusercontent.com/u/1465430?v=4" width="100px;" alt="Igor Line"/><br /><sub><b>Igor Line</b></sub></a><br /><a href="https://github.com/trufflesuite/drizzle-suite/commits?author=igorline" title="Code">💻</a></td>
   </tr>
 </table>
 
