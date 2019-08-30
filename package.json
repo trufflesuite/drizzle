@@ -17,7 +17,7 @@
 
     "ganache": "lerna run ganache --stream",
     "ganache:deploy": "lerna run ganache:deploy --stream",
-    "serve:ui": "lerna run serve:ui --stream --concurrency 3",
+    "serve:ui": "lerna run serve:ui --parallel --stream",
 
     "webpack-reports": "lerna run webpack-report --parallel --stream",
 
