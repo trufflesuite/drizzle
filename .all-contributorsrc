@@ -294,6 +294,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "saitima",
+      "name": "Sait İmamoğlu",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/2371121?v=4",
+      "profile": "https://github.com/saitima",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7
