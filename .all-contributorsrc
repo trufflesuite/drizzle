@@ -168,6 +168,15 @@
         "code",
         "doc"
       ]
+    },
+    {
+      "login": "guix77",
+      "name": "Guillaume Duveau",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/4377644?v=4",
+      "profile": "https://guillaumeduveau.com",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7
