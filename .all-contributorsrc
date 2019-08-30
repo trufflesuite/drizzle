@@ -267,6 +267,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "protolambda",
+      "name": "Diederik Loerakker",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/19571989?v=4",
+      "profile": "https://protolambda.com",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7

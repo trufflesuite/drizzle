@@ -1,5 +1,5 @@
 <img src="https://truffleframework.com/img/drizzle-logo-dark.svg" width="200">
-[![All Contributors](https://img.shields.io/badge/all_contributors-28-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-29-orange.svg?style=flat-square)](#contributors-)
 
 ----
 
@@ -234,6 +234,9 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/nharlow89"><img src="https://avatars3.githubusercontent.com/u/6100067?v=4" width="100px;" alt="nharlow89"/><br /><sub><b>nharlow89</b></sub></a><br /><a href="https://github.com/trufflesuite/drizzle-suite/commits?author=nharlow89" title="Code">💻</a></td>
     <td align="center"><a href="http://shutt.in"><img src="https://avatars0.githubusercontent.com/u/1646497?v=4" width="100px;" alt="John Shutt"/><br /><sub><b>John Shutt</b></sub></a><br /><a href="https://github.com/trufflesuite/drizzle-suite/commits?author=pemulis" title="Code">💻</a></td>
     <td align="center"><a href="https://decentralized.blog"><img src="https://avatars1.githubusercontent.com/u/1078320?v=4" width="100px;" alt="Mark Pors"/><br /><sub><b>Mark Pors</b></sub></a><br /><a href="https://github.com/trufflesuite/drizzle-suite/commits?author=pors" title="Code">💻</a></td>
+  </tr>
+  <tr>
+    <td align="center"><a href="https://protolambda.com"><img src="https://avatars2.githubusercontent.com/u/19571989?v=4" width="100px;" alt="Diederik Loerakker"/><br /><sub><b>Diederik Loerakker</b></sub></a><br /><a href="https://github.com/trufflesuite/drizzle-suite/commits?author=protolambda" title="Code">💻</a></td>
   </tr>
 </table>
 
