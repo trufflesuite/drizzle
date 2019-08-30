@@ -1,5 +1,5 @@
 <img src="https://truffleframework.com/img/drizzle-logo-dark.svg" width="200">
-[![All Contributors](https://img.shields.io/badge/all_contributors-3-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-4-orange.svg?style=flat-square)](#contributors-)
 
 ----
 
@@ -203,6 +203,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/DiscRiskandBisque"><img src="https://avatars2.githubusercontent.com/u/3990373?v=4" width="100px;" alt="Josh Quintal"/><br /><sub><b>Josh Quintal</b></sub></a><br /><a href="https://github.com/trufflesuite/drizzle-suite/commits?author=DiscRiskandBisque" title="Code">💻</a> <a href="https://github.com/trufflesuite/drizzle-suite/commits?author=DiscRiskandBisque" title="Documentation">📖</a></td>
     <td align="center"><a href="https://github.com/adrianmcli"><img src="https://avatars2.githubusercontent.com/u/943555?v=4" width="100px;" alt="Adrian Li"/><br /><sub><b>Adrian Li</b></sub></a><br /><a href="https://github.com/trufflesuite/drizzle-suite/commits?author=adrianmcli" title="Code">💻</a> <a href="https://github.com/trufflesuite/drizzle-suite/commits?author=adrianmcli" title="Documentation">📖</a></td>
     <td align="center"><a href="https://www.heyseli.com"><img src="https://avatars3.githubusercontent.com/u/36248745?v=4" width="100px;" alt="Heyse Li"/><br /><sub><b>Heyse Li</b></sub></a><br /><a href="https://github.com/trufflesuite/drizzle-suite/commits?author=honestbonsai" title="Code">💻</a> <a href="https://github.com/trufflesuite/drizzle-suite/commits?author=honestbonsai" title="Documentation">📖</a></td>
+    <td align="center"><a href="https://github.com/cds-amal"><img src="https://avatars1.githubusercontent.com/u/2529600?v=4" width="100px;" alt="Amal Sudama"/><br /><sub><b>Amal Sudama</b></sub></a><br /><a href="https://github.com/trufflesuite/drizzle-suite/commits?author=cds-amal" title="Code">💻</a> <a href="https://github.com/trufflesuite/drizzle-suite/commits?author=cds-amal" title="Documentation">📖</a></td>
   </tr>
 </table>
 
