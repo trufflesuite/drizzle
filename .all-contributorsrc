@@ -249,6 +249,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "pemulis",
+      "name": "John Shutt",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/1646497?v=4",
+      "profile": "http://shutt.in",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7
