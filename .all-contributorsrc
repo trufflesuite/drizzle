@@ -258,6 +258,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "pors",
+      "name": "Mark Pors",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/1078320?v=4",
+      "profile": "https://decentralized.blog",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7
