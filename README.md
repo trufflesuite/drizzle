@@ -1,5 +1,5 @@
 <img src="https://truffleframework.com/img/drizzle-logo-dark.svg" width="200">
-[![All Contributors](https://img.shields.io/badge/all_contributors-33-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-34-orange.svg?style=flat-square)](#contributors-)
 
 ----
 
@@ -241,6 +241,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/rawfalafel"><img src="https://avatars0.githubusercontent.com/u/202157?v=4" width="100px;" alt="Yutaro Mori"/><br /><sub><b>Yutaro Mori</b></sub></a><br /><a href="https://github.com/trufflesuite/drizzle-suite/commits?author=rawfalafel" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/saitima"><img src="https://avatars1.githubusercontent.com/u/2371121?v=4" width="100px;" alt="Sait İmamoğlu"/><br /><sub><b>Sait İmamoğlu</b></sub></a><br /><a href="https://github.com/trufflesuite/drizzle-suite/commits?author=saitima" title="Code">💻</a></td>
     <td align="center"><a href="https://www.samajammin.com/"><img src="https://avatars1.githubusercontent.com/u/8097623?v=4" width="100px;" alt="Sam Richards"/><br /><sub><b>Sam Richards</b></sub></a><br /><a href="https://github.com/trufflesuite/drizzle-suite/commits?author=sbrichards" title="Code">💻</a></td>
+    <td align="center"><a href="http://kyokan.io/"><img src="https://avatars0.githubusercontent.com/u/8230144?v=4" width="100px;" alt="Daniel Tsui"/><br /><sub><b>Daniel Tsui</b></sub></a><br /><a href="https://github.com/trufflesuite/drizzle-suite/commits?author=sdtsui" title="Code">💻</a></td>
   </tr>
 </table>
 
