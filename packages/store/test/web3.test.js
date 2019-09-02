@@ -27,20 +27,7 @@ describe('Resolving Web3', () => {
       expect(gen.next().value).toEqual(put({ type: Action.WEB3_INITIALIZED }))
 
       resolvedWeb3 = gen.next().value
-
-      hasWeb3Shape(resolvedWeb3)
-    })
-
-    test('get network ID', async () => {
-      gen = getNetworkId({ web3: resolvedWeb3 })
-
-      expect(gen.next().value).toEqual(call(resolvedWeb3.eth.net.getId))
-      expect(gen.next(global.defaultNetworkId).value).toEqual(
-        put({
-          type: Action.NETWORK_ID_FETCHED,
-          networkId: global.defaultNetworkId
-        })
-      )
+      expect(resolvedWeb3).toEqual(global.provider)
     })
   })
 
