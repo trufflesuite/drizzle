@@ -1,5 +1,5 @@
 {
-  "name": "test-app-custom-provider",
+  "name": "@test-ui/custom-provider",
   "version": "0.0.1",
   "private": true,
   "dependencies": {
@@ -9,6 +9,9 @@
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-scripts": "3.0.1"
+  },
+  "publishConfig": {
+    "access": "private"
   },
   "scripts": {
     "serve:ui": "PORT=3003 react-scripts start",
