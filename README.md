@@ -7,11 +7,11 @@
 Overview
 --------
 
-Drizzle Suite is a collection of libraries to simplify development of your dapps
+Drizzle is a collection of libraries to simplify development of your dapps
 in Plain JavaScript, React and Vue.
 
 * [@drizzle/store](./packages/store/README.md):- is the state manager of
-    drizzle suite. It handles the boilerplate for web3 connection as
+    Drizzle. It handles the boilerplate for web3 connection as
     synchronizing Smart Contract state and events.
 
 * [@drizzle/react-plugin](./packages/react-plugin/README.md):- defines the
