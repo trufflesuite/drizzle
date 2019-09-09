@@ -26,12 +26,12 @@ in Plain JavaScript, React and Vue.
     collection of html controls that will get your Vue dapp up and running
     quickly!
 
-Contributing to `drizzle-suite`
+Contributing to `drizzle`
 -------------------------------
 
-_Thanks for taking the time to help out and improve `drizzle-suite`! :tada:_
+_Thanks for taking the time to help out and improve `drizzle`! :tada:_
 
-The following is a set of guidelines for `drizzle-suite` contributions and may
+The following is a set of guidelines for `drizzle` contributions and may
 change over time. Feel free to suggest improvements to this document in a pull
 request!
 
@@ -46,7 +46,7 @@ Gitter channel](https://gitter.im/ConsenSys/truffle), in case others have run
 into the problem or know how to help.
 
 To report a problem or to suggest a new feature, [open a GitHub
-Issue](https://github.com/trufflesuite/drizzle-suite/issues/new). This will
+Issue](https://github.com/trufflesuite/drizzle/issues/new). This will
 alert us of the problem so we can prioritize a fix.
 
 For code contributions, for either new features or bug fixes, see
@@ -59,7 +59,7 @@ to give us a heads up.
 Development Requirements
 ------------------------
 
-In order to develop `drizzle-suite`, you'll need:
+In order to develop `drizzle`, you'll need:
 
 - [Git](https://git-scm.com/)
 - [Node.js](https://nodejs.org)
@@ -71,8 +71,8 @@ In order to develop `drizzle-suite`, you'll need:
 
 First clone this repository and install NPM dependencies:
 
-    $ git clone git@github.com:trufflesuite/drizzle-suite.git
-    $ cd drizzle-suite
+    $ git clone git@github.com:trufflesuite/drizzle.git
+    $ cd drizzle
     $ yarn
 
 If all is good, navigate (`cd`) to the package of interest and
@@ -80,7 +80,7 @@ follow the README document there.
 
 ### Forks, Branches, and Pull Requests
 
-Community contributions to `drizzle-suite` require that you first fork the
+Community contributions to `drizzle` require that you first fork the
 repository. After your modifications, push changes to your
 fork(s) and submit a pull request upstream to `trufflesuite`.
 
@@ -88,13 +88,13 @@ See GitHub documentation about [Collaborating with issues and pull
 requests](https://help.github.com/categories/collaborating-with-issues-and-pull-requests/)
 for more information.
 
-> :exclamation: **Note:** _`drizzle-suite` development uses a long-lived
+> :exclamation: **Note:** _`drizzle` development uses a long-lived
 > `develop` branch for new (non-hotfix) development. Pull Requests should be
 > opened against `develop` in all repositories._
 
 #### Branching Model
 
-`drizzle-suite` projects adhere to Gitflow, a Git workflow designed around a
+`drizzle` projects adhere to Gitflow, a Git workflow designed around a
 strict branching model to more easily track feature development vs. releases.
 [For more information on Gitflow, check out Atlassian's helpful
 guide](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow).
@@ -125,17 +125,17 @@ Use a branch for your modifications, tracking it on your fork:
 Then, make changes and commit as usual.
 
 
-#### Testing and debugging a ganache-suite
+#### Testing and debugging with Ganache
 
 Start and wait for Ganache to initialize.
 
     $ yarn ganache
 
-You'll know when the console shows:
+You'll know when the console shows the following:
 
     test-truffle-contracts: Listening on 127.0.0.1:9545
 
-Deploy the contracts to Ganache
+Open up another terminal and deploy the contracts to Ganache:
 
     $ yarn ganache:deploy
 
@@ -146,11 +146,11 @@ Deployment is done when the following is logged to the console:
     test-truffle-contracts: > Total deployments:   4
     test-truffle-contracts: > Final cost:          ... ETH
 
-Start the front end test apps
+Start the front end test apps:
 
     yarn serve:ui
 
-You'll have 3 apps to interact with.
+Now you'll have 3 apps to interact with.
 
   - [Generic React app](http://localhost:3000) on port 3000
   - [React app using the context API](http://localhost:3001) on port 3001
@@ -185,7 +185,7 @@ Join the chat in [our community Spectrum
 channel](https://spectrum.chat/trufflesuite). If anything about this process is
 unclear, or for helpful feedback of any kind, we'd love to hear from you!
 
-**Thanks again for all your support, encouragement, and effort! `drizzle-suite`
+**Thanks again for all your support, encouragement, and effort! `drizzle`
 would not be possible without contributors like you. :bow:**
 
 
