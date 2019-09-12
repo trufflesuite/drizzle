@@ -16,6 +16,9 @@ import deepEqual from 'deep-equal'
 const Context = createContext()
 export const useDrizzle = () => useContext(Context)
 
+// Use strict equality for leaf nodes.
+const deepEqualStrict = (a, b) => deepEqual(a, b, {strict: true})
+
 // Redux-like state selector.
 // `mapState` should be a function that takes the state of the drizzle store and returns only the part you need.
 // The component will only rerender if this part changes.
@@ -35,10 +38,10 @@ export const useDrizzleState = (mapState, args) => {
     mapStateRef.current(drizzle.store.getState())
   )
   const stateRef = useRef(state)
-  if (!deepEqual(argsRef.current, args)) {
+  if (!deepEqualStrict(argsRef.current, args)) {
     argsRef.current = args
     const newState = mapStateRef.current(drizzle.store.getState())
-    if (!deepEqual(stateRef.current, newState)) {
+    if (!deepEqualStrict(stateRef.current, newState)) {
       stateRef.current = newState
       setState(newState)
     }
@@ -48,7 +51,7 @@ export const useDrizzleState = (mapState, args) => {
       // Debounce udpates, because sometimes the store will fire too much when there are a lot of `cacheCall`s and the cache is empty.
       const debouncedHandler = debounce(() => {
         const newState = mapStateRef.current(drizzle.store.getState())
-        if (!deepEqual(stateRef.current, newState)) {
+        if (!deepEqualStrict(stateRef.current, newState)) {
           stateRef.current = newState
           setState(newState)
         }
