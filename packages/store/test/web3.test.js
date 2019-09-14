@@ -118,8 +118,8 @@ describe('Resolving Web3', () => {
       // saga result is undefined when exception is thrown
       expect(result).toBe(undefined)
 
-      // and the last action should be WEB3_ERROR
-      expect(dispatched.pop()).toEqual({ type: Action.WEB3_ERROR })
+      // and the last action should be WEB3_FAILED
+      expect(dispatched.pop()).toEqual({ type: Action.WEB3_FAILED })
     })
   })
 

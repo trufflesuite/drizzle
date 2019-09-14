@@ -34,7 +34,7 @@ export function * initializeWeb3 ({ options }) {
         return web3
       } catch (error) {
         console.error(error)
-        yield put({ type: Action.WEB3_ERROR })
+        yield put({ type: Action.WEB3_FAILED })
         return
       }
     } else if (typeof window.web3 !== 'undefined') {
