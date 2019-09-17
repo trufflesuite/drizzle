@@ -11,7 +11,7 @@
   "scripts": {
     "lint": "vue-cli-service lint",
     "prepare": "vue-cli-service build --target lib --name drizzle-vue-plugin ./src/DrizzleVuePlugin.js",
-    "test:unit": "vue-cli-service test:unit"
+    "test": "vue-cli-service test:unit"
   },
   "publishConfig": {
     "access": "public"

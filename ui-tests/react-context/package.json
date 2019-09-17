@@ -13,7 +13,7 @@
   "scripts": {
     "serve:ui": "PORT=3001 react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test:ui": "react-scripts test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {

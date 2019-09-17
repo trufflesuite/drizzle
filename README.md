@@ -178,6 +178,31 @@ Navigate to your front end project:
     $ yarn link @drizzle/vue-plugin  # use your local vue-plugin
 
 
+### Important NPM Scripts for Development
+
+Cleaning:
+
+- `clean`: Clean all non-root workspaces
+- `clean:all`: All workspaces including root and removes yarn.lock
+
+Running the Test UIs:
+
+- `ganache`: Launch a Ganache instance
+- `ganache:deploy`: Deploy some test contracts to an existing Ganache instance
+- `serve:ui`: Launch the test UIs that work with the two Ganache commands above
+
+Webpack bundle size report:
+
+- `webpack-reports`: Creates a report of the bundle size
+
+Tests:
+
+- `test`: Run all tests
+- `test:store`: Run only tests for `@drizzle/store`
+- `test:store:verbose`: Run only tests for `@drizzle/store` passing verbose flag
+- `test:vue`: Run only tests for `@drizzle/vue-plugin`
+
+
 Additional Notes
 ----------------
 
