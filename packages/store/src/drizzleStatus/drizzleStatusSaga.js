@@ -9,12 +9,10 @@ import { NETWORK_IDS, NETWORK_MISMATCH } from '../web3/constants'
 
 export function * initializeDrizzle (action) {
   try {
-    const options = action.options
-    const web3Options = options.web3
-    const drizzle = action.drizzle
+    const { drizzle, options } = action
 
     // Initialize web3 and get the current network ID.
-    var web3 = yield call(initializeWeb3, { options: web3Options })
+    const web3 = yield call(initializeWeb3, options.web3)
     drizzle.web3 = web3
 
     // Client may opt out of connecting their account to the dapp Guard against

@@ -7,14 +7,13 @@ var Web3 = require('web3')
  * Initialization
  */
 
-export function * initializeWeb3 ({ options }) {
+export function * initializeWeb3 (options) {
   try {
-    var web3 = {}
+    let web3 = {}
 
-    if (options && options.web3 && options.web3.customProvider) {
-      web3 = new Web3(options.web3.customProvider)
+    if (options.customProvider) {
       yield put({ type: Action.WEB3_INITIALIZED })
-      return web3
+      return options.customProvider
     }
 
     if (window.ethereum) {
