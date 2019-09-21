@@ -17,4 +17,20 @@ contract SimpleStorage {
 
         emit StorageSet("Boolean stored successfully!");
     }
+
+    /// @dev test view function that takes a parameter
+    function getValueWithOffset(uint offset)
+      public view
+      returns (uint)
+    {
+        return storedData + offset;
+    }
+
+    /// @dev test view function that takes a parameter
+    function getValueWithOffsetAndMultiplier(uint offset, uint multiplier)
+      public view
+      returns (uint)
+    {
+        return (storedData + offset) * multiplier;
+    }
 }
