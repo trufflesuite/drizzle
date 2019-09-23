@@ -1,2 +1,11 @@
 .DS_Store
+jest.config.js
+.travis.yml
+.eslintrc.js
+.babelrc
+
 node_modules
+src
+test
+webpack
+.github
