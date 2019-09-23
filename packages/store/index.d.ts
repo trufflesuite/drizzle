@@ -1,43 +1,45 @@
-declare module drizzle {
-  export class Drizzle {
-    constructor(options: any, store: any);
+import {
+  Drizzle,
+  IDrizzleOptions,
+  generateStore,
+  IStoreConfig,
+  generateContractsInitialState,
+} from './types';
 
-    addContract(contractConfig: any, ...args: any[]): void;
+export {
+  Drizzle,
+  IDrizzleOptions,
+  generateStore,
+  IStoreConfig,
+  generateContractsInitialState,
+};
 
-    deleteContract(contractName: any): void;
+export enum EventActions {
+  EVENT_FIRED = 'EVENT_FIRED',
+  EVENT_CHANGED = 'EVENT_CHANGED',
+  EVENT_ERROR = 'EVENT_ERROR',
+}
 
-    findContractByAddress(address: any): any;
-
-    generateStore(options: any): any;
+export namespace drizzleReducers {
+  export interface IAction {
+    [key: string]: any;
+    type: string;
   }
 
-  export const EventActions: {
-    EVENT_CHANGED: string;
-    EVENT_ERROR: string;
-    EVENT_FIRED: string;
-  };
+  export function accounts(state: any | undefined | null, action: IAction): any;
+  export function accountBalances(state: any | undefined | null, action: IAction): any;
+  export function contracts(state: any | undefined | null, action: IAction): any;
+  export function currentBlock(state: any | undefined | null, action: IAction): any;
+  export function drizzleStatus(state: any | undefined | null, action: IAction): any;
+  export function transactions(state: any | undefined | null, action: IAction): any;
+  export function transactionStack(state: any | undefined | null, action: IAction): any;
+  export function web3(state: any | undefined | null, action: IAction): any;
+}
 
-  export const drizzleSagas: any[];
-
-  export function generateContractsInitialState(options: any): any;
-
-  export function generateStore(_ref: any): any;
-
-  export namespace drizzleReducers {
-    function accountBalances(...args: any[]): any;
-
-    function accounts(...args: any[]): any;
-
-    function contracts(...args: any[]): any;
-
-    function currentBlock(...args: any[]): any;
-
-    function drizzleStatus(...args: any[]): any;
-
-    function transactionStack(...args: any[]): any;
-
-    function transactions(...args: any[]): any;
-
-    function web3(...args: any[]): any;
-  }
+export namespace drizzleSagas {
+  export function accountSaga(): any;
+  export function accountBalancesSaga(): any;
+  export function blocksSaga(): any;
+  export function contractsSaga(): any;
+  export function drizzleStatusSaga(): any;
 }
