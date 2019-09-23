@@ -1,15 +1,15 @@
-<div style="text-align: center"><img src="https://github.com/trufflesuite/drizzle/blob/master/readme/drizzle-logomark.png?raw=true" alt="Drizzle Logo" /></div>
+<img src="https://truffleframework.com/img/drizzle-logo-dark.svg" width="200">
 
-# drizzle
+# @drizzle/store
 
-`npm install --save drizzle`
+`npm install --save @drizzle/store`
 
 Drizzle is a collection of front-end libraries that make writing dapp frontends easier and more predictable. The core of Drizzle is based on a Redux store, so you have access to the spectacular development tools around Redux. We take care of synchronizing your contract data, transaction data and more. Things stay fast because you declare what to keep in sync.
 *   Fully reactive contract data, including state, events and transactions.
 *   Declarative, so you're not wasting valuable cycles on uneeded data.
 *   Maintains access to underlying functionality. Web3 and your contract's methods are still there, untouched.
 
-**Using React?**: The easiest way to get started with Drizzle is to use our [official `drizzle-react` package](https://github.com/trufflesuite/drizzle-react) and (optionally) its companion [`drizzle-react-components`](https://github.com/trufflesuite/drizzle-react-components).
+**Using React?**: The easiest way to get started with Drizzle is to use our [official `@drizzle/react-plugin` package](https://github.com/trufflesuite/drizzle/tree/master/packages/react-plugin) and (optionally) its companion [`@drizzle/react-components`](https://github.com/trufflesuite/drizzle/tree/master/packages/react-components).
 
 ## Getting Started
 
@@ -17,7 +17,7 @@ Drizzle is a collection of front-end libraries that make writing dapp frontends 
 
 1. Import the provider.
    ```javascript
-   import { Drizzle } from 'drizzle'
+   import { Drizzle } from '@drizzle/store'
    ```
 
 1. Create an `options` object and pass in the desired contract artifacts for Drizzle to instantiate. Other options are available, see [the Options section](#options) below.
@@ -44,10 +44,10 @@ Drizzle is a collection of front-end libraries that make writing dapp frontends 
    contract. For more information on how this works, see [How Data Stays
    Fresh](#how-data-stays-fresh).
 
-   **Note:** We have to check that Drizzle is initialized before fetching data. A simple if statement such as below is fine for displaying a few pieces of data, but a better approach for larger dapps is to use a [loading component](https://github.com/trufflesuite/drizzle-react#recipe-loading-component). We've already built one for you in our [`drizzle-react-components` library](https://github.com/trufflesuite/drizzle-react-components) as well.
+   **Note:** We have to check that Drizzle is initialized before fetching data. A simple if statement such as below is fine for displaying a few pieces of data, but a better approach for larger dapps is to use a [loading component](https://github.com/trufflesuite/drizzle-react#recipe-loading-component). We've already built one for you in our [`@drizzle/react-components` library](https://github.com/trufflesuite/drizzle/tree/master/packages/react-components) as well.
    ```javascript
    // Assuming we're observing the store for changes.
-   var state = drizzle.store.getState()
+   const state = drizzle.store.getState()
 
    // If Drizzle is initialized (and therefore web3, accounts and contracts), continue.
    if (state.drizzleStatus.initialized) {
@@ -69,10 +69,10 @@ Drizzle is a collection of front-end libraries that make writing dapp frontends 
 
 1. Send a contract transaction. Calling the `cacheSend()` function on a contract will send the desired transaction and return a corresponding transaction hash so the status can be retrieved from the store. The last argument can optionally be an options object with the typical from, gas and gasPrice keys. Drizzle will update the transaction's state in the store (pending, success, error) and store the transaction receipt. For more information on how this works, see [How Data Stays Fresh](#how-data-stays-fresh).
 
-   **Note:** We have to check that Drizzle is initialized before fetching data. A simple if statement such as below is fine for displaying a few pieces of data, but a better approach for larger dapps is to use a [loading component](https://github.com/trufflesuite/drizzle-react#recipe-loading-component). We've already built one for you in our [`drizzle-react-components` library](https://github.com/trufflesuite/drizzle-react-components) as well.
+   **Note:** We have to check that Drizzle is initialized before fetching data. A simple if statement such as below is fine for displaying a few pieces of data, but a better approach for larger dapps is to use a [loading component](https://github.com/trufflesuite/drizzle/tree/master/packages/react-plugin#recipe-loading-component). We've already built one for you in our [`@drizzle/react-components` library](https://github.com/trufflesuite/drizzle/tree/master/packages/react-components) as well.
    ```javascript
    // Assuming we're observing the store for changes.
-   var state = drizzle.store.getState()
+   const state = drizzle.store.getState()
 
    // If Drizzle is initialized (and therefore web3, accounts and contracts), continue.
    if (state.drizzleStatus.initialized) {
@@ -103,7 +103,7 @@ Drizzle is a collection of front-end libraries that make writing dapp frontends 
 You can programmatically add contracts to Drizzle using either `drizzle.addContract()` or the `ADD_CONTRACT` action.
 
 ```javascript
-var contractConfig = {
+const contractConfig = {
   contractName: "0x066408929e8d5Ed161e9cAA1876b60e1fBB5DB75",
   web3Contract: new web3.eth.Contract(/* ... */)
 }
@@ -178,7 +178,7 @@ contracts: [
 ```
 
 ### `events` (object)
-An object consisting of contract names each containing an array of strings of the event names we'd like to listen for and sync with the store. Furthermore, event names may be replaced with an object containing both `eventName` and `eventOptions`, where `eventOptions` field corresponds to the [web3 Contract.events options](https://web3js.readthedocs.io/en/1.0/web3-eth-contract.html#contract-events).
+An object consisting of contract names each containing an array of strings of the event names we'd like to listen for and sync with the store. Furthermore, event names may be replaced with an object containing both `eventName` and `eventOptions`, where `eventOptions` field corresponds to the [web3 Contract.events options](https://web3js.readthedocs.io/en/v1.2.0/web3-eth-contract.html#contract-events).
 
 ### `polls` (object)
 An object containing key/value pairs denoting what is being polled and the interval (in ms). Possible polls are accounts and blocks. Accounts will poll for addresses and balances, blocks for new blocks. **Default**: `{ blocks: 3000 }`
@@ -294,7 +294,7 @@ The contract's state also includes the state of each constant function called on
 `value` (mixed): Value returned from function call.
 
 ### `currentBlock` (object)
-An object the latest block as an object resulting from [`web3.getBlock()`](https://web3js.readthedocs.io/en/1.0/web3-eth.html#getblock). This is updated once the block is received from a subscription or fetched via polling, but before any processing takes place.
+An object the latest block as an object resulting from [`web3.getBlock()`](https://web3js.readthedocs.io/en/v1.2.0/web3-eth.html#getblock). This is updated once the block is received from a subscription or fetched via polling, but before any processing takes place.
 
 ## `drizzleStatus` (object)
 An object containing information about the status of Drizzle.
@@ -334,20 +334,20 @@ In cases where a user cancels a transaction or the transaction is malformed and 
 
 1. Once initialized, Drizzle instantiates `web3` and our desired contracts, then observes the chain by subscribing to new block headers.
 
-   ![Drizzle Sync Step 1](https://github.com/trufflesuite/drizzle/blob/master/readme/drizzle-sync1.png?raw=true)
+   ![Drizzle Sync Step 1](https://github.com/trufflesuite/drizzle/blob/master/packages/store/readme/drizzle-sync1.png?raw=true)
 
 1. Drizzle keeps track of contract calls so it knows what to synchronize.
 
-   ![Drizzle Sync Step 2](https://github.com/trufflesuite/drizzle/blob/master/readme/drizzle-sync2.png?raw=true)
+   ![Drizzle Sync Step 2](https://github.com/trufflesuite/drizzle/blob/master/packages/store/readme/drizzle-sync2.png?raw=true)
 
 1. When a new block header comes in, Drizzle checks that the block isn't pending, then goes through the transactions looking to see if any of them touched our contracts.
 
-   ![Drizzle Sync Step 3](https://github.com/trufflesuite/drizzle/blob/master/readme/drizzle-sync3.png?raw=true)
+   ![Drizzle Sync Step 3](https://github.com/trufflesuite/drizzle/blob/master/packages/store/readme/drizzle-sync3.png?raw=true)
 
 1. If they did, we replay the calls already in the store to refresh any potentially altered data. If they didn't we continue with the store data.
 
-   ![Drizzle Sync Step 4](https://github.com/trufflesuite/drizzle/blob/master/readme/drizzle-sync4.png?raw=true)
+   ![Drizzle Sync Step 4](https://github.com/trufflesuite/drizzle/blob/master/packages/store/readme/drizzle-sync4.png?raw=true)
 
 ## License
 
-[MIT](https://github.com/trufflesuite/drizzle/blob/master/LICENSE.txt)
+[MIT](https://github.com/trufflesuite/drizzle/blob/master/packages/store/LICENSE.txt)
