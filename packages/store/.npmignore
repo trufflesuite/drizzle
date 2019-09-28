@@ -5,7 +5,6 @@ jest.config.js
 .babelrc
 
 node_modules
-src
 test
 webpack
 .github
