@@ -1,8 +1,9 @@
 import { Store } from 'redux';
+import { IDrizzleOptions } from './Drizzle';
 
 export interface IStoreConfig {
   [key: string]: any;
-  drizzleOptions: any;
+  drizzleOptions: IDrizzleOptions;
   reducers?: any;
   appSagas?: any[];
   appMiddlewares?: any[];

@@ -8,7 +8,10 @@ export interface IDrizzleOptions {
   events?: {
     [contractName: string]: any;
   };
-  polls?: any;
+  polls?: {
+    accounts?: number;
+    blocks?: number;
+  };
   syncAlways?: any;
   web3?: {
     customProvider?: any;
@@ -17,7 +20,7 @@ export interface IDrizzleOptions {
       url: string;
     }
   },
-  networkWhitelist?: any[];
+  networkWhitelist?: number[];
 }
 
 export class Drizzle {

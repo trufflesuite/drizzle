@@ -6,12 +6,15 @@ import {
   generateContractsInitialState,
 } from './types';
 
+type drizzleSagas = any[];
+
 export {
   Drizzle,
   IDrizzleOptions,
   generateStore,
   IStoreConfig,
   generateContractsInitialState,
+  drizzleSagas,
 };
 
 export enum EventActions {
@@ -21,25 +24,19 @@ export enum EventActions {
 }
 
 export namespace drizzleReducers {
+  type state = any | undefined | null;
+
   export interface IAction {
     [key: string]: any;
     type: string;
   }
 
-  export function accounts(state: any | undefined | null, action: IAction): any;
-  export function accountBalances(state: any | undefined | null, action: IAction): any;
-  export function contracts(state: any | undefined | null, action: IAction): any;
-  export function currentBlock(state: any | undefined | null, action: IAction): any;
-  export function drizzleStatus(state: any | undefined | null, action: IAction): any;
-  export function transactions(state: any | undefined | null, action: IAction): any;
-  export function transactionStack(state: any | undefined | null, action: IAction): any;
-  export function web3(state: any | undefined | null, action: IAction): any;
-}
-
-export namespace drizzleSagas {
-  export function accountSaga(): any;
-  export function accountBalancesSaga(): any;
-  export function blocksSaga(): any;
-  export function contractsSaga(): any;
-  export function drizzleStatusSaga(): any;
+  export function accounts(state: state, action: IAction): any;
+  export function accountBalances(state: state, action: IAction): any;
+  export function contracts(state: state, action: IAction): any;
+  export function currentBlock(state: state, action: IAction): any;
+  export function drizzleStatus(state: state, action: IAction): any;
+  export function transactions(state: state, action: IAction): any;
+  export function transactionStack(state: state, action: IAction): any;
+  export function web3(state: state, action: IAction): any;
 }
