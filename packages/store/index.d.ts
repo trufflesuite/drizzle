@@ -1,43 +1,42 @@
-declare module drizzle {
-  export class Drizzle {
-    constructor(options: any, store: any);
+import {
+  Drizzle,
+  IDrizzleOptions,
+  generateStore,
+  IStoreConfig,
+  generateContractsInitialState,
+} from './types';
 
-    addContract(contractConfig: any, ...args: any[]): void;
+type drizzleSagas = any[];
 
-    deleteContract(contractName: any): void;
+export {
+  Drizzle,
+  IDrizzleOptions,
+  generateStore,
+  IStoreConfig,
+  generateContractsInitialState,
+  drizzleSagas,
+};
 
-    findContractByAddress(address: any): any;
+export enum EventActions {
+  EVENT_FIRED = 'EVENT_FIRED',
+  EVENT_CHANGED = 'EVENT_CHANGED',
+  EVENT_ERROR = 'EVENT_ERROR',
+}
 
-    generateStore(options: any): any;
+export namespace drizzleReducers {
+  type state = any | undefined | null;
+
+  export interface IAction {
+    [key: string]: any;
+    type: string;
   }
 
-  export const EventActions: {
-    EVENT_CHANGED: string;
-    EVENT_ERROR: string;
-    EVENT_FIRED: string;
-  };
-
-  export const drizzleSagas: any[];
-
-  export function generateContractsInitialState(options: any): any;
-
-  export function generateStore(_ref: any): any;
-
-  export namespace drizzleReducers {
-    function accountBalances(...args: any[]): any;
-
-    function accounts(...args: any[]): any;
-
-    function contracts(...args: any[]): any;
-
-    function currentBlock(...args: any[]): any;
-
-    function drizzleStatus(...args: any[]): any;
-
-    function transactionStack(...args: any[]): any;
-
-    function transactions(...args: any[]): any;
-
-    function web3(...args: any[]): any;
-  }
+  export function accounts(state: state, action: IAction): any;
+  export function accountBalances(state: state, action: IAction): any;
+  export function contracts(state: state, action: IAction): any;
+  export function currentBlock(state: state, action: IAction): any;
+  export function drizzleStatus(state: state, action: IAction): any;
+  export function transactions(state: state, action: IAction): any;
+  export function transactionStack(state: state, action: IAction): any;
+  export function web3(state: state, action: IAction): any;
 }
