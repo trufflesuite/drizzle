@@ -18,7 +18,7 @@ module.exports = {
     },
     rinkeby: {
       provider: () => new HDWalletProvider(mnemonic, rinkebyEndpoint),
-    network_id: '4'
+      network_id: '4'
     },
   }
 };
