@@ -1,8 +1,8 @@
 const HDWalletProvider = require('@truffle/hdwallet-provider')
 
 const mnemonic = process.env['MNEMONIC']
-const rinkeby_endpoint = process.env['RINKEBY_ENDPOINT']
-const ropsten_endpoint = process.env['ROPSTEN_ENDPOINT']
+const rinkebyEndpoint = process.env['RINKEBY_ENDPOINT']
+const ropstenEndpoint = process.env['ROPSTEN_ENDPOINT']
 
 module.exports = {
   // See <http://truffleframework.com/docs/advanced/configuration>
@@ -13,11 +13,11 @@ module.exports = {
       network_id: '*'
     },
     ropsten: {
-      provider: () => new HDWalletProvider(mnemonic, ropsten_endpoint),
+      provider: () => new HDWalletProvider(mnemonic, ropstenEndpoint),
       network_id: '3'
     },
     rinkeby: {
-      provider: () => new HDWalletProvider(mnemonic, rinkeby_endpoint),
+      provider: () => new HDWalletProvider(mnemonic, rinkebyEndpoint),
     network_id: '4'
     },
   }
