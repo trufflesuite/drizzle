@@ -373,6 +373,19 @@ In cases where a user cancels a transaction or the transaction is malformed and 
 
    ![Drizzle Sync Step 4](https://github.com/trufflesuite/drizzle/blob/master/packages/store/readme/drizzle-sync4.png?raw=true)
 
+## Running tests
+
+Install dependencies in root folder:
+
+```
+yarn
+```
+
+Run tests in `packages/store`:
+
+```
+cd packages/store
+jest --  
 ## License
 
 [MIT](https://github.com/trufflesuite/drizzle/blob/master/packages/store/LICENSE.txt)

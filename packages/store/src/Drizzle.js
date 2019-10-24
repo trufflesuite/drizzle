@@ -65,6 +65,10 @@ class Drizzle {
     })
   }
 
+  connectWallet () {
+    this.store.dispatch({ type: 'CONNECT_WALLET', contractConfig })
+  }
+
   addContract (contractConfig, events = []) {
     const web3Contract = getOrCreateWeb3Contract(
       this.store,

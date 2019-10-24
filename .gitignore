@@ -1,5 +1,7 @@
 .DS_Store
 .vscode
+*.swp
+tags/*
 
 # Node
 node_modules

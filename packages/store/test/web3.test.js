@@ -1,4 +1,4 @@
-import { initializeWeb3, getNetworkId } from '../src/web3/web3Saga'
+import { initializeWeb3, getNetworkId, connectWallet } from '../src/web3/web3Saga'
 import { call, put } from 'redux-saga/effects'
 import { runSaga } from 'redux-saga'
 import * as Action from '../src/web3/constants'
@@ -24,7 +24,7 @@ describe('Resolving Web3', () => {
       gen = initializeWeb3(web3Options)
 
       // First action dispatched
-      expect(gen.next().value).toEqual(put({ type: Action.WEB3_INITIALIZED }))
+      expect(gen.next().value).toEqual(put({ type: Action.WALLET_READ_READY }))
 
       resolvedWeb3 = gen.next().value
       expect(resolvedWeb3).toEqual(global.provider)
@@ -37,7 +37,7 @@ describe('Resolving Web3', () => {
       const ethereum = { enable: mockedEthereumEnable }
       global.window = { ethereum }
 
-      gen = initializeWeb3({})
+      gen = connectWallet({})
       let next = gen.next()
       // get permission according to EIP 1102
       //
@@ -48,10 +48,7 @@ describe('Resolving Web3', () => {
 
       // return an account to simulate opt-in
       next = gen.next('0x123')
-      expect(next.value).toEqual(put({ type: Action.WEB3_INITIALIZED }))
-
-      resolvedWeb3 = gen.next().value
-      hasWeb3Shape(resolvedWeb3)
+      expect(next.value).toEqual(put({ type: Action.WALLET_WRITE_READY }))
     })
 
     test('loads when user opts in', async () => {
@@ -79,7 +76,7 @@ describe('Resolving Web3', () => {
           dispatch: action => dispatched.push(action),
           getState: () => ({ state: 'test' })
         },
-        initializeWeb3,
+        connectWallet,
         {}
       ).done
 
@@ -100,13 +97,13 @@ describe('Resolving Web3', () => {
       const result = await runSaga({
         dispatch: (action) => dispatched.push(action),
         getState: () => ({ state: 'test' })
-      }, initializeWeb3, {}).done
+      }, connectWallet, {}).done
 
       // saga result is undefined when exception is thrown
       expect(result).toBe(undefined)
 
-      // and the last action should be WEB3_FAILED
-      expect(dispatched.pop()).toEqual({ type: Action.WEB3_FAILED })
+      // and the last action should be CONNECT_WALLET_FAILED
+      expect(dispatched.pop()).toEqual({ type: Action.CONNECT_WALLET_FAILED })
     })
   })
 
@@ -119,7 +116,7 @@ describe('Resolving Web3', () => {
 
     test('get web3', async () => {
       // First action dispatched
-      expect(gen.next().value).toEqual(put({ type: Action.WEB3_INITIALIZED }))
+      expect(gen.next().value).toEqual(put({ type: Action.WALLET_READ_READY }))
     })
   })
 
@@ -141,7 +138,7 @@ describe('Resolving Web3', () => {
       gen = initializeWeb3(web3Options)
 
       // First action dispatched
-      expect(gen.next().value).toEqual(put({ type: Action.WEB3_INITIALIZED }))
+      expect(gen.next().value).toEqual(put({ type: Action.WALLET_READ_READY }))
       resolvedWeb3 = gen.next().value
 
       // is it a Web3 object?

@@ -12,10 +12,17 @@ const web3Reducer = (state = initialState, action) => {
     }
   }
 
-  if (action.type === Action.WEB3_INITIALIZED) {
+  if (action.type === Action.WALLET_READ_READY) {
     return {
       ...state,
-      status: 'initialized'
+      status: 'drizzleReadReady'
+    }
+  }
+
+  if (action.type === Action.WALLET_WRITE_READY) {
+    return {
+      ...state,
+      status: 'drizzleWriteReady'
     }
   }
 
@@ -26,7 +33,7 @@ const web3Reducer = (state = initialState, action) => {
     }
   }
 
-  if (action.type === Action.WEB3_USER_DENIED) {
+  if (action.type === Action.CONNECT_WALLET_FAILED) {
     return {
       ...state,
       status: 'UserDeniedAccess'

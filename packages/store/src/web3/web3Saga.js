@@ -12,35 +12,18 @@ export function * initializeWeb3 (options) {
     let web3 = {}
 
     if (options.customProvider) {
-      yield put({ type: Action.WEB3_INITIALIZED })
+      yield put({ type: Action.WALLET_READ_READY })
       return options.customProvider
     }
 
     if (window.ethereum) {
-      const { ethereum } = window
-      web3 = new Web3(ethereum)
-      try {
-        // ethereum.enable() will return the selected account
-        // unless user opts out and then it will return undefined
-        const selectedAccount = yield call([ethereum, 'enable'])
-
-        yield put({ type: Action.WEB3_INITIALIZED })
-
-        if (!selectedAccount) {
-          yield put({ type: Action.WEB3_USER_DENIED })
-          return
-        }
-        return web3
-      } catch (error) {
-        console.error(error)
-        yield put({ type: Action.WEB3_FAILED })
-        return
-      }
-    } else if (typeof window.web3 !== 'undefined') {
+      yield put({ type: Action.WALLET_READ_READY })
+      return new Web3(window.ethereum)
+    } else if(typeof window.web3 !== 'undefined') {
       // Checking if Web3 has been injected by the browser (Mist/MetaMask)
       // Use Mist/MetaMask's provider.
       web3 = new Web3(window.web3.currentProvider)
-      yield put({ type: Action.WEB3_INITIALIZED })
+      yield put({ type: Action.WALLET_READ_READY })
 
       return web3
     } else if (options.fallback) {
@@ -51,7 +34,7 @@ export function * initializeWeb3 (options) {
             options.fallback.url
           )
           web3 = new Web3(provider)
-          yield put({ type: Action.WEB3_INITIALIZED })
+          yield put({ type: Action.WALLET_READ_READY })
           return web3
 
         default:
@@ -66,6 +49,29 @@ export function * initializeWeb3 (options) {
     yield put({ type: Action.WEB3_FAILED, error })
     console.error('Error intializing web3:')
     console.error(error)
+  }
+}
+
+export function * connectWallet() {
+  if (window.ethereum) {
+    const { ethereum } = window
+    try {
+      // ethereum.enable() will return the selected account
+      // unless user opts out and then it will return undefined
+      const selectedAccount = yield call([ethereum, 'enable'])
+
+      yield put({ type: Action.WALLET_WRITE_READY })
+
+      if (!selectedAccount) {
+        yield put({ type: Action.WEB3_USER_DENIED })
+        return
+      }
+      return web3
+    } catch (error) {
+      console.error(error)
+      yield put({ type: Action.CONNECT_WALLET_FAILED })
+      return
+    }
   }
 }
 

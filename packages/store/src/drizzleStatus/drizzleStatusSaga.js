@@ -1,7 +1,7 @@
 import { call, put, select, takeLatest } from 'redux-saga/effects'
 
 // Initialization Functions
-import { initializeWeb3, getNetworkId } from '../web3/web3Saga'
+import { initializeWeb3, getNetworkId, connectWallet as connectWalletSaga } from '../web3/web3Saga'
 import { getAccounts } from '../accounts/accountsSaga'
 import { getAccountBalances } from '../accountBalances/accountBalancesSaga'
 
@@ -28,10 +28,6 @@ export function * initializeDrizzle (action) {
           !networkWhitelist.includes(networkId)) {
         yield put({ type: NETWORK_MISMATCH, networkId })
       } else {
-        // Get initial accounts list and balances.
-        yield call(getAccounts, { web3 })
-        yield call(getAccountBalances, { web3 })
-
         // Instantiate contracts passed through via options.
         for (var i = 0; i < options.contracts.length; i++) {
           var contractConfig = options.contracts[i]
@@ -80,8 +76,19 @@ export function * initializeDrizzle (action) {
   yield put({ type: 'DRIZZLE_INITIALIZED' })
 }
 
+export function * connectWallet (action) {
+    const web3 = yield call(connectWalletSaga, options.web3)
+    if (web3) {
+      // Get initial accounts list and balances.
+      yield call(getAccounts, { web3 })
+      yield call(getAccountBalances, { web3 })
+    }
+}
+
 function * drizzleStatusSaga () {
   yield takeLatest('DRIZZLE_INITIALIZING', initializeDrizzle)
+  yield takeLatest('CONNECT_WALLET', connectWallet)
 }
+
 
 export default drizzleStatusSaga
