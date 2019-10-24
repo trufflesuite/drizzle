@@ -3,6 +3,9 @@
 *.swp
 tags/*
 
+# Secrets
+secrets.env
+
 # Node
 node_modules
 
