@@ -7,7 +7,7 @@
     "email": "amal@trufflesuite.com",
     "url": "https://github.com/trufflesuite/drizzle-vue-plugin#readme"
   },
-  "repository": "https://github.com/trufflesuite/drizzle-suite/tree/master/packages/vue-plugin",
+  "repository": "https://github.com/trufflesuite/drizzle",
   "scripts": {
     "lint": "vue-cli-service lint",
     "prepare": "vue-cli-service build --target lib --name drizzle-vue-plugin ./src/DrizzleVuePlugin.js",
