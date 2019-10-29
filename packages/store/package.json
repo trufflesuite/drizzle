@@ -5,7 +5,7 @@
   "types": "./index.d.ts",
   "main": "./dist/drizzle-store.js",
   "react-native": "./src/index.js",
-  "repository": "https://github.com/trufflesuite/drizzle-suite/tree/master/packages/store",
+  "repository": "https://github.com/trufflesuite/drizzle",
   "scripts": {
     "prepare": "webpack --config webpack/release.config.js",
     "build:pure": "webpack --config webpack/pure.config.js",
