@@ -1,6 +1,6 @@
 {
   "name": "@drizzle/react-plugin",
-  "version": "1.5.0",
+  "version": "1.5.1",
   "description": "Put some Drizzle on your React components.",
   "main": "dist/drizzle-react-plugin.js",
   "repository": "https://github.com/trufflesuite/drizzle",
