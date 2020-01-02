@@ -112,6 +112,8 @@ this.$drizzleEvents.$on('drizzle/contractEvent', payload => {
 })
 ```
 
+This listener will fire on any events you've defined in `drizzleOptions.js`.
+
 ## Component Props
 
 ```js
