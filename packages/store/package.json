@@ -1,11 +1,11 @@
 {
   "name": "@drizzle/store",
-  "version": "1.5.0",
+  "version": "1.5.1",
   "description": "A reactive data-store for web3 and smart contracts.",
   "types": "./index.d.ts",
   "main": "./dist/drizzle-store.js",
   "react-native": "./src/index.js",
-  "repository": "https://github.com/trufflesuite/drizzle-suite/tree/master/packages/store",
+  "repository": "https://github.com/trufflesuite/drizzle",
   "scripts": {
     "prepare": "webpack --config webpack/release.config.js",
     "build:pure": "webpack --config webpack/pure.config.js",
@@ -32,6 +32,7 @@
   },
   "dependencies": {
     "deepmerge": "^3.2.0",
+    "is-plain-object": "^2.0.4",
     "redux": "^4.0.1",
     "redux-saga": "^1.1.1",
     "web3": "^1.2.1"
@@ -47,7 +48,6 @@
     "eslint-plugin-standard": "^4.0.0",
     "eth-block-tracker-es5": "^2.3.2",
     "ganache-core": "^2.5.5",
-    "is-plain-object": "^2.0.4",
     "jest": "^24.7.1",
     "prettier-standard": "^9.1.1",
     "redux-mock-store": "^1.5.3",
