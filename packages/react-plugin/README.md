@@ -1,9 +1,9 @@
-# drizzle-react
+# @drizzle/react-plugin
 
 Requires React 0.14+
-`npm install --save drizzle-react`
+`npm install --save @drizzle/react-plugin`
 
-`drizzle-react` is the official way to integrate Drizzle with your React dapp.
+`@drizzle/react-plugin` is the official way to integrate Drizzle with your React dapp.
 
 Tired of constantly coding contract calls after your state changes? Wish you had a one-liner for knowing when your dapp is ready to use? Ethereum developers have to account for extra considerations that traditional apps don't have to worry about. Drizzle abstracts away the boilerplate of creating a dapp front-end, allowing you to focus on what makes it unique. Drizzle handles instantiating web3 and contracts, fetching accounts, and keeping all of this data in sync with the blockchain.
 
@@ -20,9 +20,9 @@ If you are using React v16.3 and up, you have access to the new [React Context](
 1. Setup Drizzle and then pass the `drizzle` instance into the context provider:
 
     ```js
-    // 1. Import drizzle, drizzle-react, and your contract artifacts.
+    // 1. Import drizzle, @drizzle/react-plugin, and your contract artifacts.
     import { Drizzle, generateStore } from "drizzle";
-    import { DrizzleContext } from "drizzle-react";
+    import { DrizzleContext } from "@drizzle/react-plugin";
     import SimpleStorage from "./contracts/SimpleStorage.json";
 
     // 2. Setup the drizzle instance.
@@ -55,13 +55,13 @@ If you are using React v16.3 and up, you have access to the new [React Context](
 
     ```js
     import React from "react";
-    import { DrizzleContext } from "drizzle-react";
+    import { DrizzleContext } from "@drizzle/react-plugin";
 
     export default () => (
       <DrizzleContext.Consumer>
         {drizzleContext => {
           const { drizzle, drizzleState, initialized } = drizzleContext;
-      
+
           if (!initialized) {
             return "Loading...";
           }
@@ -118,7 +118,7 @@ We retain the old API for backwards compatibility, but please note that React it
 
 1. Import the provider.
    ```javascript
-   import { DrizzleProvider } from 'drizzle-react'
+   import { DrizzleProvider } from '@drizzle/react-plugin'
    ```
 
 1. Create an `options` object and pass in the desired contract artifacts for Drizzle to instantiate. Other options are available, see [the Options section of the Drizzle docs](https://github.com/trufflesuite/drizzle#options) below.
@@ -144,7 +144,7 @@ We retain the old API for backwards compatibility, but please note that React it
 
 1. Wrap your components using the `drizzleConnect` function. It has the same API as the `connect()` function in `react-redux`. [See their docs here](https://github.com/reactjs/react-redux/blob/master/docs/api.md#connectmapstatetoprops-mapdispatchtoprops-mergeprops-options).
    ```javascript
-   import { drizzleConnect } from 'drizzle-react'
+   import { drizzleConnect } from '@drizzle/react-plugin'
 
    const mapStateToProps = state => {
      return {
@@ -191,7 +191,7 @@ The following wrapper and component will detect when your dapp isn't ready and a
 
 ```javascript
 import Loading from './Loading.js'
-import { drizzleConnect } from 'drizzle-react'
+import { drizzleConnect } from '@drizzle/react-plugin'
 
 // May still need this even with data function to refresh component on updates for this contract.
 const mapStateToProps = state => {
@@ -259,7 +259,7 @@ Just like with the other approaches, you'll need to wrap your app in a context p
 
 ```js
 import React from 'react'
-import { drizzleReactHooks } from 'drizzle-react'
+import { drizzleReactHooks } from '@drizzle/react-plugin'
 import setUpDrizzle from './set-up-drizzle'
 import App from './app'
 
@@ -277,7 +277,7 @@ The first of the two main hooks exported is a `mapStateToProps` like function fo
 
 ```js
 import React from 'react'
-import { drizzleReactHooks } from 'drizzle-react'
+import { drizzleReactHooks } from '@drizzle/react-plugin'
 import Accounts from './components/accounts'
 
 export default () => {
@@ -296,7 +296,7 @@ The second of the two main hooks exported is a function that returns your `drizz
 
 ```js
 import React from 'react'
-import { drizzleReactHooks } from 'drizzle-react'
+import { drizzleReactHooks } from '@drizzle/react-plugin'
 
 export default () => {
   const {
@@ -325,7 +325,7 @@ This is the hooks version of `drizzle`'s `cacheCall`. It has two modes, a single
 
 ```js
 import React from 'react'
-import { drizzleReactHooks } from 'drizzle-react'
+import { drizzleReactHooks } from '@drizzle/react-plugin'
 import Balance from './components/balance'
 
 export default () => {
@@ -352,7 +352,7 @@ export default () => {
 
 ```js
 import React from 'react'
-import { drizzleReactHooks } from 'drizzle-react'
+import { drizzleReactHooks } from '@drizzle/react-plugin'
 import Balance from './components/balance'
 
 export default () => {
@@ -389,7 +389,7 @@ This is a hook for arbitrary event queries in a `cacheCall` like manner for when
 
 ```js
 import React, { useMemo } from 'react'
-import { drizzleReactHooks } from 'drizzle-react'
+import { drizzleReactHooks } from '@drizzle/react-plugin'
 import Transfers from './components/transfers'
 
 export default () => {
@@ -430,7 +430,7 @@ This is a hook for sending and listening to transactions.
 
 ```js
 import React, { useCallback } from 'react'
-import { drizzleReactHooks } from 'drizzle-react'
+import { drizzleReactHooks } from '@drizzle/react-plugin'
 import TransferForm from './components/transfer-form'
 import TransactionStatuses from './components/transaction-statuses'
 
@@ -459,7 +459,7 @@ We also export a general initializer component for wrapping your hooks enabled a
 
 ```js
 import React from 'react'
-import { drizzleReactHooks } from 'drizzle-react'
+import { drizzleReactHooks } from '@drizzle/react-plugin'
 import setUpDrizzle from './set-up-drizzle'
 import Error from './components/error'
 import LoadingContractsAndAccounts from './components/loading-contracts-and-accounts'
