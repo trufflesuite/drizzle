@@ -23,6 +23,7 @@ export const drizzleMiddleware = drizzleInstance => store => next => action => {
 
   if (type === 'ADD_CONTRACT' && drizzleInstance) {
     try {
+      debugger
       const { contractConfig, events } = action
       drizzleInstance.addContract(contractConfig, events)
     } catch (error) {

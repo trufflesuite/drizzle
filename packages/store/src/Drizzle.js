@@ -44,6 +44,7 @@ export const getOrCreateWeb3Contract = (store, contractConfig, web3) => {
 class Drizzle {
   constructor (givenOptions, store) {
     const options = merge(defaultOptions, givenOptions)
+    // console.log("Using Local Drizzle")
 
     // Variables
     this.contracts = {}
@@ -53,6 +54,8 @@ class Drizzle {
     this.web3 = {}
 
     this.loadingContract = {}
+
+    console.log("local linked")
 
     // Wait for window load event in case of injected web3.
     isEnvReadyPromise.then(() => {
@@ -140,4 +143,9 @@ class Drizzle {
   }
 }
 
+
+
+
+// console.log("Using Local Drizzle")
+console.log("local linked")
 export default Drizzle
