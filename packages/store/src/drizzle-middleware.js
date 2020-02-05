@@ -2,6 +2,8 @@ export const drizzleMiddleware = drizzleInstance => store => next => action => {
   const { type } = action
 
   if (type === 'DRIZZLE_INITIALIZING') {
+    console.log("initializing middleware")
+    // debugger
     drizzleInstance = action.drizzle
   }
 
@@ -23,7 +25,6 @@ export const drizzleMiddleware = drizzleInstance => store => next => action => {
 
   if (type === 'ADD_CONTRACT' && drizzleInstance) {
     try {
-      debugger
       const { contractConfig, events } = action
       drizzleInstance.addContract(contractConfig, events)
     } catch (error) {
