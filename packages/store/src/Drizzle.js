@@ -2,6 +2,7 @@ import { generateStore } from './generateStore'
 import defaultOptions from './defaultOptions'
 import merge from './mergeOptions'
 import DrizzleContract from './DrizzleContract'
+import * as ContractActions from './constants'
 
 // Load as promise so that async Drizzle initialization can still resolve
 var isEnvReadyPromise = new Promise((resolve, reject) => {
@@ -85,13 +86,13 @@ class Drizzle {
       )
     }
 
-    this.store.dispatch({ type: 'CONTRACT_INITIALIZING', contractConfig })
+    this.store.dispatch({ type: ContractActions.CONTRACT_INITIALIZING, contractConfig })
 
     this.contracts[drizzleContract.contractName] = drizzleContract
     this.contractList.push(drizzleContract)
 
     this.store.dispatch({
-      type: 'CONTRACT_INITIALIZED',
+      type: ContractActions.CONTRACT_INITIALIZED,
       name: contractConfig.contractName
     })
   }
@@ -119,7 +120,7 @@ class Drizzle {
     this.loadingContract = restLoadingContract
 
     this.store.dispatch({
-      type: 'DELETE_CONTRACT',
+      type: ContractActions.DELETE_CONTRACT,
       contractName
     })
   }

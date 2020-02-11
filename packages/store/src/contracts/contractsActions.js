@@ -1,3 +1,5 @@
+import * as ContractActions from './constants'
+
 const INITIALIZING_CONTRACT = 'INITIALIZING_CONTRACT'
 
 export function initializingContract (results) {
@@ -25,11 +27,9 @@ export function gettingContractVar (results) {
   }
 }
 
-const GOT_CONTRACT_VAR = 'GOT_CONTRACT_VAR'
-
 export function gotContractVar (results) {
   return {
-    type: GOT_CONTRACT_VAR,
+    type: ContractActions.GOT_CONTRACT_VAR,
     payload: results
   }
 }
