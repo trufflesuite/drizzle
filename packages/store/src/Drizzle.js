@@ -3,6 +3,7 @@ import defaultOptions from './defaultOptions'
 import merge from './mergeOptions'
 import DrizzleContract from './DrizzleContract'
 import * as ContractActions from './contracts/constants'
+import * as DrizzleActions from './drizzleStatus/constants'
 
 // Load as promise so that async Drizzle initialization can still resolve
 var isEnvReadyPromise = new Promise((resolve, reject) => {
@@ -59,7 +60,7 @@ class Drizzle {
     isEnvReadyPromise.then(() => {
       // Begin Drizzle initialization.
       this.store.dispatch({
-        type: 'DRIZZLE_INITIALIZING',
+        type: DrizzleActions.DRIZZLE_INITIALIZING,
         drizzle: this,
         options
       })
