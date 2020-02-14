@@ -61,7 +61,7 @@ describe('Drizzle Middleware', () => {
     const sentinel = {}
     mockedDrizzleInstance.contractList.push({ options: { from: sentinel } })
 
-    dmw()(next)({ type: 'ACCOUNTS_FETCHED', accounts: [selectedAccount] })
+    dmw()(next)({ type: AccountsActions.ACCOUNTS_FETCHED, accounts: [selectedAccount] })
 
     const froms = mockedDrizzleInstance.contractList.map(x => x.options.from)
     expect(froms).toHaveLength(11)
