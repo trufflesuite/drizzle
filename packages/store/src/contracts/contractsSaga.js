@@ -1,6 +1,7 @@
 import { END, eventChannel } from 'redux-saga'
 import { call, put, select, take, takeEvery } from 'redux-saga/effects'
 import * as ContractActions from './constants'
+import * as TransactionsActions from '../transactions/constants'
 
 /*
  * Events
@@ -66,25 +67,25 @@ function createTxChannel ({
       .on('transactionHash', txHash => {
         persistTxHash = txHash
 
-        emit({ type: 'TX_BROADCASTED', txHash, stackId })
+        emit({ type: TransactionsActions.TX_BROADCASTED, txHash, stackId })
         emit({ type: ContractActions.CONTRACT_SYNC_IND, contractName })
       })
       .on('confirmation', (confirmationNumber, receipt) => {
         emit({
-          type: 'TX_CONFIRMAITON',
+          type: TransactionsActions.TX_CONFIRMATION,
           confirmationReceipt: receipt,
           txHash: persistTxHash
         })
       })
       .on('receipt', receipt => {
-        emit({ type: 'TX_SUCCESSFUL', receipt: receipt, txHash: persistTxHash })
+        emit({ type: TransactionsActions.TX_SUCCESSFUL, receipt: receipt, txHash: persistTxHash })
         emit(END)
       })
       .on('error', (error, receipt) => {
         console.error(error)
         console.error(receipt)
 
-        emit({ type: 'TX_ERROR', error: error, stackTempKey })
+        emit({ type: TransactionsActions.TX_ERROR, error: error, stackTempKey })
         emit(END)
       })
 
