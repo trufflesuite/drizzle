@@ -2,7 +2,7 @@ import { generateStore } from './generateStore'
 import defaultOptions from './defaultOptions'
 import merge from './mergeOptions'
 import DrizzleContract from './DrizzleContract'
-import * as ContractActions from './constants'
+import * as ContractActions from './contracts/constants'
 
 // Load as promise so that async Drizzle initialization can still resolve
 var isEnvReadyPromise = new Promise((resolve, reject) => {
