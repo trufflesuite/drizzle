@@ -1,3 +1,5 @@
+import * as AccountBalancesActions from '../src/accountBalances/constants'
+
 import {
   getAccountBalances,
   getAccountsState
@@ -26,13 +28,13 @@ describe('Account Balance Saga', () => {
       expect(next.value).toEqual(call(mockedGetBalance, account))
       next = gen.next(accountBalance)
       expect(next.value).toEqual(
-        put({ type: 'ACCOUNT_BALANCE_FETCHED', account, accountBalance })
+        put({ type: AccountBalancesActions.ACCOUNT_BALANCE_FETCHED, account, accountBalance })
       )
       next = gen.next()
     }
 
     // Final dispatch
-    expect(next.value).toEqual(put({ type: 'ACCOUNT_BALANCES_FETCHED' }))
+    expect(next.value).toEqual(put({ type: AccountBalancesActions.ACCOUNT_BALANCES_FETCHED }))
   })
 
   test('Fails properly', () => {
@@ -42,10 +44,10 @@ describe('Account Balance Saga', () => {
 
     const error = new Error()
     next = gen.throw(error)
-    expect(next.value).toEqual(put({ type: 'ACCOUNT_BALANCE_FAILED', error }))
+    expect(next.value).toEqual(put({ type: AccountBalancesActions.ACCOUNT_BALANCE_FAILED, error }))
 
     // Final dispatch
     next = gen.next()
-    expect(next.value).toEqual(put({ type: 'ACCOUNT_BALANCES_FETCHED' }))
+    expect(next.value).toEqual(put({ type: AccountBalancesActions.ACCOUNT_BALANCES_FETCHED }))
   })
 })
