@@ -33,6 +33,13 @@ const web3Reducer = (state = initialState, action) => {
     }
   }
 
+  if (action.type === Action.WEB3_CONNECTION_DELAYED) {
+    return {
+      ...state,
+      status: 'ConnectionDelayed'
+    }
+  }
+
   if (action.type === Action.NETWORK_ID_FETCHED) {
     return {
       ...state,

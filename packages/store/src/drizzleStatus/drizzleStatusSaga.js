@@ -10,8 +10,10 @@ import { NETWORK_IDS, NETWORK_MISMATCH } from '../web3/constants'
 export function * initializeDrizzle (action) {
   try {
     const { drizzle, options } = action
+    // debugger
 
     // Initialize web3 and get the current network ID.
+    console.log("initializing Status Saga")
     const web3 = yield call(initializeWeb3, options.web3)
     drizzle.web3 = web3
 

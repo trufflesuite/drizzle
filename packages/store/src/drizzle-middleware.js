@@ -2,6 +2,8 @@ export const drizzleMiddleware = drizzleInstance => store => next => action => {
   const { type } = action
 
   if (type === 'DRIZZLE_INITIALIZING') {
+    console.log("initializing middleware")
+    // debugger
     drizzleInstance = action.drizzle
   }
 
