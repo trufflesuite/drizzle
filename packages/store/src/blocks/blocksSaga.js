@@ -1,6 +1,8 @@
 import { END, eventChannel } from 'redux-saga'
 import { call, put, take, takeEvery, takeLatest, all } from 'redux-saga/effects'
 import BlockTracker from 'eth-block-tracker-es5'
+import * as BlocksActions from './constants'
+import * as ContractActions from '../contracts/constants'
 
 /*
  * Listen for Blocks
@@ -11,7 +13,7 @@ export function createBlockChannel ({ drizzle, web3, syncAlways }) {
     const blockEvents = web3.eth
       .subscribe('newBlockHeaders', (error, result) => {
         if (error) {
-          emit({ type: 'BLOCKS_FAILED', error })
+          emit({ type: BlocksActions.BLOCKS_FAILED, error })
 
           console.error('Error in block header subscription:')
           console.error(error)
@@ -20,10 +22,10 @@ export function createBlockChannel ({ drizzle, web3, syncAlways }) {
         }
       })
       .on('data', blockHeader => {
-        emit({ type: 'BLOCK_RECEIVED', blockHeader, drizzle, web3, syncAlways })
+        emit({ type: BlocksActions.BLOCK_RECEIVED, blockHeader, drizzle, web3, syncAlways })
       })
       .on('error', error => {
-        emit({ type: 'BLOCKS_FAILED', error })
+        emit({ type: BlocksActions.BLOCKS_FAILED, error })
         emit(END)
       })
 
@@ -69,11 +71,11 @@ export function createBlockPollChannel ({
     })
 
     blockTracker.on('block', block => {
-      emit({ type: 'BLOCK_FOUND', block, drizzle, web3, syncAlways })
+      emit({ type: BlocksActions.BLOCK_FOUND, block, drizzle, web3, syncAlways })
     })
 
     blockTracker.start().catch(error => {
-      emit({ type: 'BLOCKS_FAILED', error })
+      emit({ type: BlocksActions.BLOCKS_FAILED, error })
       emit(END)
     })
 
@@ -127,7 +129,7 @@ function * processBlockHeader ({ blockHeader, drizzle, web3, syncAlways }) {
     console.error('Error in block processing:')
     console.error(error)
 
-    yield put({ type: 'BLOCK_FAILED', error })
+    yield put({ type: BlocksActions.BLOCK_FAILED, error })
   }
 }
 
@@ -135,13 +137,13 @@ function * processBlock ({ block, drizzle, web3, syncAlways }) {
   try {
     // Emit block for addition to store.
     // Regardless of syncing success/failure, this is still the latest block.
-    yield put({ type: 'BLOCK_PROCESSING', block })
+    yield put({ type: BlocksActions.BLOCK_PROCESSING, block })
 
     if (syncAlways) {
       yield all(
         Object.keys(drizzle.contracts).map(key => {
           return put({
-            type: 'CONTRACT_SYNCING',
+            type: ContractActions.CONTRACT_SYNCING,
             contract: drizzle.contracts[key]
           })
         })
@@ -158,13 +160,13 @@ function * processBlock ({ block, drizzle, web3, syncAlways }) {
         var from = txs[i].from || ''
         var fromContract = drizzle.findContractByAddress(from.toLowerCase())
         if (fromContract) {
-          yield put({ type: 'CONTRACT_SYNCING', contract: fromContract })
+          yield put({ type: ContractActions.CONTRACT_SYNCING, contract: fromContract })
         }
 
         var to = txs[i].to || ''
         var toContract = drizzle.findContractByAddress(to.toLowerCase())
         if (toContract) {
-          yield put({ type: 'CONTRACT_SYNCING', contract: toContract })
+          yield put({ type: ContractActions.CONTRACT_SYNCING, contract: toContract })
         }
       }
     }
@@ -172,18 +174,18 @@ function * processBlock ({ block, drizzle, web3, syncAlways }) {
     console.error('Error in block processing:')
     console.error(error)
 
-    yield put({ type: 'BLOCK_FAILED', error })
+    yield put({ type: BlocksActions.BLOCK_FAILED, error })
   }
 }
 
 function * blocksSaga () {
   // Block Subscriptions
-  yield takeLatest('BLOCKS_LISTENING', callCreateBlockChannel)
-  yield takeEvery('BLOCK_RECEIVED', processBlockHeader)
+  yield takeLatest(BlocksActions.BLOCKS_LISTENING, callCreateBlockChannel)
+  yield takeEvery(BlocksActions.BLOCK_RECEIVED, processBlockHeader)
 
   // Block Polling
-  yield takeLatest('BLOCKS_POLLING', callCreateBlockPollChannel)
-  yield takeEvery('BLOCK_FOUND', processBlock)
+  yield takeLatest(BlocksActions.BLOCKS_POLLING, callCreateBlockPollChannel)
+  yield takeEvery(BlocksActions.BLOCK_FOUND, processBlock)
 }
 
 export default blocksSaga

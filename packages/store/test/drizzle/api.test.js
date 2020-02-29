@@ -7,6 +7,8 @@ import Drizzle from '../../src/Drizzle'
 import defaultDrizzleOptions from '../../src/defaultOptions'
 import { initializeDrizzle } from '../../src/drizzleStatus/drizzleStatusSaga'
 import { NETWORK_IDS, NETWORK_MISMATCH } from '../../src/web3/constants'
+import * as DrizzleActions from '../../src/drizzleStatus/constants'
+import * as ContractActions from '../../src/contracts/constants'
 
 jest.mock('../../src/DrizzleContract')
 
@@ -42,7 +44,7 @@ describe('Drizzle API', () => {
 
   test('Constructor fires up drizzle store', () => {
     const expectedAction = {
-      type: 'DRIZZLE_INITIALIZING',
+      type: DrizzleActions.DRIZZLE_INITIALIZING,
       drizzle,
       options: defaultDrizzleOptions
     }
@@ -79,10 +81,10 @@ describe('Drizzle API', () => {
       // 1 in constructor, 2 in addContract
       expect(dispatchSpy).toHaveBeenCalledTimes(3)
 
-      let expectedAction = { type: 'CONTRACT_INITIALIZING', contractConfig }
+      let expectedAction = { type: ContractActions.CONTRACT_INITIALIZING, contractConfig }
       expect(dispatchSpy).toHaveBeenNthCalledWith(2, expectedAction)
 
-      expectedAction = { type: 'CONTRACT_INITIALIZED', name: contractName }
+      expectedAction = { type: ContractActions.CONTRACT_INITIALIZED, name: contractName }
       expect(dispatchSpy).toHaveBeenNthCalledWith(3, expectedAction)
 
       expect(drizzle.contractList).toHaveLength(1)
@@ -98,13 +100,13 @@ describe('Drizzle API', () => {
       expect(dispatchSpy).toHaveBeenCalledTimes(3)
 
       let expectedAction = {
-        type: 'CONTRACT_INITIALIZING',
+        type: ContractActions.CONTRACT_INITIALIZING,
         contractConfig: truffleArtifact
       }
       expect(dispatchSpy).toHaveBeenNthCalledWith(2, expectedAction)
 
       expectedAction = {
-        type: 'CONTRACT_INITIALIZED',
+        type: ContractActions.CONTRACT_INITIALIZED,
         name: truffleArtifact.contractName
       }
       expect(dispatchSpy).toHaveBeenNthCalledWith(3, expectedAction)

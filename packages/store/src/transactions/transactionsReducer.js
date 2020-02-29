@@ -1,7 +1,9 @@
+import * as TransactionsActions from './constants'
+
 const initialState = {}
 
 const transactionsReducer = (state = initialState, action) => {
-  if (action.type === 'TX_BROADCASTED') {
+  if (action.type === TransactionsActions.TX_BROADCASTED) {
     return {
       ...state,
       [action.txHash]: {
@@ -11,7 +13,7 @@ const transactionsReducer = (state = initialState, action) => {
     }
   }
 
-  if (action.type === 'TX_CONFIRMAITON') {
+  if (action.type === TransactionsActions.TX_CONFIRMATION) {
     return {
       ...state,
       [action.txHash]: {
@@ -24,7 +26,7 @@ const transactionsReducer = (state = initialState, action) => {
     }
   }
 
-  if (action.type === 'TX_SUCCESSFUL') {
+  if (action.type === TransactionsActions.TX_SUCCESSFUL) {
     return {
       ...state,
       [action.txHash]: {
@@ -35,7 +37,7 @@ const transactionsReducer = (state = initialState, action) => {
     }
   }
 
-  if (action.type === 'TX_ERROR') {
+  if (action.type === TransactionsActions.TX_ERROR) {
     return {
       ...state,
       [action.stackTempKey]: {

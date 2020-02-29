@@ -4,6 +4,9 @@ import { call, put, select, takeLatest } from 'redux-saga/effects'
 import { initializeWeb3, getNetworkId } from '../web3/web3Saga'
 import { getAccounts } from '../accounts/accountsSaga'
 import { getAccountBalances } from '../accountBalances/accountBalancesSaga'
+import * as DrizzleActions from './constants'
+import * as BlocksActions from '../blocks/constants'
+import * as AccountsActions from '../accounts/constants'
 
 import { NETWORK_IDS, NETWORK_MISMATCH } from '../web3/constants'
 
@@ -53,16 +56,16 @@ export function * initializeDrizzle (action) {
         if (web3.currentProvider.isMetaMask && !window.ethereum) {
           // Using old MetaMask, attempt block polling.
           const interval = options.polls.blocks
-          yield put({ type: 'BLOCKS_POLLING', drizzle, interval, web3, syncAlways })
+          yield put({ type: BlocksActions.BLOCKS_POLLING, drizzle, interval, web3, syncAlways })
         } else {
           // Not using old MetaMask, attempt subscription block listening.
-          yield put({ type: 'BLOCKS_LISTENING', drizzle, web3, syncAlways })
+          yield put({ type: BlocksActions.BLOCKS_LISTENING, drizzle, web3, syncAlways })
         }
 
         // Accounts Polling
         if ('accounts' in options.polls) {
           yield put({
-            type: 'ACCOUNTS_POLLING',
+            type: AccountsActions.ACCOUNTS_POLLING,
             interval: options.polls.accounts,
             web3
           })
@@ -70,18 +73,18 @@ export function * initializeDrizzle (action) {
       }
     }
   } catch (error) {
-    yield put({ type: 'DRIZZLE_FAILED', error })
+    yield put({ type: DrizzleActions.DRIZZLE_FAILED, error })
     console.error('Error initializing Drizzle:')
     console.error(error)
 
     return
   }
 
-  yield put({ type: 'DRIZZLE_INITIALIZED' })
+  yield put({ type: DrizzleActions.DRIZZLE_INITIALIZED })
 }
 
 function * drizzleStatusSaga () {
-  yield takeLatest('DRIZZLE_INITIALIZING', initializeDrizzle)
+  yield takeLatest(DrizzleActions.DRIZZLE_INITIALIZING, initializeDrizzle)
 }
 
 export default drizzleStatusSaga

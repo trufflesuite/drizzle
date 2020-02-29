@@ -1,6 +1,7 @@
 import { END, eventChannel } from 'redux-saga'
 import { call, put, select, take, takeEvery } from 'redux-saga/effects'
-import * as EventActions from './constants'
+import * as ContractActions from './constants'
+import * as TransactionsActions from '../transactions/constants'
 
 /*
  * Events
@@ -16,13 +17,13 @@ export function createContractEventChannel ({
   return eventChannel(emit => {
     const eventListener = contract.events[eventName](eventOptions)
       .on('data', event => {
-        emit({ type: EventActions.EVENT_FIRED, name, event })
+        emit({ type: ContractActions.EVENT_FIRED, name, event })
       })
       .on('changed', event => {
-        emit({ type: EventActions.EVENT_CHANGED, name, event })
+        emit({ type: ContractActions.EVENT_CHANGED, name, event })
       })
       .on('error', error => {
-        emit({ type: EventActions.EVENT_ERROR, name, error })
+        emit({ type: ContractActions.EVENT_ERROR, name, error })
         emit(END)
       })
 
@@ -66,25 +67,25 @@ function createTxChannel ({
       .on('transactionHash', txHash => {
         persistTxHash = txHash
 
-        emit({ type: 'TX_BROADCASTED', txHash, stackId })
-        emit({ type: 'CONTRACT_SYNC_IND', contractName })
+        emit({ type: TransactionsActions.TX_BROADCASTED, txHash, stackId })
+        emit({ type: ContractActions.CONTRACT_SYNC_IND, contractName })
       })
       .on('confirmation', (confirmationNumber, receipt) => {
         emit({
-          type: 'TX_CONFIRMAITON',
+          type: TransactionsActions.TX_CONFIRMATION,
           confirmationReceipt: receipt,
           txHash: persistTxHash
         })
       })
       .on('receipt', receipt => {
-        emit({ type: 'TX_SUCCESSFUL', receipt: receipt, txHash: persistTxHash })
+        emit({ type: TransactionsActions.TX_SUCCESSFUL, receipt: receipt, txHash: persistTxHash })
         emit(END)
       })
       .on('error', (error, receipt) => {
         console.error(error)
         console.error(receipt)
 
-        emit({ type: 'TX_ERROR', error: error, stackTempKey })
+        emit({ type: TransactionsActions.TX_ERROR, error: error, stackTempKey })
         emit(END)
       })
 
@@ -195,7 +196,7 @@ function * callCallContractFn ({
       fnIndex: fnIndex
     }
 
-    yield put({ type: 'GOT_CONTRACT_VAR', ...dispatchArgs })
+    yield put({ type: ContractActions.GOT_CONTRACT_VAR, ...dispatchArgs })
   } catch (error) {
     console.error(error)
 
@@ -208,7 +209,7 @@ function * callCallContractFn ({
       fnIndex: fnIndex
     }
 
-    yield put({ type: 'ERROR_CONTRACT_VAR', ...errorArgs })
+    yield put({ type: ContractActions.ERROR_CONTRACT_VAR, ...errorArgs })
   }
 }
 
@@ -238,7 +239,7 @@ function * callSyncContract (action) {
       // Pull args and call fn for each given function
       // keeping for pre-v1.1.5 compatibility with CALL_CONTRACT_FN event.
       yield put({
-        type: 'CALL_CONTRACT_FN',
+        type: ContractActions.CALL_CONTRACT_FN,
         contract,
         fnName,
         fnIndex,
@@ -257,7 +258,7 @@ function * callSyncContract (action) {
   }
 
   // When complete, dispatch CONTRACT_SYNCED
-  yield put({ type: 'CONTRACT_SYNCED', contractName })
+  yield put({ type: ContractActions.CONTRACT_SYNCED, contractName })
 }
 
 const getContractsState = state => state.contracts
@@ -272,10 +273,10 @@ function isSendOrCallOptions (options) {
 }
 
 function * contractsSaga () {
-  yield takeEvery('SEND_CONTRACT_TX', callSendContractTx)
-  yield takeEvery('CALL_CONTRACT_FN', callCallContractFn)
-  yield takeEvery('CONTRACT_SYNCING', callSyncContract)
-  yield takeEvery('LISTEN_FOR_EVENT', callListenForContractEvent)
+  yield takeEvery(ContractActions.SEND_CONTRACT_TX, callSendContractTx)
+  yield takeEvery(ContractActions.CALL_CONTRACT_FN, callCallContractFn)
+  yield takeEvery(ContractActions.CONTRACT_SYNCING, callSyncContract)
+  yield takeEvery(ContractActions.LISTEN_FOR_EVENT, callListenForContractEvent)
 }
 
 export default contractsSaga

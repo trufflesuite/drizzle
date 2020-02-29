@@ -1,3 +1,6 @@
+import * as ContractActions from './contracts/constants'
+import * as TransactionsActions from './transactions/constants'
+
 class DrizzleContract {
   constructor (
     web3Contract,
@@ -36,14 +39,14 @@ class DrizzleContract {
 
         if (typeof event === 'object') {
           store.dispatch({
-            type: 'LISTEN_FOR_EVENT',
+            type: ContractActions.LISTEN_FOR_EVENT,
             contract: this,
             eventName: event.eventName,
             eventOptions: event.eventOptions
           })
         } else {
           store.dispatch({
-            type: 'LISTEN_FOR_EVENT',
+            type: ContractActions.LISTEN_FOR_EVENT,
             contract: this,
             eventName: event
           })
@@ -77,7 +80,7 @@ class DrizzleContract {
 
       // Otherwise, call function and update store
       contract.store.dispatch({
-        type: 'CALL_CONTRACT_FN',
+        type: ContractActions.CALL_CONTRACT_FN,
         contract,
         fnName,
         fnIndex,
@@ -103,12 +106,12 @@ class DrizzleContract {
       const stackTempKey = `TEMP_${new Date().getTime()}`
 
       // Add ID to "transactionStack" with temp value, will be overwritten on TX_BROADCASTED
-      contract.store.dispatch({ type: 'PUSH_TO_TXSTACK', stackTempKey })
+      contract.store.dispatch({ type: TransactionsActions.PUSH_TO_TXSTACK, stackTempKey })
 
       // Dispatch tx to saga
       // When txhash received, will be value of stack ID
       contract.store.dispatch({
-        type: 'SEND_CONTRACT_TX',
+        type: TransactionsActions.SEND_CONTRACT_TX,
         contract,
         fnName,
         fnIndex,

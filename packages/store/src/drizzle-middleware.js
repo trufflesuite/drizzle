@@ -1,12 +1,16 @@
+import * as DrizzleActions from './drizzleStatus/constants'
+import * as AccountsActions from './accounts/constants'
+import * as ContractActions from './contracts/constants'
+
 export const drizzleMiddleware = drizzleInstance => store => next => action => {
   const { type } = action
 
-  if (type === 'DRIZZLE_INITIALIZING') {
+  if (type === DrizzleActions.DRIZZLE_INITIALIZING) {
     drizzleInstance = action.drizzle
   }
 
   if (
-    type === 'ACCOUNTS_FETCHED' &&
+    type === AccountsActions.ACCOUNTS_FETCHED &&
     drizzleInstance &&
     drizzleInstance.contractList.length
   ) {
@@ -21,7 +25,7 @@ export const drizzleMiddleware = drizzleInstance => store => next => action => {
     }
   }
 
-  if (type === 'ADD_CONTRACT' && drizzleInstance) {
+  if (type === ContractActions.ADD_CONTRACT && drizzleInstance) {
     try {
       const { contractConfig, events } = action
       drizzleInstance.addContract(contractConfig, events)
@@ -30,7 +34,7 @@ export const drizzleMiddleware = drizzleInstance => store => next => action => {
 
       // Notify user via
       const notificationAction = {
-        type: 'ERROR_ADD_CONTRACT',
+        type: ContractActions.ERROR_ADD_CONTRACT,
         error,
         attemptedAction: action
       }

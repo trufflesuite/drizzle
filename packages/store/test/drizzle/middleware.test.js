@@ -4,6 +4,9 @@ import Drizzle from '../../src/Drizzle'
 import { getWeb3Assets } from '../utils/helpers'
 import configureStore from 'redux-mock-store'
 import defaultDrizzleOptions from '../../src/defaultOptions'
+import * as DrizzleActions from '../../src/drizzleStatus/constants'
+import * as ContractActions from '../../src/contracts/constants'
+import * as AccountsActions from '../../src/accounts/constants'
 
 jest.mock('../../src/DrizzleContract')
 
@@ -31,10 +34,10 @@ describe('Drizzle Middleware', () => {
   test('default sendFrom changes when wallet provider changes selectedAccount', () => {
     const selectedAccount = accounts[2]
     dmw()(next)({
-      type: 'DRIZZLE_INITIALIZING',
+      type: DrizzleActions.DRIZZLE_INITIALIZING,
       drizzle: mockedDrizzleInstance
     })
-    dmw()(next)({ type: 'ACCOUNTS_FETCHED', accounts: [selectedAccount] })
+    dmw()(next)({ type: AccountsActions.ACCOUNTS_FETCHED, accounts: [selectedAccount] })
 
     // All contract options should have from address set to selectedAccount
     const froms = mockedDrizzleInstance.contractList.map(x => x.options.from)
@@ -47,7 +50,7 @@ describe('Drizzle Middleware', () => {
 
   test('default sendFrom does not change unnecessarily', () => {
     dmw()(next)({
-      type: 'DRIZZLE_INITIALIZING',
+      type: DrizzleActions.DRIZZLE_INITIALIZING,
       drizzle: mockedDrizzleInstance
     })
 
@@ -58,7 +61,7 @@ describe('Drizzle Middleware', () => {
     const sentinel = {}
     mockedDrizzleInstance.contractList.push({ options: { from: sentinel } })
 
-    dmw()(next)({ type: 'ACCOUNTS_FETCHED', accounts: [selectedAccount] })
+    dmw()(next)({ type: AccountsActions.ACCOUNTS_FETCHED, accounts: [selectedAccount] })
 
     const froms = mockedDrizzleInstance.contractList.map(x => x.options.from)
     expect(froms).toHaveLength(11)
@@ -99,7 +102,7 @@ describe('Drizzle Middleware', () => {
       const actions = mockedStore.getActions()
       expect(actions).toHaveLength(1)
       expect(actions[0]).toEqual({
-        type: 'DRIZZLE_INITIALIZING',
+        type: DrizzleActions.DRIZZLE_INITIALIZING,
         drizzle,
         options: expectedDrizzleOptions
       })
@@ -121,7 +124,7 @@ describe('Drizzle Middleware', () => {
 
       test('successfully', async () => {
         mockedStore.dispatch({
-          type: 'ADD_CONTRACT',
+          type: ContractActions.ADD_CONTRACT,
           contractConfig: mockedContractConfig,
           mockedEvents
         })
@@ -130,20 +133,20 @@ describe('Drizzle Middleware', () => {
         const actions = mockedStore.getActions()
         expect(actions).toHaveLength(4)
         expect(actions[0]).toEqual({
-          type: 'DRIZZLE_INITIALIZING',
+          type: DrizzleActions.DRIZZLE_INITIALIZING,
           drizzle,
           options: expectedDrizzleOptions
         })
         expect(actions[1]).toEqual({
-          type: 'CONTRACT_INITIALIZING',
+          type: ContractActions.CONTRACT_INITIALIZING,
           contractConfig: mockedContractConfig
         })
         expect(actions[2]).toEqual({
-          type: 'CONTRACT_INITIALIZED',
+          type: ContractActions.CONTRACT_INITIALIZED,
           name: mockedContractConfig.contractName
         })
         expect(actions[3]).toEqual({
-          type: 'ADD_CONTRACT',
+          type: ContractActions.ADD_CONTRACT,
           contractConfig: mockedContractConfig,
           mockedEvents
         })
@@ -153,7 +156,7 @@ describe('Drizzle Middleware', () => {
         // Add a contract
 
         const addContractAction = {
-          type: 'ADD_CONTRACT',
+          type: ContractActions.ADD_CONTRACT,
           contractConfig: mockedContractConfig,
           mockedEvents
         }
@@ -170,7 +173,7 @@ describe('Drizzle Middleware', () => {
         expect(actions).toHaveLength(5)
 
         const errorAction = actions[4]
-        expect(errorAction.type).toEqual('ERROR_ADD_CONTRACT')
+        expect(errorAction.type).toEqual(ContractActions.ERROR_ADD_CONTRACT)
         expect(errorAction.error.message).toEqual(
           `Contract already exists: ${mockedContractConfig.contractName}`
         )
