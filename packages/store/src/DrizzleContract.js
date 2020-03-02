@@ -23,11 +23,11 @@ class DrizzleContract {
     for (var i = 0; i < this.abi.length; i++) {
       var item = this.abi[i]
 
-      if (item.type == 'function' && item.constant === true) {
+      if (item.type == 'function' && (x.stateMutability === 'view' || x.stateMutability === 'pure')) {
         this.methods[item.name].cacheCall = this.cacheCallFunction(item.name, i)
       }
 
-      if (item.type == 'function' && item.constant === false) {
+      if (item.type == 'function' && (x.stateMutability !== 'view' && x.stateMutability !== 'pure')) {
         this.methods[item.name].cacheSend = this.cacheSendFunction(item.name, i)
       }
     }

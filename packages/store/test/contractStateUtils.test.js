@@ -9,12 +9,18 @@ import TestContractABI from './utils/data/TestContract-abi.json'
 describe('Contract State Utilities', () => {
   describe('isConstant', () => {
     test('can identify a constant', () => {
-      const config = { type: 'function', constant: true }
+      let config = { type: 'function', stateMutability: 'view' }
+      expect(isConstant(config)).toBe(true)
+
+      config = { type: 'function', stateMutability: 'pure' }
       expect(isConstant(config)).toBe(true)
     })
 
     test('can identify non constants', () => {
-      let config = { type: 'function', constant: false }
+      let config = { type: 'function', stateMutability: 'payable' }
+      expect(isConstant(config)).toBe(false)
+
+      config = { type: 'function', stateMutability: 'nonpayable' }
       expect(isConstant(config)).toBe(false)
 
       config = { type: 'event' }

@@ -3,7 +3,7 @@ export const getAbi = contractEntry =>
     ? contractEntry.web3Contract.options.jsonInterface
     : contractEntry.abi
 
-export const isConstant = x => x.type === 'function' && x.constant === true
+export const isConstant = x => x.type === 'function' && (x.stateMutability === 'view' || x.stateMutability === 'pure')
 
 export const generateContractInitialState = contractConfig => {
   const constants = getAbi(contractConfig).filter(isConstant)
