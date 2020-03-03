@@ -14,6 +14,9 @@ describe('Contract State Utilities', () => {
 
       config = { type: 'function', stateMutability: 'pure' }
       expect(isConstant(config)).toBe(true)
+
+      config = { type: 'function', constant: true }
+      expect(isConstant(config)).toBe(true)
     })
 
     test('can identify non constants', () => {
@@ -21,6 +24,9 @@ describe('Contract State Utilities', () => {
       expect(isConstant(config)).toBe(false)
 
       config = { type: 'function', stateMutability: 'nonpayable' }
+      expect(isConstant(config)).toBe(false)
+
+      config = { type: 'function', constant: false }
       expect(isConstant(config)).toBe(false)
 
       config = { type: 'event' }

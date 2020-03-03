@@ -10,7 +10,7 @@ export interface ABI {
     name: string;
     type: string;
   }[];
-  payable: boolean;
+  payable?: boolean;
   stateMutability: string;
   type: string;
   anonymous?: boolean;
