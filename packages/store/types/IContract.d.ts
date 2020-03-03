@@ -1,12 +1,12 @@
 export interface ABI {
-  constant: boolean;
+  constant?: boolean;
   inputs: {
     name: string;
     type: string;
     indexed?: boolean;
   }[];
-  name: string;
-  outputs: {
+  name?: string;
+  outputs?: {
     name: string;
     type: string;
   }[];
