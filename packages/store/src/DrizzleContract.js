@@ -111,7 +111,7 @@ class DrizzleContract {
       // Dispatch tx to saga
       // When txhash received, will be value of stack ID
       contract.store.dispatch({
-        type: TransactionsActions.SEND_CONTRACT_TX,
+        type: ContractActions.SEND_CONTRACT_TX,
         contract,
         fnName,
         fnIndex,
