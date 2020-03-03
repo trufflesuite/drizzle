@@ -1,5 +1,6 @@
 import {
-  isConstant,
+  isGetterFunction,
+  isSetterFunction,
   getAbi,
   generateContractInitialState,
   generateContractsInitialState
@@ -8,17 +9,44 @@ import TestContractABI from './utils/data/TestContract-abi.json'
 
 describe('Contract State Utilities', () => {
   describe('isConstant', () => {
-    test('can identify a constant', () => {
+    test('can identify a constant for solc v0.5.16 and below', () => {
       const config = { type: 'function', constant: true }
-      expect(isConstant(config)).toBe(true)
+      expect(isGetterFunction(config)).toBe(true)
+      expect(isSetterFunction(config)).toBe(false)
     })
 
-    test('can identify non constants', () => {
+    test('can identify non constants for solc v0.5.16 and below', () => {
       let config = { type: 'function', constant: false }
-      expect(isConstant(config)).toBe(false)
+      expect(isGetterFunction(config)).toBe(false)
+      expect(isSetterFunction(config)).toBe(true)
 
       config = { type: 'event' }
-      expect(isConstant(config)).toBe(false)
+      expect(isGetterFunction(config)).toBe(false)
+      expect(isSetterFunction(config)).toBe(false)
+    })
+
+    test('can identify a constant for a pure or view func, for breaking changes from solc v0.6.0 and above', () => {
+      let config = { type: 'function', stateMutability: 'pure' }
+      expect(isGetterFunction(config)).toBe(true)
+      expect(isSetterFunction(config)).toBe(false)
+
+      config = { type: 'function', stateMutability: 'view' }
+      expect(isGetterFunction(config)).toBe(true)
+      expect(isSetterFunction(config)).toBe(false)
+    })
+
+    test('can identify non constants, for breaking changes from solc v0.6.0 and above', () => {
+      let config = { type: 'function', stateMutability: 'payable' }
+      expect(isGetterFunction(config)).toBe(false)
+      expect(isSetterFunction(config)).toBe(true)
+
+      config = { type: 'function', stateMutability: 'nonpayable' }
+      expect(isGetterFunction(config)).toBe(false)
+      expect(isSetterFunction(config)).toBe(true)
+
+      config = { type: 'event' }
+      expect(isGetterFunction(config)).toBe(false)
+      expect(isSetterFunction(config)).toBe(false)
     })
   })
 

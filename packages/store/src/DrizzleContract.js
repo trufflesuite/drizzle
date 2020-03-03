@@ -1,6 +1,6 @@
 import * as ContractActions from './contracts/constants'
 import * as TransactionsActions from './transactions/constants'
-
+import { isGetterFunction, isSetterFunction } from './contractStateUtils'
 class DrizzleContract {
   constructor (
     web3Contract,
@@ -22,12 +22,10 @@ class DrizzleContract {
 
     for (var i = 0; i < this.abi.length; i++) {
       var item = this.abi[i]
-
-      if (item.type == 'function' && item.constant === true) {
+      if (isGetterFunction(item)) {
         this.methods[item.name].cacheCall = this.cacheCallFunction(item.name, i)
       }
-
-      if (item.type == 'function' && item.constant === false) {
+      if (isSetterFunction(item)) {
         this.methods[item.name].cacheSend = this.cacheSendFunction(item.name, i)
       }
     }
@@ -35,7 +33,7 @@ class DrizzleContract {
     // Register event listeners if any events.
     if (events.length > 0) {
       for (i = 0; i < events.length; i++) {
-        let event = events[i]
+        const event = events[i]
 
         if (typeof event === 'object') {
           store.dispatch({
