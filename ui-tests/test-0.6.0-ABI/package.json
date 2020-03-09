@@ -1,0 +1,28 @@
+{
+  "name": "@test-ui/test-0.6.0-ABI",
+  "version": "0.0.2",
+  "private": true,
+  "dependencies": {
+    "@drizzle/react-components": "^1.5.1",
+    "@drizzle/react-plugin": "^1.5.1",
+    "@drizzle/store": "^1.5.1",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-scripts": "3.0.1"
+  },
+  "publishConfig": {
+    "access": "private"
+  },
+  "scripts": {
+    "serve:ui": "PORT=3004 react-scripts start",
+    "build": "react-scripts build",
+    "test:ui": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
+}
