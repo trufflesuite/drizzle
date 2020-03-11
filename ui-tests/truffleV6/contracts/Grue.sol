@@ -1,4 +1,4 @@
-pragma solidity >=0.4.21 <0.6.0;
+pragma solidity >=0.5.15 <0.7.0;
 
 contract Grue {
     uint256 public publicState; // public uint256
