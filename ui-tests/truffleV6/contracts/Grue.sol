@@ -111,12 +111,12 @@ contract Grue {
     }
 
 	// payable setter for private state var
-    function setPrivateStatePayable( uint num) public payable {
+    function setPrivateStatePayable(uint num) public payable {
         privateState = num;
     }
 
 	// nonpayable setter for private state var
-	function setPrivateStateNonPayable( uint num) public {
+	function setPrivateStateNonPayable(uint num) public {
         privateState = num;
     }
 
@@ -144,13 +144,13 @@ contract Grue {
 	*/
 
 	// payable setter
-	function setBalancesMapPayable(uint amount) public payable returns(bool success) {
+	function setBalancesMapPayable(uint amount) public payable returns (bool success) {
 		balances[msg.sender] += amount;
 		return true;
 	}
 
 	// nonpayable setter
-	function setBalancesMapNonPayable(uint amount) public returns(bool success) {
+	function setBalancesMapNonPayable(uint amount) public returns (bool success) {
 		balances[msg.sender] += amount;
 		return true;
 	}
@@ -161,16 +161,16 @@ contract Grue {
 	* setter payable
 	* setter nonpayable
 	*/
-    function getDynamicArray() public view returns(uint[] memory){
+    function getDynamicArray() public view returns (uint[] memory){
         return dynamicArray;
     }
     
-	function setDynamicArrayPayable(uint amount) public payable returns(bool success){
+	function setDynamicArrayPayable(uint amount) public payable returns (bool success){
 		dynamicArray.push(amount);
 		return true;
 	}
 
-	function setDynamicArrayNonPayable(uint amount) public returns(bool success){
+	function setDynamicArrayNonPayable(uint amount) public returns (bool success){
 		dynamicArray.push(amount);
 		return true;
 	}
@@ -182,16 +182,16 @@ contract Grue {
 	* setter nonpayable
 	*/
 	
-	function getFixedArray() public view returns(uint[10] memory){
+	function getFixedArray() public view returns (uint[10] memory){
         return fixedArray;
     }
 
-	function setFixedArrayPayable(uint index, uint amount) public payable returns(bool success){
+	function setFixedArrayPayable(uint index, uint amount) public payable returns (bool success){
 		fixedArray[index] = amount;
 		return true;
 	}
 
-	function setFixedArrayNonPayable(uint index, uint amount) public returns(bool success){
+	function setFixedArrayNonPayable(uint index, uint amount) public returns (bool success){
 		fixedArray[index] = amount;
 		return true;
 	}
