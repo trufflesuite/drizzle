@@ -157,11 +157,14 @@ contract Grue {
 
 	/*
 	* dynamic array
-	* getter built in
+	* getter for returning entire array
 	* setter payable
 	* setter nonpayable
 	*/
-
+    function getDynamicArray() public view returns(uint[] memory){
+        return dynamicArray;
+    }
+    
 	function setDynamicArrayPayable(uint amount) public payable returns(bool success){
 		dynamicArray.push(amount);
 		return true;
@@ -174,10 +177,14 @@ contract Grue {
 
 	/*
 	* fixed array
-	* getter built in
+	* getter for returning entire array
 	* setter payable
 	* setter nonpayable
 	*/
+	
+	function getFixedArray() public view returns(uint[10] memory){
+        return fixedArray;
+    }
 
 	function setFixedArrayPayable(uint index, uint amount) public payable returns(bool success){
 		fixedArray[index] = amount;
