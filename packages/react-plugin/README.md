@@ -21,7 +21,7 @@ If you are using React v16.3 and up, you have access to the new [React Context](
 
     ```js
     // 1. Import drizzle, @drizzle/react-plugin, and your contract artifacts.
-    import { Drizzle, generateStore } from "drizzle";
+    import { Drizzle, generateStore } from "@drizzle/store";
     import { DrizzleContext } from "@drizzle/react-plugin";
     import SimpleStorage from "./contracts/SimpleStorage.json";
 
