@@ -1,6 +1,7 @@
 import { END, eventChannel } from 'redux-saga'
 import { call, put, take, takeLatest } from 'redux-saga/effects'
 import { getAccountBalances } from '../accountBalances/accountBalancesSaga'
+import * as AccountsActions from './constants'
 
 /*
  * Fetch Accounts List
@@ -16,9 +17,9 @@ export function * getAccounts (action) {
       throw 'No accounts found!'
     }
 
-    yield put({ type: 'ACCOUNTS_FETCHED', accounts })
+    yield put({ type: AccountsActions.ACCOUNTS_FETCHED, accounts })
   } catch (error) {
-    yield put({ type: 'ACCOUNTS_FAILED', error })
+    yield put({ type: AccountsActions.ACCOUNTS_FAILED, error })
     console.error('Error fetching accounts:')
     console.error(error)
   }
@@ -33,7 +34,7 @@ function * createAccountsPollChannel ({ interval, web3 }) {
     const persistedWeb3 = web3
 
     const accountsPoller = setInterval(() => {
-      emit({ type: 'SYNCING_ACCOUNTS', persistedWeb3 })
+      emit({ type: AccountsActions.SYNCING_ACCOUNTS, persistedWeb3 })
     }, interval) // options.polls.accounts
 
     const unsubscribe = () => {
@@ -54,7 +55,7 @@ function * callCreateAccountsPollChannel ({ interval, web3 }) {
     while (true) {
       var event = yield take(accountsChannel)
 
-      if (event.type === 'SYNCING_ACCOUNTS') {
+      if (event.type === AccountsActions.SYNCING_ACCOUNTS) {
         yield call(getAccounts, { web3: event.persistedWeb3 })
         yield call(getAccountBalances, { web3: event.persistedWeb3 })
       }
@@ -67,8 +68,8 @@ function * callCreateAccountsPollChannel ({ interval, web3 }) {
 }
 
 function * accountsSaga () {
-  yield takeLatest('ACCOUNTS_FETCHING', getAccounts)
-  yield takeLatest('ACCOUNTS_POLLING', callCreateAccountsPollChannel)
+  yield takeLatest(AccountsActions.ACCOUNTS_FETCHING, getAccounts)
+  yield takeLatest(AccountsActions.ACCOUNTS_POLLING, callCreateAccountsPollChannel)
 }
 
 export default accountsSaga

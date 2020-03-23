@@ -1,5 +1,6 @@
 import { getAccounts } from '../src/accounts/accountsSaga'
 import { call, put } from 'redux-saga/effects'
+import * as AccountsActions from '../src/accounts/constants'
 
 describe('Accounts Saga', () => {
   let mockedWeb3, mockedGetAccounts
@@ -14,7 +15,7 @@ describe('Accounts Saga', () => {
   test('retrieves Metamask accounts', () => {
     expect(gen.next().value).toEqual(call(mockedGetAccounts))
     expect(gen.next(global.accounts).value).toEqual(
-      put({ type: 'ACCOUNTS_FETCHED', accounts: global.accounts })
+      put({ type: AccountsActions.ACCOUNTS_FETCHED, accounts: global.accounts })
     )
   })
 
@@ -22,7 +23,7 @@ describe('Accounts Saga', () => {
     test('when accounts are not retrieved', () => {
       expect(gen.next().value).toEqual(call(mockedGetAccounts))
       expect(gen.next(undefined).value).toEqual(
-        put({ type: 'ACCOUNTS_FAILED', error: 'No accounts found!' })
+        put({ type: AccountsActions.ACCOUNTS_FAILED, error: 'No accounts found!' })
       )
     })
 
@@ -30,7 +31,7 @@ describe('Accounts Saga', () => {
       const error = new Error()
       expect(gen.next().value).toEqual(call(mockedGetAccounts))
       expect(gen.throw(error).value).toEqual(
-        put({ type: 'ACCOUNTS_FAILED', error })
+        put({ type: AccountsActions.ACCOUNTS_FAILED, error })
       )
     })
   })

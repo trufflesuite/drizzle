@@ -3,6 +3,7 @@ import {
   createBlockPollChannel
 } from '../src/blocks/blocksSaga'
 import { getWeb3 } from './utils/helpers'
+import * as BlocksActions from '../src/blocks/constants'
 
 describe('read from blocks', () => {
   let web3
@@ -24,7 +25,7 @@ describe('read from blocks', () => {
     test('listens for block headers', done => {
       // Subscribe to event
       blockListener.take(event => {
-        expect(event.type).toEqual('BLOCK_RECEIVED')
+        expect(event.type).toEqual(BlocksActions.BLOCK_RECEIVED)
         done()
       })
 
@@ -64,7 +65,7 @@ describe('read from blocks', () => {
     test('polls for block headers', done => {
       // Subscribe to event
       blockPoller.take(event => {
-        expect(event.type).toEqual('BLOCK_FOUND')
+        expect(event.type).toEqual(BlocksActions.BLOCK_FOUND)
         done()
       })
 
