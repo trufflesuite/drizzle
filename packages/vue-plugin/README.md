@@ -1,12 +1,12 @@
 # Vue Plugin
 
-**Note**: This is still a work in progres
+**Note**: This is still a work in progress
 
 ```
-$ npm install drizzle-vue-plugin
+$ npm install @drizzle/vue-plugin
 ```
 
-drizzle-vue-plugin adapts [Drizzle](https://github.com/trufflesuite/drizzle) for Vue development.
+`@drizzle/vue-plugin` adapts [Drizzle](https://github.com/trufflesuite/drizzle) for Vue development.
 
 ## Getting Started
 
