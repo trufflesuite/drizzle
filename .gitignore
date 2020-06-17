@@ -25,3 +25,4 @@ scripts/verdaccio.log
 
 # local testing
 ui-tests/truffle/build
+ui-tests/truffleV6/build
