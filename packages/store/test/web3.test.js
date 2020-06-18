@@ -1,4 +1,4 @@
-import { initializeWeb3, getNetworkId } from '../src/web3/web3Saga'
+import { initializeWeb3 } from '../src/web3/web3Saga'
 import { call, put } from 'redux-saga/effects'
 import { runSaga } from 'redux-saga'
 import * as Action from '../src/web3/constants'
@@ -63,7 +63,7 @@ describe('Resolving Web3', () => {
       const result = await runSaga({
         dispatch: (action) => dispatched.push(action),
         getState: () => ({ state: 'test' })
-      }, initializeWeb3, {}).done
+      }, initializeWeb3, {}).toPromise()
 
       // result should be a proper web3 provider
       expect(result).toBeInstanceOf(require('web3'))
@@ -81,7 +81,7 @@ describe('Resolving Web3', () => {
         },
         initializeWeb3,
         {}
-      ).done
+      ).toPromise()
 
       // saga result should be undefined if an exception occurs
       expect(web3Result).toBe(undefined)
@@ -100,7 +100,7 @@ describe('Resolving Web3', () => {
       const result = await runSaga({
         dispatch: (action) => dispatched.push(action),
         getState: () => ({ state: 'test' })
-      }, initializeWeb3, {}).done
+      }, initializeWeb3, {}).toPromise()
 
       // saga result is undefined when exception is thrown
       expect(result).toBe(undefined)
