@@ -1,6 +1,6 @@
 {
   "name": "@drizzle/vue-plugin",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "A drizzle adaptor for Vue",
   "author": {
     "name": "Amal Sudama",
@@ -25,7 +25,7 @@
     "*.md"
   ],
   "dependencies": {
-    "@drizzle/store": "^1.5.1",
+    "@drizzle/store": "^1.5.2",
     "lodash": "^4.17.11",
     "rxjs": "^6.5.2",
     "rxjs-compat": "^6.5.2"

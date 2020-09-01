@@ -1,6 +1,6 @@
 {
   "name": "@drizzle/react-components",
-  "version": "1.5.1",
+  "version": "1.5.2",
   "description": "Put some Drizzle on your React components.",
   "main": "dist/drizzle-react-components.js",
   "scripts": {
@@ -29,7 +29,7 @@
   },
   "devDependencies": {
     "@babel/preset-react": "^7.0.0",
-    "@drizzle/store": "^1.5.1",
+    "@drizzle/store": "^1.5.2",
     "babel-loader": "^8.0.6",
     "react-redux": "^5.1.1",
     "redux": "^4.0.4",

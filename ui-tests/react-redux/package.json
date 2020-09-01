@@ -1,11 +1,11 @@
 {
   "name": "test-app-react-redux",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "private": true,
   "dependencies": {
-    "@drizzle/react-components": "^1.5.1",
-    "@drizzle/react-plugin": "^1.5.1",
-    "@drizzle/store": "^1.5.1",
+    "@drizzle/react-components": "^1.5.2",
+    "@drizzle/react-plugin": "^1.5.2",
+    "@drizzle/store": "^1.5.2",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-scripts": "3.0.1"
