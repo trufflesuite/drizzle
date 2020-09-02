@@ -8,6 +8,7 @@ export interface IStoreConfig {
   appSagas?: any[];
   appMiddlewares?: any[];
   disableReduxDevTools?: boolean;
+  initialAppState?: any;
 }
 
 export function generateStore(config: IStoreConfig): Store;
