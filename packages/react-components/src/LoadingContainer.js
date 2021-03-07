@@ -8,17 +8,33 @@ import PropTypes from "prop-types";
 
 class LoadingContainer extends Component {
   render() {
-    if (this.props.web3.status === "failed") {
-      if (this.props.errorComp) {
-        return this.props.errorComp;
+    const {
+      accounts,
+      children,
+      drizzleStatus,
+      errorComp,
+      loadingComp,
+      web3,
+    } = this.props;
+
+    if (web3.status === "failed") {
+      if (errorComp) {
+        return errorComp;
       }
 
       return (
         <main className="container loading-screen">
           <div className="pure-g">
-            <div className="pure-u-1-1">
-              <h1>⚠️</h1>
-              <p>
+            <div
+              className="pure-u-1-1"
+              role="alertdialog"
+              aria-labelledby="alertTitle"
+              aria-describedby="alertContext"
+            >
+              <h1 id="alertTitle" aria-label="Warning!">
+                ⚠️
+              </h1>
+              <p id="alertContext">
                 This browser has no connection to the Ethereum network. Please
                 use the Chrome/FireFox extension MetaMask, or dedicated Ethereum
                 browsers Mist or Parity.
@@ -29,16 +45,20 @@ class LoadingContainer extends Component {
       );
     }
 
-    if (
-      this.props.web3.status === "initialized" &&
-      Object.keys(this.props.accounts).length === 0
-    ) {
+    if (web3.status === "initialized" && Object.keys(accounts).length === 0) {
       return (
         <main className="container loading-screen">
           <div className="pure-g">
-            <div className="pure-u-1-1">
-              <h1>🦊</h1>
-              <p>
+            <div
+              className="pure-u-1-1"
+              role="alertdialog"
+              aria-labelledby="alertTitle"
+              aria-describedby="alertContext"
+            >
+              <h1 id="alertTitle" aria-label="MetaMask">
+                🦊
+              </h1>
+              <p id="alertContext">
                 <strong>{"We can't find any Ethereum accounts!"}</strong> Please
                 check and make sure Metamask or your browser are pointed at the
                 correct network and your account is unlocked.
@@ -49,20 +69,27 @@ class LoadingContainer extends Component {
       );
     }
 
-    if (this.props.drizzleStatus.initialized) {
-      return Children.only(this.props.children);
+    if (drizzleStatus.initialized) {
+      return Children.only(children);
     }
 
-    if (this.props.loadingComp) {
-      return this.props.loadingComp;
+    if (loadingComp) {
+      return loadingComp;
     }
 
     return (
       <main className="container loading-screen">
         <div className="pure-g">
-          <div className="pure-u-1-1">
-            <h1>⚙️</h1>
-            <p>Loading dapp...</p>
+          <div
+            className="pure-u-1-1"
+            role="alertdialog"
+            aria-labelledby="alertTitle"
+            aria-describedby="alertContext"
+          >
+            <h1 id="alertTitle" aria-label="Please wait">
+              ⚙️
+            </h1>
+            <p id="alertContext">Loading dapp...</p>
           </div>
         </div>
       </main>

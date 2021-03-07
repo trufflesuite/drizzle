@@ -1,5 +1,5 @@
-import PropTypes from 'prop-types'
-import { useDrizzleState } from '..'
+import PropTypes from "prop-types"
+import { useDrizzleState } from ".."
 
 const Initializer = ({
   children,
@@ -12,9 +12,9 @@ const Initializer = ({
     web3Status: drizzleState.web3.status
   }))
   if (drizzleState.drizzleStatusInitialized) return children
-  if (drizzleState.web3Status === 'initialized')
+  if (drizzleState.web3Status === "initialized")
     return loadingContractsAndAccounts
-  if (drizzleState.web3Status === 'failed') return error
+  if (drizzleState.web3Status === "failed") return error
   return loadingWeb3
 }
 
@@ -26,9 +26,9 @@ Initializer.propTypes = {
 }
 
 Initializer.defaultProps = {
-  error: 'Error.',
-  loadingContractsAndAccounts: 'Loading contracts and accounts.',
-  loadingWeb3: 'Loading web3.'
+  error: "Error.",
+  loadingContractsAndAccounts: "Loading contracts and accounts.",
+  loadingWeb3: "Loading web3."
 }
 
 export default Initializer

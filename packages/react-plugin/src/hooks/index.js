@@ -5,19 +5,19 @@ import React, {
   useMemo,
   useRef,
   useState
-} from 'react'
-import PropTypes from 'prop-types'
-import createUseCacheCall from './create-use-cache-call'
-import createUseCacheEvents from './create-use-cache-events'
-import createUseCacheSend from './create-use-cache-send'
-import debounce from 'debounce'
-import deepEqual from 'deep-equal'
+} from "react"
+import PropTypes from "prop-types"
+import createUseCacheCall from "./create-use-cache-call"
+import createUseCacheEvents from "./create-use-cache-events"
+import createUseCacheSend from "./create-use-cache-send"
+import debounce from "debounce"
+import deepEqual from "deep-equal"
 
 const Context = createContext()
 export const useDrizzle = () => useContext(Context)
 
 // Use strict equality for leaf nodes.
-const deepEqualStrict = (a, b) => deepEqual(a, b, {strict: true})
+const deepEqualStrict = (a, b) => deepEqual(a, b, { strict: true })
 
 // Redux-like state selector.
 // `mapState` should be a function that takes the state of the drizzle store and returns only the part you need.
@@ -46,24 +46,21 @@ export const useDrizzleState = (mapState, args) => {
       setState(newState)
     }
   }
-  useEffect(
-    () => {
-      // Debounce udpates, because sometimes the store will fire too much when there are a lot of `cacheCall`s and the cache is empty.
-      const debouncedHandler = debounce(() => {
-        const newState = mapStateRef.current(drizzle.store.getState())
-        if (!deepEqualStrict(stateRef.current, newState)) {
-          stateRef.current = newState
-          setState(newState)
-        }
-      })
-      const unsubscribe = drizzle.store.subscribe(debouncedHandler)
-      return () => {
-        unsubscribe()
-        debouncedHandler.clear()
+  useEffect(() => {
+    // Debounce udpates, because sometimes the store will fire too much when there are a lot of `cacheCall`s and the cache is empty.
+    const debouncedHandler = debounce(() => {
+      const newState = mapStateRef.current(drizzle.store.getState())
+      if (!deepEqualStrict(stateRef.current, newState)) {
+        stateRef.current = newState
+        setState(newState)
       }
-    },
-    [drizzle.store]
-  )
+    })
+    const unsubscribe = drizzle.store.subscribe(debouncedHandler)
+    return () => {
+      unsubscribe()
+      debouncedHandler.clear()
+    }
+  }, [drizzle.store])
   return stateRef.current
 }
 
@@ -93,4 +90,4 @@ DrizzleProvider.propTypes = {
   drizzle: PropTypes.shape({}).isRequired
 }
 
-export * from './components'
+export * from "./components"

@@ -1,5 +1,5 @@
-import { useDrizzleState } from '.'
-import { useState } from 'react'
+import { useDrizzleState } from "."
+import { useState } from "react"
 
 export default drizzle => (contractName, methodName) => {
   const { transactionStack, transactions } = useDrizzleState(drizzleState => ({
@@ -8,7 +8,7 @@ export default drizzle => (contractName, methodName) => {
   }))
   const [stackIDs, setStackIDs] = useState([])
   const TXObjects = stackIDs.map(
-    stackID => transactions[transactionStack[stackID] || 'undefined']
+    stackID => transactions[transactionStack[stackID] || "undefined"]
   )
   const contractMethod = drizzle.contracts[contractName].methods[methodName]
   return {
