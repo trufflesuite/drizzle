@@ -1,4 +1,4 @@
-import { END, eventChannel } from 'redux-saga'
+import { eventChannel } from 'redux-saga'
 import { call, put, take, takeLatest } from 'redux-saga/effects'
 import { getAccountBalances } from '../accountBalances/accountBalancesSaga'
 import * as AccountsActions from './constants'
@@ -14,6 +14,7 @@ export function * getAccounts (action) {
     const accounts = yield call(web3.eth.getAccounts)
 
     if (!accounts) {
+      // eslint-disable-next-line no-throw-literal
       throw 'No accounts found!'
     }
 

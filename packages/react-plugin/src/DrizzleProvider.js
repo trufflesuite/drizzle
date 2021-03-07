@@ -1,9 +1,10 @@
-import { Component, Children } from 'react'
-import PropTypes from 'prop-types'
-import { Drizzle, generateStore } from '@drizzle/store'
+import { Component, Children } from "react"
+import PropTypes from "prop-types"
+import { Drizzle, generateStore } from "@drizzle/store"
 
 class DrizzleProvider extends Component {
   static propTypes = {
+    children: PropTypes.node.isRequired,
     options: PropTypes.object.isRequired,
     store: PropTypes.object
   }
@@ -19,8 +20,9 @@ class DrizzleProvider extends Component {
   }
 
   getChildContext() {
-    const drizzleStore = this.props.store ? this.props.store : generateStore(this.props.options)
-    const drizzle = new Drizzle(this.props.options, drizzleStore)
+    const { options, store } = this.props
+    const drizzleStore = store || generateStore(options)
+    const drizzle = new Drizzle(options, drizzleStore)
 
     return { drizzle, drizzleStore }
   }

@@ -50,7 +50,7 @@ export function generateStore ({
     ? global.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
     : compose
 
-  let initialContractsState = {
+  const initialContractsState = {
     contracts: generateContractsInitialState(drizzleOptions)
   }
 

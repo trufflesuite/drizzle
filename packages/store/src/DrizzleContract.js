@@ -142,10 +142,11 @@ class DrizzleContract {
         }
 
         // This check is in place for web3 v0.x
+        let hashPiece
         if ('utils' in web3) {
-          var hashPiece = web3.utils.sha3(argToHash)
+          hashPiece = web3.utils.sha3(argToHash)
         } else {
-          var hashPiece = web3.sha3(argToHash)
+          hashPiece = web3.sha3(argToHash)
         }
 
         hashString += hashPiece

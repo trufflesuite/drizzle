@@ -105,14 +105,15 @@ function * callSendContractTx ({
   stackId,
   stackTempKey
 }) {
+  let sendArgs = {}
+
   // Check for type of object and properties indicative of call/send options.
   if (args.length) {
     const finalArg = args.length > 1 ? args[args.length - 1] : args[0]
-    var sendArgs = {}
-    var finalArgTest = false
+    let finalArgTest = false
 
     if (typeof finalArg === 'object') {
-      var finalArgTest = yield call(isSendOrCallOptions, finalArg)
+      finalArgTest = yield call(isSendOrCallOptions, finalArg)
     }
 
     if (finalArgTest) {
@@ -163,14 +164,16 @@ function * callCallContractFn ({
     return
   }
 
+  let callArgs = {}
+
   // Check for type of object and properties indicative of call/send options.
   if (args.length) {
     const finalArg = args.length > 1 ? args[args.length - 1] : args[0]
-    var callArgs = {}
-    var finalArgTest = false
+
+    let finalArgTest = false
 
     if (typeof finalArg === 'object') {
-      var finalArgTest = yield call(isSendOrCallOptions, finalArg)
+      finalArgTest = yield call(isSendOrCallOptions, finalArg)
     }
 
     if (finalArgTest) {
