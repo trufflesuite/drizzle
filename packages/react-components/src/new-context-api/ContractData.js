@@ -1,12 +1,13 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import Loading from "../Loading.js";
 
 class ContractData extends Component {
   constructor(props) {
     super(props);
 
     // Fetch initial value from chain and return cache key for reactive updates.
-    var methodArgs = this.props.methodArgs ? this.props.methodArgs : [];
+    const methodArgs = this.props.methodArgs ? this.props.methodArgs : [];
 
     this.contracts = props.drizzle.contracts;
     this.state = {
@@ -35,51 +36,53 @@ class ContractData extends Component {
   }
 
   render() {
-    const { drizzle, drizzleState } = this.props;
+    const { dataKey } = this.state;
+    const { contracts } = this.props.drizzleState;
+    const {
+      contract,
+      drizzle,
+      hideIndicator,
+      method,
+      render,
+      toAscii,
+      toUtf8,
+    } = this.props;
 
     // Contract is not yet intialized.
-    if (!drizzleState.contracts[this.props.contract].initialized) {
-      return <span>Initializing...</span>;
+    if (!contracts[contract].initialized) {
+      return <Loading>Initializing...</Loading>;
     }
 
     // If the cache key we received earlier isn't in the store yet; the initial value is still being fetched.
-    if (
-      !(
-        this.state.dataKey in
-        drizzleState.contracts[this.props.contract][this.props.method]
-      )
-    ) {
-      return <span>Fetching...</span>;
+    if (!(dataKey in contracts[contract][method])) {
+      return <Loading>Fetching...</Loading>;
     }
 
     // Show a loading spinner for future updates.
-    var pendingSpinner = drizzleState.contracts[this.props.contract].synced
-      ? ""
-      : " 🔄";
+    let pendingSpinner = !contracts[contract].synced && (
+      <Loading aria-label="Loading">{" 🔄"}</Loading>
+    );
 
     // Optionally hide loading spinner (EX: ERC20 token symbol).
-    if (this.props.hideIndicator) {
-      pendingSpinner = "";
+    if (hideIndicator) {
+      pendingSpinner = null;
     }
 
-    var displayData =
-      drizzleState.contracts[this.props.contract][this.props.method][
-        this.state.dataKey
-      ].value;
+    let displayData = contracts[contract][method][dataKey].value;
 
     // Optionally convert to UTF8
-    if (this.props.toUtf8) {
+    if (toUtf8) {
       displayData = drizzle.web3.utils.hexToUtf8(displayData);
     }
 
     // Optionally convert to Ascii
-    if (this.props.toAscii) {
+    if (toAscii) {
       displayData = drizzle.web3.utils.hexToAscii(displayData);
     }
 
     // If a render prop is given, have displayData rendered from that component
-    if (this.props.render) {
-      return this.props.render(displayData);
+    if (render) {
+      return render(displayData);
     }
 
     // If return value is an array
@@ -98,7 +101,7 @@ class ContractData extends Component {
 
     // If retun value is an object
     if (typeof displayData === "object") {
-      var i = 0;
+      let i = 0;
       const displayObjectProps = [];
 
       Object.keys(displayData).forEach(key => {

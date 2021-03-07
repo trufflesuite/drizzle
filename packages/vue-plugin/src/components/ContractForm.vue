@@ -1,12 +1,13 @@
 <template>
   <form v-if="isDrizzleInitialized">
-    <input
-      v-for="(param, i) in displayInputs"
-      v-model="ethData[i]"
-      :key="i"
-      :type="param.type"
-      :placeholder="param.name"
-    />
+    <label v-for="(param, i) in displayInputs" :key="i">
+      <span :style="hidden">{{ param.name }}</span>
+      <input
+        v-model="ethData[i]"
+        :type="param.type"
+        :placeholder="param.name"
+      />
+    </label>
     <button @click.prevent="onSubmit">Submit</button>
   </form>
 </template>
@@ -68,6 +69,10 @@ export default {
         name: this.placeholders[i] ? this.placeholders[i] : x.name,
         type: translateType(x.type)
       }))
+    },
+
+    hidden() {
+      return 'display:inline-block; height: 0; width: 0; visibility: hidden;'
     },
 
     utils() {

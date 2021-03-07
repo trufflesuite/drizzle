@@ -1,5 +1,5 @@
 import { drizzleConnect } from "@drizzle/react-plugin";
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
 
 const translateType = type => {
@@ -24,19 +24,20 @@ class ContractForm extends Component {
 
     this.contracts = context.drizzle.contracts;
     this.utils = context.drizzle.web3.utils;
+    this.inputs = [];
+
+    const { contract, method } = this.props;
+    const initialState = {};
 
     // Get the contract ABI
-    const abi = this.contracts[this.props.contract].abi;
-
-    this.inputs = [];
-    var initialState = {};
+    const abi = this.contracts[contract].abi;
 
     // Iterate over abi for correct function.
-    for (var i = 0; i < abi.length; i++) {
-      if (abi[i].name === this.props.method) {
+    for (let i = 0; i < abi.length; i++) {
+      if (abi[i].name === method) {
         this.inputs = abi[i].inputs;
 
-        for (var j = 0; j < this.inputs.length; j++) {
+        for (let j = 0; j < this.inputs.length; j++) {
           initialState[this.inputs[j].name] = "";
         }
 
@@ -50,6 +51,7 @@ class ContractForm extends Component {
   handleSubmit(event) {
     event.preventDefault();
 
+    const { contract, method, sendArgs } = this.props;
     const convertedInputs = this.inputs.map(input => {
       if (input.type === "bytes32") {
         return this.utils.toHex(this.state[input.name]);
@@ -57,28 +59,34 @@ class ContractForm extends Component {
       return this.state[input.name];
     });
 
-    if (this.props.sendArgs) {
-      return this.contracts[this.props.contract].methods[
-        this.props.method
-      ].cacheSend(...convertedInputs, this.props.sendArgs);
+    if (sendArgs) {
+      return this.contracts[contract].methods[method].cacheSend(
+        ...convertedInputs,
+        sendArgs,
+      );
     }
 
-    return this.contracts[this.props.contract].methods[
-      this.props.method
-    ].cacheSend(...convertedInputs);
+    return this.contracts[contract].methods[method].cacheSend(
+      ...convertedInputs,
+    );
   }
 
   handleInputChange(event) {
-    const value =
-      event.target.type === 'checkbox'
-        ? event.target.checked
-        : event.target.value;
-    this.setState({ [event.target.name]: value });
+    const { checked, name, type } = event.target;
+    const value = type === "checkbox" ? checked : event.target.value;
+    this.setState({ [name]: value });
   }
 
   render() {
-    if (this.props.render) {
-      return this.props.render({
+    const { labels, render } = this.props;
+    const visibilityHidden = {
+      visibility: "hidden",
+      display: "inline-block",
+      width: 0,
+    };
+
+    if (render) {
+      return render({
         inputs: this.inputs,
         inputTypes: this.inputs.map(input => translateType(input.type)),
         state: this.state,
@@ -93,20 +101,24 @@ class ContractForm extends Component {
         onSubmit={this.handleSubmit}
       >
         {this.inputs.map((input, index) => {
-          var inputType = translateType(input.type);
-          var inputLabel = this.props.labels
-            ? this.props.labels[index]
-            : input.name;
           // check if input type is struct and if so loop out struct fields as well
+
+          const inputType = translateType(input.type);
+          const inputLabel = labels ? labels[index] : input.name;
+
           return (
-            <input
-              key={input.name}
-              type={inputType}
-              name={input.name}
-              value={this.state[input.name]}
-              placeholder={inputLabel}
-              onChange={this.handleInputChange}
-            />
+            <Fragment key={input.name}>
+              <label htmlFor={input.name} style={visibilityHidden}>
+                {inputLabel}
+              </label>
+              <input
+                type={inputType}
+                name={input.name}
+                value={this.state[input.name]}
+                placeholder={inputLabel}
+                onChange={this.handleInputChange}
+              />
+            </Fragment>
           );
         })}
         <button

@@ -1,6 +1,7 @@
 import { drizzleConnect } from "@drizzle/react-plugin";
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import Loading from "./Loading.js";
 
 class AccountData extends Component {
   constructor(props) {
@@ -10,38 +11,44 @@ class AccountData extends Component {
   }
 
   precisionRound(number, precision) {
-    var factor = Math.pow(10, precision);
+    const factor = Math.pow(10, precision);
     return Math.round(number * factor) / factor;
   }
 
   render() {
+    const {
+      accounts,
+      accountIndex,
+      accountBalances,
+      precision,
+      render,
+    } = this.props;
+
     // No accounts found.
-    if (Object.keys(this.props.accounts).length === 0) {
-      return <span>Initializing...</span>;
+    if (Object.keys(accounts).length === 0) {
+      return <Loading>Initializing...</Loading>;
     }
 
     // Get account address and balance.
-    const address = this.props.accounts[this.props.accountIndex];
-    var balance = this.props.accountBalances[address];
+    const address = accounts[accountIndex];
     const units = this.props.units
       ? this.props.units.charAt(0).toUpperCase() + this.props.units.slice(1)
       : "Wei";
 
+    let balance = accountBalances[address];
+
     // Convert to given units.
-    if (this.props.units && typeof balance !== "undefined") {
-      balance = this.context.drizzle.web3.utils.fromWei(
-        balance,
-        this.props.units,
-      );
+    if (units && typeof balance !== "undefined") {
+      balance = this.context.drizzle.web3.utils.fromWei(balance, units);
     }
 
     // Adjust to given precision.
-    if (this.props.precision) {
-      balance = this.precisionRound(balance, this.props.precision);
+    if (precision) {
+      balance = this.precisionRound(balance, precision);
     }
 
-    if (this.props.render) {
-      return this.props.render({
+    if (render) {
+      return render({
         address,
         balance,
         units,
@@ -49,9 +56,9 @@ class AccountData extends Component {
     }
 
     return (
-      <div>
-        <h4>{address}</h4>
-        <p>
+      <div role="status" aria-live="polite">
+        <h4 aria-label={`${units} Address: ${address}`}>{address}</h4>
+        <p aria-label={`${units} Balance: ${balance}`}>
           {balance} {units}
         </p>
       </div>
