@@ -4,7 +4,7 @@ import { IDrizzleOptions } from './Drizzle';
 export interface IStoreConfig {
   [key: string]: any;
   drizzleOptions: IDrizzleOptions;
-  reducers?: any;
+  appReducers?: any;
   appSagas?: any[];
   appMiddlewares?: any[];
   disableReduxDevTools?: boolean;
