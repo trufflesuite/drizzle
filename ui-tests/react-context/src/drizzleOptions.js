@@ -17,6 +17,7 @@ const options = {
   polls: {
     accounts: 1500,
   },
+  networkWhitelist: [1, 4]
 };
 
 export default options;

@@ -12,10 +12,10 @@ For 1.x.x this is how you import the different components:
 
 ```
 import { newContextComponents } from "@drizzle/react-components";
-const { AccountData, ContractData, ContractForm } = newContextComponents;
+const { AccountData, ContractData, ContractForm, LoadingContainer } = newContextComponents;
 ```
 
-`LoadingContainer` is not provided with the new context components currently. Also note that you must pass in `drizzle` and `drizzleState` for each of these components.
+Note that you must pass in `drizzle` and `drizzleState` for each of these components.
 
 ### Legacy Context Components
 
@@ -30,13 +30,15 @@ import {
 
 Refer to the included [test apps](#test-apps) for usage examples.
 
-### LoadingContainer (Legacy only)
+### LoadingContainer
 
-This component wraps your entire app (but within the DrizzleProvider) and will show a loading screen until Drizzle, and therefore web3 and your contracts, are initialized.
+This component wraps your entire app (but within the DrizzleProvider) and will show a loading screen until Drizzle, and therefore web3 and your contracts, are initialized. If using `networkWhitelist` in your `drizzleOptions`, it will also detect if the provider is connected to a non-whitelisted network and display a warning message.
 
 `loadingComp` (component) The component displayed while Drizzle initializes.
 
 `errorComp` (component) The component displayed if Drizzle initialization fails.
+
+`networkMismatchComp` (component) The component displayed if the provider is connected to a non-whitelisted network.
 
 ### AccountData
 
