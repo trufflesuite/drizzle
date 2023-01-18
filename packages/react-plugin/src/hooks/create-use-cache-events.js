@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from "react"
 
 export default drizzle => (contractName, eventName, eventOptions) => {
   const [events, setEvents] = useState()
@@ -11,22 +11,19 @@ export default drizzle => (contractName, eventName, eventOptions) => {
       ),
     [contractName]
   )
-  useEffect(
-    () => {
-      let mounted = true
-      contract
-        .getPastEvents(eventName, eventOptions)
-        .then(pastEvents => mounted && setEvents(pastEvents))
-      const listener = drizzleContract.events[eventName]({
-        ...eventOptions,
-        fromBlock: 'latest'
-      }).on('data', event => setEvents(events => [...events, event]))
-      return () => {
-        listener.unsubscribe()
-        mounted = false
-      }
-    },
-    [contractName, eventName, eventOptions]
-  )
+  useEffect(() => {
+    let mounted = true
+    contract
+      .getPastEvents(eventName, eventOptions)
+      .then(pastEvents => mounted && setEvents(pastEvents))
+    const listener = drizzleContract.events[eventName]({
+      ...eventOptions,
+      fromBlock: "latest"
+    }).on("data", event => setEvents(events => [...events, event]))
+    return () => {
+      listener.unsubscribe()
+      mounted = false
+    }
+  }, [contractName, eventName, eventOptions])
   return events
 }

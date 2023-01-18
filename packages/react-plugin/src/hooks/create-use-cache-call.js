@@ -1,11 +1,11 @@
-import { useDrizzleState } from '.'
+import { useDrizzleState } from "."
 
 export default drizzle => (
   contractNameOrNames,
   methodNameOrFunction,
   ...args
 ) => {
-  const isFunction = typeof methodNameOrFunction === 'function'
+  const isFunction = typeof methodNameOrFunction === "function"
   const drizzleState = useDrizzleState(drizzleState => {
     if (isFunction) {
       return contractNameOrNames.reduce(

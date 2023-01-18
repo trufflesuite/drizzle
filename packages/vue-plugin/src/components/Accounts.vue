@@ -1,9 +1,11 @@
 <template>
-  <div v-if="isDrizzleInitialized">
-    <div>{{ activeAccount }}</div>
-    <div>Balance: {{ convertedBalance }} {{ units }}</div>
+  <div v-if="isDrizzleInitialized" role="status" aria-live="polite">
+    <div v-bind:aria-label="activeAccountAriaLabel">{{ activeAccount }}</div>
+    <div v-bind:aria-label="convertedBalanceAriaLabel">
+      Balance: {{ convertedBalance }} {{ units }}
+    </div>
   </div>
-  <div v-else>Loading...</div>
+  <div v-else role="alert" aria-busy="true" aria-live="polite">Loading...</div>
 </template>
 
 <script>
@@ -40,6 +42,20 @@ export default {
         this.drizzleInstance.web3.utils.fromWei(wei, units),
         this.precision
       )
+    },
+
+    convertedBalanceAriaLabel() {
+      const units = capitalize(this.units)
+      const balance = precisionRound(
+        this.drizzleInstance.web3.utils.fromWei(this.activeBalance, units),
+        this.precision
+      )
+      return `${units} Balance: ${balance}`
+    },
+
+    activeAccountAriaLabel() {
+      const units = capitalize(this.units)
+      return `${units} Address: ${this.activeAccount}`
     }
   }
 }

@@ -17,6 +17,8 @@
     "ganache:deploy": "lerna run ganache:deploy --stream",
     "serve:ui": "lerna run serve:ui --parallel --stream",
     "webpack-reports": "lerna run webpack-report --parallel --stream",
+    "lint": "eslint 'packages/*/src/**/*.js'",
+    "lint:fix": "eslint 'packages/*/src/**/*.js' --fix",
     "test": "lerna run test --parallel --stream",
     "test:store": "lerna run test --stream --scope @drizzle/store",
     "test:store:verbose": "lerna run test --stream --scope @drizzle/store -- --verbose",

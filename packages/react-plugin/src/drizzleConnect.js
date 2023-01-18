@@ -1,6 +1,6 @@
-import PropTypes from 'prop-types'
-import React from 'react'
-import { connect } from 'react-redux'
+import PropTypes from "prop-types"
+import React from "react"
+import { connect } from "react-redux"
 
 export default function drizzleConnect(Component, ...args) {
   var ConnectedWrappedComponent = connect(...args)(Component)
