@@ -21,6 +21,7 @@ const composeSagas = sagas =>
  * @param {object[]} config.appSagas=[] - application sagas to be managed by drizzle's saga middleware
  * @param {object[]} config.appMiddlewares=[] - application middlewares to be managed by drizzle's saga middleware
  * @param {boolean} config.disableReduxDevTools=false - disable redux devtools hook
+ * @param {object} config.initialAppState={} - application initial state to include in drizzle's redux store
  * @returns {object} Redux store
  *
  */
@@ -30,6 +31,7 @@ export function generateStore ({
   appSagas = [],
   appMiddlewares = [],
   disableReduxDevTools = false,
+  initialAppState = {},
   ...options
 }) {
   // Note: Preserve backwards compatibility for passing options to
@@ -37,7 +39,7 @@ export function generateStore ({
   // of `generateStore(options)`.
   //
   // The updated signature looks for `drizzleOptions`, `appReducers`,
-  // `appSagas`, `initialAppStore` and `disableReduxDevTools` while
+  // `appSagas`, `appMiddlewares`, `disableReduxDevTools` and `initialAppState` while
   // {...options} captures the previous release's signature.
   //
   // Resolve drizzleOptions. If called by dapps written to previous API, then
@@ -50,17 +52,18 @@ export function generateStore ({
     ? global.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
     : compose
 
-  let initialContractsState = {
+  const initialContractsState = {
     contracts: generateContractsInitialState(drizzleOptions)
   }
 
   const sagaMiddleware = createSagaMiddleware()
   const allMiddlewares = [...appMiddlewares, sagaMiddleware, drizzleMW]
   const allReducers = { ...drizzleReducers, ...appReducers }
+  const allState = { ...initialAppState, ...initialContractsState }
 
   const store = createStore(
     combineReducers(allReducers),
-    initialContractsState,
+    allState,
     composeEnhancers(applyMiddleware(...allMiddlewares))
   )
 

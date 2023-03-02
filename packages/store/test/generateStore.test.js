@@ -63,5 +63,21 @@ describe('generateStore', () => {
       expect(state).toHaveProperty('myState')
       expect(state.myState).toBe(initialState)
     })
+
+    test('when invoked with initialAppState', () => {
+      const initialState = 'This is the initial app State'
+      const myState = jest.fn((state = '') => state)
+      const appReducers = { myState }
+      const initialAppState = { myState: initialState }
+      const store = generateStore({
+        drizzleOptions,
+        appReducers,
+        initialAppState
+      })
+      const state = store.getState()
+      hasBasicShape(state)
+      expect(state).toHaveProperty('myState')
+      expect(state.myState).toBe(initialState)
+    })
   })
 })
