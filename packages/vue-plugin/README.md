@@ -57,7 +57,7 @@ $ npm install @drizzle/vue-plugin
    import App from './App.vue'
    import Vuex from 'vuex'
 
-   import drizzleVuePlugin from 'TODO: TBD name of package'
+   import drizzleVuePlugin from '@drizzle/vue-plugin'
    import drizzleOptions from './drizzleOptions'
 
    // Register Vuex
